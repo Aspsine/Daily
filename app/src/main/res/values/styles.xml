@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="AppTheme.Base"></style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
+        <item name="colorPrimary">@color/style_color_primary</item>
+        <item name="colorPrimaryDark">@color/style_color_primary_dark</item>
+        <item name="colorAccent">@color/style_color_accent</item>
+        <item name="android:divider">@color/style_divider</item>
+        <!--<item name="android:textColorPrimary">@color/style_text_color_primary</item>-->
+        <!--<item name="android:textColorSecondary">@color/style_text_color_secondary</item>-->
+
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+</resources>

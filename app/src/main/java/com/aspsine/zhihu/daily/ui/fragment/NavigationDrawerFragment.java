@@ -144,6 +144,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
      *
      * @param fragmentId   The android:id of this fragment in its activity's layout.
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
+     * @param toolbar The actionbar
      */
     public void setUp(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);

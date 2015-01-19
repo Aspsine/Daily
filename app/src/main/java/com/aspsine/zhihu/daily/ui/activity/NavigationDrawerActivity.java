@@ -18,8 +18,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class NavigationDrawerActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
-    @InjectView(R.id.toolbar)
-    Toolbar toolbar;
+    @InjectView(R.id.actionbarToolbar)
+    Toolbar mActionBarToolbar;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
@@ -30,20 +30,14 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
         ButterKnife.inject(this);
-        setupToolbar();
         setUpDrawer();
     }
 
-    private void setupToolbar() {
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.app_name);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-    }
-
     private void setUpDrawer() {
+        setSupportActionBar(mActionBarToolbar);
         mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-        mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
+        mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mActionBarToolbar);
     }
 
     @Override
@@ -91,9 +85,6 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

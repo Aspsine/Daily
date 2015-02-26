@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.ui.activity.NavigationDrawerActivity;

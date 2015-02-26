@@ -23,7 +23,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
-    private CharSequence mTitle;
+    private CharSequence mTitle = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         setSupportActionBar(mActionBarToolbar);
         mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-        mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mActionBarToolbar);
+        mNavigationDrawerFragment.setup(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mActionBarToolbar);
     }
 
     @Override
@@ -45,22 +45,12 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, PlaceholderFragment.newInstance(position))
                 .commit();
     }
 
     public void onSectionAttached(int number) {
-        switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_section1);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section2);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
-        }
+        mTitle = getString(NavigationDrawerFragment.NAVDRAWER_TITLE_RES_ID[number]);
     }
 
     public void restoreActionBar() {

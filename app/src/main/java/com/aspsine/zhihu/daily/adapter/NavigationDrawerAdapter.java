@@ -11,9 +11,6 @@ import android.widget.TextView;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.entity.NavigationItem;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
-import com.aspsine.zhihu.daily.ui.fragment.NavigationDrawerFragment;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -41,7 +38,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_navigation_drawer, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.nav_drawer_item, viewGroup, false);
         return new ViewHolder(view);
     }
 

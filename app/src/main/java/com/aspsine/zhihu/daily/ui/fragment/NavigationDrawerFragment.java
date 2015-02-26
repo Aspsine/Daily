@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +36,7 @@ import java.util.List;
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment{
+public class NavigationDrawerFragment extends Fragment {
 
     /**
      * Remember the position of the selected item.
@@ -122,10 +124,16 @@ public class NavigationDrawerFragment extends Fragment{
 
         populateNavDrawer(view);
 
+        if (mCallbacks != null) {
+            mCallbacks.onNavigationDrawerItemSelected(mCurrentSelectedPosition);
+        }
+
         return view;
     }
 
-    /** Populates the navigation drawer with the appropriate items. */
+    /**
+     * Populates the navigation drawer with the appropriate items.
+     */
     private void populateNavDrawer(View view) {
         mNavDrawerItems.add(NAV_DRAWER_ITEM_EXPLORE);
         mNavDrawerItems.add(NAV_DRAWER_ITEM_MY_SCHEDULE);
@@ -136,34 +144,34 @@ public class NavigationDrawerFragment extends Fragment{
         createNavDrawerItems(view);
     }
 
-    private void createNavDrawerItems(View view){
-        mDrawerItemsListContainer = (ViewGroup)view.findViewById(R.id.ll_drawer_items);
-        if(mDrawerItemsListContainer == null){
+    private void createNavDrawerItems(View view) {
+        mDrawerItemsListContainer = (ViewGroup) view.findViewById(R.id.ll_drawer_items);
+        if (mDrawerItemsListContainer == null) {
             return;
         }
         mNavDrawerItemViews = new View[mNavDrawerItems.size()];
         mDrawerItemsListContainer.removeAllViews();
         int i = 0;
-        for (int itemId : mNavDrawerItems){
+        for (int itemId : mNavDrawerItems) {
             mNavDrawerItemViews[i] = makeNavDrawerItem(itemId, mDrawerItemsListContainer);
             mDrawerItemsListContainer.addView(mNavDrawerItemViews[i]);
             ++i;
         }
     }
 
-    private View makeNavDrawerItem(final int itemId, ViewGroup container){
+    private View makeNavDrawerItem(final int itemId, ViewGroup container) {
         boolean selected = getSelfNavDrawerItem() == itemId;
         int layoutToInflate = 0;
 
-        if(isSeparator(itemId)){
+        if (isSeparator(itemId)) {
             layoutToInflate = R.layout.nav_drawer_separator;
-        }else{
+        } else {
             layoutToInflate = R.layout.nav_drawer_item;
         }
 
         View view = getActivity().getLayoutInflater().inflate(layoutToInflate, container, false);
 
-        if(isSeparator(itemId)){
+        if (isSeparator(itemId)) {
             UIUtils.setAccessibilityIgnore(view);
             return view;
         }
@@ -197,12 +205,11 @@ public class NavigationDrawerFragment extends Fragment{
     }
 
 
-
-    private boolean isSeparator(int itemId){
+    private boolean isSeparator(int itemId) {
         return itemId == NAV_DRAWER_SEPARATOR;
     }
 
-    void setSelectedNavDrawerItem(int itemId){
+    void setSelectedNavDrawerItem(int itemId) {
         if (mNavDrawerItemViews != null) {
             for (int i = 0; i < mNavDrawerItemViews.length; i++) {
                 if (i < mNavDrawerItems.size()) {
@@ -222,10 +229,9 @@ public class NavigationDrawerFragment extends Fragment{
         ImageView iconView = (ImageView) view.findViewById(R.id.ivItemIcon);
         TextView titleView = (TextView) view.findViewById(R.id.tvItemName);
 
-        if (selected) {
+//        if (selected) {
 //            view.setBackgroundResource(R.drawable.selected_navdrawer_item_background);
-        }
-
+//        }
         // configure its appearance according to whether or not it's selected
         titleView.setTextColor(selected ?
                 getResources().getColor(R.color.navdrawer_text_color_selected) :
@@ -240,19 +246,20 @@ public class NavigationDrawerFragment extends Fragment{
      * of BaseActivity override this to indicate what nav drawer item corresponds to them
      * Return NAVDRAWER_ITEM_INVALID to mean that this Activity should not have a Nav Drawer.
      */
-    int getSelfNavDrawerItem(){
+    int getSelfNavDrawerItem() {
         return NAV_DRAWER_ITEM_EXPLORE;
     }
 
-    private void onNavDrawerItemClicked(int itemId){
-        if (itemId == NAV_DRAWER_ITEM_INVALID){
+    private void onNavDrawerItemClicked(int itemId) {
+        if (itemId == NAV_DRAWER_ITEM_INVALID) {
             closeDrawer();
             return;
         }
         setSelectedNavDrawerItem(itemId);
-        if (mCallbacks != null){
+        if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(itemId);
-        };
+        }
+        ;
         mCurrentSelectedPosition = itemId;
         closeDrawer();
     }
@@ -261,12 +268,12 @@ public class NavigationDrawerFragment extends Fragment{
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
 
-    public void openDrawer(){
-        if(mDrawerLayout != null) mDrawerLayout.openDrawer(mFragmentContainerView);
+    public void openDrawer() {
+        if (mDrawerLayout != null) mDrawerLayout.openDrawer(mFragmentContainerView);
     }
 
-    public void closeDrawer(){
-        if(mDrawerLayout != null) mDrawerLayout.closeDrawer(mFragmentContainerView);
+    public void closeDrawer() {
+        if (mDrawerLayout != null) mDrawerLayout.closeDrawer(mFragmentContainerView);
     }
 
     /**
@@ -274,7 +281,7 @@ public class NavigationDrawerFragment extends Fragment{
      *
      * @param fragmentId   The android:id of this fragment in its activity's layout.
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
-     * @param toolbar The actionbar
+     * @param toolbar      The actionbar
      */
     public void setup(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);

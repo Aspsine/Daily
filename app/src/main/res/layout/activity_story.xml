@@ -1,0 +1,21 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.aspsine.zhihu.daily.ui.activity.StoryActivity">
+
+    <include
+        android:id="@+id/actionbarToolbar"
+        layout="@layout/layout_actionbar_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actionbarToolbar"
+        android:text="@string/hello_world"
+        android:textColor="@color/black" />
+
+</RelativeLayout>

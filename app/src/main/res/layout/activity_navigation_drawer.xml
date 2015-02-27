@@ -6,6 +6,7 @@
     tools:context="com.aspsine.zhihu.daily.ui.activity.NavigationDrawerActivity">
 
     <include
+        android:id="@+id/actionbarToolbar"
         layout="@layout/layout_actionbar_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

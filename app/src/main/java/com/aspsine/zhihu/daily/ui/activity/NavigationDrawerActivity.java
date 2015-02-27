@@ -1,5 +1,6 @@
 package com.aspsine.zhihu.daily.ui.activity;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
+import com.aspsine.zhihu.daily.ui.fragment.ExploreFragment;
 import com.aspsine.zhihu.daily.ui.fragment.NavigationDrawerFragment;
 import com.aspsine.zhihu.daily.ui.fragment.PlaceholderFragment;
 
@@ -43,10 +45,12 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position))
                 .commit();
+
     }
 
     public void onSectionAttached(int number) {

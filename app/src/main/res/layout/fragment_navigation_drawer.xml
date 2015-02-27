@@ -29,8 +29,8 @@
 
                 <com.aspsine.zhihu.daily.ui.widget.BezelImageView
                     android:id="@+id/profile_image"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_profile_avatar"
                     app:maskDrawable="@drawable/circle_mask" />
@@ -73,8 +73,8 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textSize="20sp"
-                    android:visibility="gone" />
+                    android:text="成汐"
+                    android:textSize="18sp" />
             </RelativeLayout>
         </FrameLayout>
 

@@ -1,0 +1,98 @@
+package com.aspsine.zhihu.daily.adapter;
+
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.aspsine.zhihu.daily.R;
+import com.aspsine.zhihu.daily.entity.Story;
+import com.aspsine.zhihu.daily.interfaces.OnItemClickListener;
+import com.aspsine.zhihu.daily.interfaces.OnItemLongClickListener;
+
+import java.util.List;
+
+/**
+ * Created by Aspsine on 2015/2/26.
+ */
+public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHolder> {
+    private List<Story> mStories;
+    private OnItemClickListener mOnItemClickListener;
+    private OnItemLongClickListener mOnItemLongClickListener;
+
+    public ExploreAdapter(List<Story> stories) {
+        this.mStories = stories;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.mOnItemClickListener = onItemClickListener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener){
+        this.mOnItemLongClickListener = onItemLongClickListener;
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.explore_cardview_item, parent, false);
+        return new ViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Story story = mStories.get(position);
+        holder.text.setText(TextUtils.isEmpty(story.getTitle()) ? "" : story.getTitle());
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return mStories == null ? 0 : mStories.size();
+    }
+
+    public void add(Story story){
+        mStories.add(story);
+        this.notifyItemInserted(mStories.size());
+    }
+
+    public void add(Story story, int position){
+        mStories.add(position, story);
+        this.notifyItemInserted(position);
+    }
+
+    public void remove(int position){
+        mStories.remove(position);
+        this.notifyItemRemoved(position);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
+        public CardView card;
+        public TextView text;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            card = (CardView) itemView.findViewById(R.id.card);
+            text = (TextView) itemView.findViewById(R.id.text);
+
+            card.setOnClickListener(this);
+            card.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(mOnItemClickListener == null) return;
+            mOnItemClickListener.onItemClick(getPosition(), v);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if(mOnItemLongClickListener == null) return false;
+            mOnItemLongClickListener.onItemLongClick(getPosition(), v);
+            return true;
+        }
+    }
+}

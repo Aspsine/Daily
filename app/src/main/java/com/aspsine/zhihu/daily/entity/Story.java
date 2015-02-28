@@ -7,6 +7,7 @@ import java.util.List;
  */
 public class Story {
     private List<String> images;
+    private String thumbnail;
     private String type;
     private String id;
     private String gaPrefix;
@@ -50,5 +51,13 @@ public class Story {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

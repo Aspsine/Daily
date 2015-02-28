@@ -1,17 +1,20 @@
 package com.aspsine.zhihu.daily.adapter;
 
+import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.entity.Story;
 import com.aspsine.zhihu.daily.interfaces.OnItemClickListener;
 import com.aspsine.zhihu.daily.interfaces.OnItemLongClickListener;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -44,9 +47,8 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Story story = mStories.get(position);
-        holder.text.setText(TextUtils.isEmpty(story.getTitle()) ? "" : story.getTitle());
-
-
+        holder.text.setText(String.valueOf(story.getTitle()));
+        ImageLoader.getInstance().displayImage(story.getThumbnail(), holder.image);
     }
 
     @Override
@@ -72,11 +74,13 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
         public CardView card;
         public TextView text;
+        public ImageView image;
 
         public ViewHolder(View itemView) {
             super(itemView);
             card = (CardView) itemView.findViewById(R.id.card);
             text = (TextView) itemView.findViewById(R.id.text);
+            image = (ImageView) itemView.findViewById(R.id.image);
 
             card.setOnClickListener(this);
             card.setOnLongClickListener(this);

@@ -26,11 +26,14 @@ import java.util.Map;
  * 处理程序中未捕获的异常，将异常写入日志文件
  */
 public class CrashHandler implements UncaughtExceptionHandler {
-    public static final String TAG = "CrashHandler";
+    public static final String TAG = CrashHandler.class.getSimpleName();
+
+    private static CrashHandler instance = null;
+
+    private Context mContext;
 
     private UncaughtExceptionHandler mDefaultHandler;
-    private static CrashHandler INSTANCE = null;
-    private Context mContext;
+
     private Map<String, String> infos = new HashMap<String, String>();
 
     private CrashHandler() {
@@ -42,18 +45,17 @@ public class CrashHandler implements UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
-    /**
-     * 获取CrashHandler实例 ,单例模式
-     */
     public static CrashHandler getInstance(Context context) {
-        if (INSTANCE == null)
-            INSTANCE = new CrashHandler(context);
-        return INSTANCE;
+        if (instance == null) {
+            synchronized (CrashHandler.class) {
+                if (instance == null) {
+                    instance = new CrashHandler(context);
+                }
+            }
+        }
+        return instance;
     }
 
-    /**
-     * 当UncaughtException发生时会转入该函数来处理
-     */
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
         if (!handleException(ex) && mDefaultHandler != null) {
@@ -93,7 +95,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 infos.put("versionCode", versionCode);
             }
         } catch (NameNotFoundException e) {
-            Log.e(TAG, "an error occured when collect package info", e);
+            Log.e(TAG, "an error occurred when collect package info", e);
         }
         Field[] fields = Build.class.getDeclaredFields();
         for (Field field : fields) {
@@ -101,7 +103,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 field.setAccessible(true);
                 infos.put(field.getName(), field.get(null).toString());
             } catch (Exception e) {
-                Log.e(TAG, "an error occured when collect crash info", e);
+                Log.e(TAG, "an error occurred when collect crash info", e);
             }
         }
     }
@@ -129,7 +131,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
         try {
             String fileName = String.format("crash-%s.log", df.format(new Date(System.currentTimeMillis())));
             if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-                String path = "/sdcard/blueChat/log";
+                String path = "/sdcard/daily/log/";
                 File dir = new File(path);
                 if (!dir.exists())
                     dir.mkdirs();

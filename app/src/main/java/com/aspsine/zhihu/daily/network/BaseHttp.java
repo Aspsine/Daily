@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by Aspsine on 2015/2/28.
  */
 public class BaseHttp {
-    public static final String CHARSET = "UTF-8";
+    protected static final String CHARSET = "UTF-8";
 
     protected static String get(String urlAddress) throws IOException {
         URL url = new URL(urlAddress);

@@ -320,6 +320,10 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    public int getCurrentSelectedPosition(){
+        return mCurrentSelectedPosition;
+    }
+
 
     @Override
     public void onAttach(Activity activity) {

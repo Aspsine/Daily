@@ -1,18 +1,16 @@
 package com.aspsine.zhihu.daily.ui.activity;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v7.widget.Toolbar;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
-import com.aspsine.zhihu.daily.ui.fragment.ExploreFragment;
 import com.aspsine.zhihu.daily.ui.fragment.NavigationDrawerFragment;
 import com.aspsine.zhihu.daily.ui.fragment.PlaceholderFragment;
 
@@ -97,7 +95,11 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         if (mNavigationDrawerFragment.isDrawerOpen()) {
             mNavigationDrawerFragment.closeDrawer();
         }else {
-            super.onBackPressed();
+            if(mNavigationDrawerFragment.getCurrentSelectedPosition() != NavigationDrawerFragment.getDefaultNavDrawerItem()){
+                mNavigationDrawerFragment.selectItem(NavigationDrawerFragment.getDefaultNavDrawerItem());
+            }else {
+                super.onBackPressed();
+            }
         }
     }
 }

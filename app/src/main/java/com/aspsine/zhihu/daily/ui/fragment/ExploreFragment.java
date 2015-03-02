@@ -1,45 +1,26 @@
 package com.aspsine.zhihu.daily.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.adapter.ExploreAdapter;
-import com.aspsine.zhihu.daily.entity.Story;
-import com.aspsine.zhihu.daily.interfaces.OnItemClickListener;
-import com.aspsine.zhihu.daily.interfaces.OnItemLongClickListener;
-import com.aspsine.zhihu.daily.network.Http;
-import com.aspsine.zhihu.daily.ui.activity.StoryActivity;
 import com.aspsine.zhihu.daily.util.DateUtils;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
 /**
  * Created by Aspsine on 2015/2/26.
  */
 public class ExploreFragment extends PlaceholderFragment {
     public static final String TAG = ExploreFragment.class.getSimpleName();
-    public static final int TAB_NUM = 5;
+    public static final int TAB_NUM = 7;
     private ViewPagerTabAdapter mViewPagerTabAdapter;
 
     @Override
@@ -67,7 +48,7 @@ public class ExploreFragment extends PlaceholderFragment {
 
     }
 
-    protected final class ViewPagerTabAdapter extends FragmentStatePagerAdapter{
+    protected final class ViewPagerTabAdapter extends FragmentStatePagerAdapter {
 
         public ViewPagerTabAdapter(FragmentManager fm) {
             super(fm);
@@ -75,7 +56,9 @@ public class ExploreFragment extends PlaceholderFragment {
 
         @Override
         public Fragment getItem(int position) {
-            return StoriesFragment.newInstance(DateUtils.getCurrentDate());
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_YEAR, 1 - position);
+            return StoriesFragment.newInstance(DateUtils.getDate(calendar.getTime(), "yyyyMMdd"));
         }
 
         @Override
@@ -85,7 +68,18 @@ public class ExploreFragment extends PlaceholderFragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return DateUtils.getCurrentDate();
+            String title = null;
+            if(position == 0){
+                title = "今天";
+            }else if(position == 1){
+                title = "昨天";
+            } else{
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_YEAR, 0 - position);
+                title = DateUtils.getDate(calendar.getTime(), "yyyy年MM月dd日");
+            }
+
+            return title;
         }
     }
 }

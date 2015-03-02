@@ -1,5 +1,9 @@
 package com.aspsine.zhihu.daily.network;
 
+import android.util.Log;
+
+import com.aspsine.zhihu.daily.Constants;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,6 +21,10 @@ public class BaseHttp {
     protected static final String CHARSET = "UTF-8";
 
     protected static String get(String urlAddress) throws IOException {
+        if(Constants.Config.DEVELOPER_MODE){
+            Log.i("url", urlAddress);
+        }
+
         URL url = new URL(urlAddress);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");

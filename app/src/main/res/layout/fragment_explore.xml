@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipeRefreshLayout"
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewPager"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <android.support.v4.view.PagerTabStrip
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:background="@color/style_color_primary"
+        android:textColor ="?android:textColorSecondary"
+        android:textStyle="bold">
 
-    </android.support.v7.widget.RecyclerView>
+    </android.support.v4.view.PagerTabStrip>
 
-</android.support.v4.widget.SwipeRefreshLayout>
+</android.support.v4.view.ViewPager>

@@ -33,6 +33,9 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         setContentView(R.layout.activity_navigation_drawer);
         ButterKnife.inject(this);
         setUpDrawer();
+        if(savedInstanceState == null ){
+            mNavigationDrawerFragment.selectItem(NavigationDrawerFragment.getDefaultNavDrawerItem());
+        }
     }
 
     private void setUpDrawer() {

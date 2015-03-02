@@ -91,8 +91,8 @@ public class NavigationDrawerFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
+            selectItem(mCurrentSelectedPosition);
         }
-
     }
 
     @Override
@@ -108,10 +108,6 @@ public class NavigationDrawerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
 
         populateNavDrawer(view);
-
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(mCurrentSelectedPosition);
-        }
 
         return view;
     }
@@ -145,7 +141,6 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private View makeNavDrawerItem(final int itemId, ViewGroup container) {
-        boolean selected = getSelfNavDrawerItem() == itemId;
         int layoutToInflate = 0;
 
         if (isSeparator(itemId)) {
@@ -177,7 +172,7 @@ public class NavigationDrawerFragment extends Fragment {
         }
         titleView.setText(getString(titleId));
 
-        formatNavDrawerItem(view, itemId, selected);
+        formatNavDrawerItem(view, itemId, false);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,7 +189,7 @@ public class NavigationDrawerFragment extends Fragment {
         return itemId == NAV_DRAWER_SEPARATOR;
     }
 
-    void setSelectedNavDrawerItem(int itemId) {
+    public void setSelectedNavDrawerItem(int itemId) {
         if (mNavDrawerItemViews != null) {
             for (int i = 0; i < mNavDrawerItemViews.length; i++) {
                 if (i < mNavDrawerItems.size()) {
@@ -226,13 +221,16 @@ public class NavigationDrawerFragment extends Fragment {
                 getResources().getColor(R.color.navdrawer_icon_tint));
     }
 
-    /**
-     * Returns the navigation drawer item that corresponds to this Activity. Subclasses
-     * of BaseActivity override this to indicate what nav drawer item corresponds to them
-     * Return NAVDRAWER_ITEM_INVALID to mean that this Activity should not have a Nav Drawer.
-     */
-    int getSelfNavDrawerItem() {
+    public static int getDefaultNavDrawerItem() {
         return NAV_DRAWER_ITEM_EXPLORE;
+    }
+
+    public void selectItem(int itemId){
+        setSelectedNavDrawerItem(itemId);
+        if (mCallbacks != null) {
+            mCallbacks.onNavigationDrawerItemSelected(itemId);
+        }
+        mCurrentSelectedPosition = itemId;
     }
 
     private void onNavDrawerItemClicked(int itemId) {
@@ -240,12 +238,7 @@ public class NavigationDrawerFragment extends Fragment {
             closeDrawer();
             return;
         }
-        setSelectedNavDrawerItem(itemId);
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(itemId);
-        }
-        ;
-        mCurrentSelectedPosition = itemId;
+        selectItem(itemId);
         closeDrawer();
     }
 

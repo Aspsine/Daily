@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.ui.fragment.ExploreFragment;
+import com.aspsine.zhihu.daily.ui.fragment.StoriesFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -25,7 +26,7 @@ public class StoryActivity extends ActionBarActivity {
 
         setupActionBar();
         TextView tv = (TextView) findViewById(R.id.text);
-        tv.setText(getIntent().getStringExtra(ExploreFragment.EXTRA_STORY_ID));
+        tv.setText(getIntent().getStringExtra(StoriesFragment.EXTRA_STORY_ID));
     }
 
     private void setupActionBar(){

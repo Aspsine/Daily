@@ -1,12 +1,32 @@
 package com.aspsine.zhihu.daily.network;
 
+import android.os.Build;
+import android.util.Log;
+
+import com.aspsine.zhihu.daily.Constants;
+
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
  * Created by Aspsine on 2015/2/28.
  */
-public class Http extends BaseHttp{
+public class Http {
+    protected static final String CHARSET = "UTF-8";
+
+    public static String get(String baseUrl) throws IOException {
+        if (Constants.Config.DEVELOPER_MODE) {
+            Log.i("url", baseUrl);
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
+            return BaseHttpClient.get(baseUrl);
+        } else {
+            return BaseHttp.get(baseUrl);
+        }
+    }
 
     public static String get(String baseUrl, Map<String, String> params) throws IOException {
         return get(makeUrl(baseUrl, params));
@@ -25,6 +45,36 @@ public class Http extends BaseHttp{
             return get(baseUrl + encodeString(suffix).replace("+", "%20"));
         } else {
             return get(baseUrl, suffix);
+        }
+    }
+
+
+    protected static String makeUrl(String baseUrl, Map<String, String> params) {
+        if (params == null || params.size() == 0) {
+            return baseUrl;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(baseUrl);
+        sb.append("?");
+
+        for (Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator(); iterator.hasNext(); sb.append("&")) {
+            Map.Entry<String, String> item = iterator.next();
+            sb.append(concatKeyValue(item.getKey(), item.getValue()));
+        }
+
+        return sb.toString();
+    }
+
+    protected static String concatKeyValue(String key, String value) {
+        return encodeString(key) + "=" + encodeString(value);
+    }
+
+    protected static String encodeString(String str) {
+        try {
+            return URLEncoder.encode(str, CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            return "";
         }
     }
 }

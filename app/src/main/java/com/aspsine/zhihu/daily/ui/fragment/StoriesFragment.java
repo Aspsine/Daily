@@ -1,8 +1,6 @@
 package com.aspsine.zhihu.daily.ui.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import com.aspsine.zhihu.daily.interfaces.OnItemClickListener;
 import com.aspsine.zhihu.daily.interfaces.OnItemLongClickListener;
 import com.aspsine.zhihu.daily.network.Http;
 import com.aspsine.zhihu.daily.ui.activity.StoryActivity;
-import com.aspsine.zhihu.daily.util.DateUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -136,7 +134,11 @@ public class StoriesFragment extends Fragment implements OnItemClickListener, On
                     Story story = new Story();
                     story.setTitle(jsonStory.getString("title"));
                     story.setGaPrefix(jsonStory.getString("ga_prefix"));
-                    story.setThumbnail(String.valueOf(jsonStory.getJSONArray("images").get(0)));
+                    try {
+                        story.setThumbnail(String.valueOf(jsonStory.getJSONArray("images").get(0)));
+                    } catch (Exception e) {
+                        Log.i("TAG", story.getTitle());
+                    }
                     story.setId(jsonStory.getString("id"));
                     story.setType(jsonStory.getString("type"));
                     tmpStories.add(story);

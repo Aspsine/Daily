@@ -20,14 +20,14 @@ import java.util.List;
 /**
  * Created by Aspsine on 2015/2/26.
  */
-public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHolder> {
+public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.ViewHolder> {
     private List<Story> mStories;
     private DisplayImageOptions mOptions;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
 
 
-    public ExploreAdapter(List<Story> stories) {
+    public StoriesAdapter(List<Story> stories) {
         this.mStories = stories;
         this.mOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.ic_launcher)
@@ -40,17 +40,17 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
 
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener){
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
         this.mOnItemLongClickListener = onItemLongClickListener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.explore_cardview_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_story, parent, false);
         return new ViewHolder(itemView);
     }
 
@@ -66,22 +66,22 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
         return mStories == null ? 0 : mStories.size();
     }
 
-    public void add(Story story){
+    public void add(Story story) {
         mStories.add(story);
         this.notifyItemInserted(mStories.size());
     }
 
-    public void add(Story story, int position){
+    public void add(Story story, int position) {
         mStories.add(position, story);
         this.notifyItemInserted(position);
     }
 
-    public void remove(int position){
+    public void remove(int position) {
         mStories.remove(position);
         this.notifyItemRemoved(position);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public CardView card;
         public TextView text;
         public ImageView image;
@@ -98,13 +98,13 @@ public class ExploreAdapter extends RecyclerView.Adapter<ExploreAdapter.ViewHold
 
         @Override
         public void onClick(View v) {
-            if(mOnItemClickListener == null) return;
+            if (mOnItemClickListener == null) return;
             mOnItemClickListener.onItemClick(getPosition(), v);
         }
 
         @Override
         public boolean onLongClick(View v) {
-            if(mOnItemLongClickListener == null) return false;
+            if (mOnItemLongClickListener == null) return false;
             mOnItemLongClickListener.onItemLongClick(getPosition(), v);
             return true;
         }

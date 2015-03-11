@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.ui.activity.NavigationDrawerActivity;
@@ -34,10 +33,10 @@ public class PlaceholderFragment extends Fragment {
      */
     public static PlaceholderFragment newInstance(int sectionNumber) {
         PlaceholderFragment fragment;
-        if(sectionNumber == 0){
+        if (sectionNumber == 0) {
             fragment = new ExploreFragment();
-        }else {
-            fragment = new PlaceholderFragment();
+        } else {
+            fragment = new StoryListFragment();
         }
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -60,7 +59,7 @@ public class PlaceholderFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_place_holder, container, false);
         TextView tvSelectionLabel = (TextView) rootView.findViewById(R.id.section_label);
-        tvSelectionLabel.setText(argSectionNumber+"");
+        tvSelectionLabel.setText(argSectionNumber + "");
         return rootView;
     }
 

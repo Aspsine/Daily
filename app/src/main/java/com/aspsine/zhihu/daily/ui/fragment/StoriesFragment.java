@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.adapter.ExploreAdapter;
+import com.aspsine.zhihu.daily.adapter.StoriesAdapter;
 import com.aspsine.zhihu.daily.entity.Story;
 import com.aspsine.zhihu.daily.interfaces.OnItemClickListener;
 import com.aspsine.zhihu.daily.interfaces.OnItemLongClickListener;
@@ -35,12 +35,12 @@ import java.util.List;
  * Use the {@link StoriesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StoriesFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener{
+public class StoriesFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener {
     public static final String EXTRA_STORY_ID = "extra_Story_Id";
     public static final String EXTRA_DATE = "extra_date";
 
     private List<Story> mStories;
-    private ExploreAdapter mAdapter;
+    private StoriesAdapter mAdapter;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -64,7 +64,7 @@ public class StoriesFragment extends Fragment implements OnItemClickListener, On
         mDate = getArguments().getString(EXTRA_DATE);
 
         mStories = new ArrayList<Story>();
-        mAdapter = new ExploreAdapter(mStories);
+        mAdapter = new StoriesAdapter(mStories);
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnItemLongClickListener(this);
     }
@@ -116,7 +116,7 @@ public class StoriesFragment extends Fragment implements OnItemClickListener, On
         Toast.makeText(getActivity(), position + " long click", Toast.LENGTH_SHORT).show();
     }
 
-    private void fresh(){
+    private void fresh() {
         swipeRefreshLayout.setRefreshing(true);
         new Thread(new MyRunnable()).start();
     }
@@ -159,9 +159,9 @@ public class StoriesFragment extends Fragment implements OnItemClickListener, On
             swipeRefreshLayout.setRefreshing(false);
             if (msg.what == 0) {
                 mStories.clear();
-                mStories.addAll((List<Story>)msg.obj);
+                mStories.addAll((List<Story>) msg.obj);
                 mAdapter.notifyDataSetChanged();
-            }else {
+            } else {
                 Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
             }
         }

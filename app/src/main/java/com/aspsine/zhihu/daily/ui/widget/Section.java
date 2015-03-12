@@ -1,8 +1,6 @@
 package com.aspsine.zhihu.daily.ui.widget;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.media.Image;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +10,6 @@ import android.widget.TextView;
 
 import com.aspsine.zhihu.daily.R;
 
-import org.w3c.dom.Text;
 
 /**
  * Created by sf on 2015/1/20.

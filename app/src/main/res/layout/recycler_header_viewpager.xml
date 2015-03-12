@@ -1,8 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.aspsine.zhihu.daily.ui.widget.MyViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/viewPager"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:CirclePageIndicator="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:orientation="vertical">
+    android:layout_height="224dp">
 
-</com.aspsine.zhihu.daily.ui.widget.MyViewPager>
+    <com.aspsine.zhihu.daily.ui.widget.MyViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    </com.aspsine.zhihu.daily.ui.widget.MyViewPager>
+
+    <ImageView
+        android:id="@+id/mask"
+        android:layout_width="fill_parent"
+        android:layout_height="100dip"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/mask" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_above="@+id/indicator"
+        android:layout_marginLeft="16.0dip"
+        android:layout_marginRight="16.0dip"
+        android:layout_marginBottom="8dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:shadowColor="@color/black"
+        android:shadowDx="0.0"
+        android:shadowDy="1.0"
+        android:shadowRadius="1.0"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textIsSelectable="false" />
+
+    <com.aspsine.zhihu.daily.ui.widget.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="10dp"
+        CirclePageIndicator:fillColor="#ffffffff"
+        CirclePageIndicator:pageColor="#9f888888"
+        CirclePageIndicator:strokeWidth="0dp" />
+
+
+</RelativeLayout>

@@ -7,11 +7,14 @@ import java.util.List;
  */
 public class Story {
     private List<String> images;
+    private String image;
     private String thumbnail;
     private String type;
     private String id;
     private String gaPrefix;
     private String title;
+    private String shareUrl;
+    private String url;
 
     public List<String> getImages() {
         return images;
@@ -59,5 +62,29 @@ public class Story {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getShareUrl() {
+        return shareUrl;
+    }
+
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

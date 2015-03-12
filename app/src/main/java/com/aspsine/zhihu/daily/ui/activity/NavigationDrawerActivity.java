@@ -1,5 +1,6 @@
 package com.aspsine.zhihu.daily.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -84,6 +85,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 

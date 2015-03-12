@@ -5,14 +5,15 @@ package com.aspsine.zhihu.daily;
  */
 public class Constants {
 
-    public static class Url{
+    public static class Url {
+        public static final String ZHIHU_DAILY_LATEST = "http://news-at.zhihu.com/api/2/news/latest";
         public static final String ZHIHU_DAILY_BEFORE = "http://news.at.zhihu.com/api/3/news/before/";
         public static final String ZHIHU_DAILY_OFFLINE_NEWS = "http://news-at.zhihu.com/api/3/news/";
         public static final String ZHIHU_DAILY_PURIFY_BEFORE = "http://zhihu-daily-purify.herokuapp.com/raw/";
         public static final String SEARCH = "http://zhihu-daily-purify.herokuapp.com/search/";
     }
 
-    public static class Config{
+    public static class Config {
         public static final boolean DEVELOPER_MODE = true;
     }
 }

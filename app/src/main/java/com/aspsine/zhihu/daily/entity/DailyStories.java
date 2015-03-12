@@ -6,6 +6,7 @@ import java.util.List;
  * Created by Aspsine on 2015/3/10.
  */
 public class DailyStories {
+    private String displayDate;
     private String date;
     private List<Story> stories;
     private List<Story> topStories;
@@ -16,6 +17,14 @@ public class DailyStories {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getDisplayDate() {
+        return displayDate;
+    }
+
+    public void setDisplayDate(String displayDate) {
+        this.displayDate = displayDate;
     }
 
     public List<Story> getStories() {

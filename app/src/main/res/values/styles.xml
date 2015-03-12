@@ -27,4 +27,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@android:color/black</item>
     </style>
+
+
 </resources>

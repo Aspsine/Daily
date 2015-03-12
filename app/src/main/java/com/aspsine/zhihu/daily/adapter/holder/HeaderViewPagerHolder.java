@@ -1,9 +1,11 @@
 package com.aspsine.zhihu.daily.adapter.holder;
 
+import android.media.Image;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -27,7 +29,6 @@ import java.util.List;
  */
 public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
     public List<Story> mStories;
-    private List<ImageView> mImages;
     private TextView title;
     public MyViewPager viewPager;
     private CirclePageIndicator indicator;
@@ -65,26 +66,12 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
 
     public void bindData(List<Story> stories, View itemView) {
         mStories = stories;
-        int size = mStories == null ? 0 : mStories.size();
-        mImages = new ArrayList<ImageView>(size);
-        for (int i = 0; i < size; i++) {
-            ImageView imageView = new ImageView(itemView.getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 250);
-            imageView.setLayoutParams(layoutParams);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            final int finalI = i;
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mOnItemClickListener == null) return;
-                    mOnItemClickListener.onItemClick(finalI, v);
-                }
-            });
-            mImages.add(imageView);
-        }
     }
 
     public void notifyDataSetChanged() {
+        if (mStories == null || mStories.size() == 0){
+            return;
+        }
         if (mPagerAdapter == null) {
             mPagerAdapter = new HeaderPagerAdapter();
             viewPager.setAdapter(mPagerAdapter);
@@ -106,6 +93,7 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
                 }
             });
             title.setText(String.valueOf(mStories.get(0).getTitle()));
+            viewPager.setCurrentItem(0);
             viewPager.startAutoScroll();
         } else {
             mPagerAdapter.notifyDataSetChanged();
@@ -113,6 +101,7 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
     }
 
     protected class HeaderPagerAdapter extends PagerAdapter {
+
 
         @Override
         public int getCount() {
@@ -125,16 +114,26 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            ImageView imageView = mImages.get(position);
-            container.addView(imageView);
+        public Object instantiateItem(ViewGroup container, final int position) {
+            ImageView imageView = new ImageView(itemView.getContext());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            imageView.setLayoutParams(layoutParams);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnItemClickListener == null) return;
+                    mOnItemClickListener.onItemClick(position, v);
+                }
+            });
             ImageLoader.getInstance().displayImage(mStories.get(position).getImage(), imageView, mOptions);
+            container.addView(imageView);
             return imageView;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(mImages.get(position));
+            container.removeView((ImageView)object);
         }
     }
 }

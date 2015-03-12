@@ -97,9 +97,9 @@ public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (mDailyStories != null) {
             List<Story> topStories = mDailyStories.getStories();
             List<Story> stories = mDailyStories.getStories();
-            return (topStories == null ? 0 : 1) + (stories == null ? 0 : stories.size());
+            return (topStories == null || topStories.size() == 0 ? 0 : 1) + (stories == null ? 0 : stories.size());
         }
-        return 20;
+        return 0;
     }
 
     @Override

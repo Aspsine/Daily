@@ -5,6 +5,9 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,11 +34,22 @@ import java.util.List;
  */
 public class StoryListFragment extends PlaceholderFragment {
     private static final String TAG = StoryListFragment.class.getSimpleName();
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private StoryListAdapter mAdapter;
     RecyclerView recyclerView;
     private DailyStories mDailyStories;
 
     public StoryListFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDailyStories = new DailyStories();
+        mDailyStories.setStories(new ArrayList<Story>());
+        mDailyStories.setTopStories(new ArrayList<Story>());
+        mAdapter = new StoryListAdapter(mDailyStories);
     }
 
     @Override
@@ -49,7 +63,20 @@ public class StoryListFragment extends PlaceholderFragment {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        new Thread(new MyRunnable()).start();
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        recyclerView.setAdapter(mAdapter);
+        refresh();
     }
 
     @Override
@@ -66,19 +93,10 @@ public class StoryListFragment extends PlaceholderFragment {
         recyclerView = null;
     }
 
-    @Override
-    public void onDestroy() {
-
-        Log.i(TAG, "onDestroy");
-        super.onDestroy();
+    private void refresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        new Thread(new MyRunnable()).start();
     }
-
-    @Override
-    public void onDetach() {
-        Log.i(TAG, "onDetach");
-        super.onDetach();
-    }
-
 
     private class MyRunnable implements Runnable {
 
@@ -99,11 +117,7 @@ public class StoryListFragment extends PlaceholderFragment {
                     Story story = new Story();
                     story.setId(String.valueOf(storyObject.getString("id")));
                     story.setTitle(String.valueOf(storyObject.getString("title")));
-//                    try{
-//                        story.setThumbnail(String.valueOf(storyObject.getString("thumbnail")));
-//                    }catch (Exception e){
-//                        Log.i("TAG", story.getTitle());
-//                    }
+//                  story.setThumbnail(String.valueOf(storyObject.getString("thumbnail")));
                     story.setImage(String.valueOf(storyObject.getString("image")));
                     story.setGaPrefix(String.valueOf(storyObject.getString("ga_prefix")));
                     story.setShareUrl(String.valueOf(storyObject.getString("share_url")));
@@ -142,10 +156,16 @@ public class StoryListFragment extends PlaceholderFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            swipeRefreshLayout.setRefreshing(false);
             if (msg.what == 0) {
-                mDailyStories = (DailyStories) msg.obj;
-                Log.i("TAG", mDailyStories.getTopStories().get(0).getTitle());
-                recyclerView.setAdapter(new StoryListAdapter(mDailyStories));
+                DailyStories tmpDailyStories = (DailyStories) msg.obj;
+                mDailyStories.setDate(tmpDailyStories.getDate());
+                mDailyStories.setDisplayDate(tmpDailyStories.getDisplayDate());
+                mDailyStories.getTopStories().clear();
+                mDailyStories.getTopStories().addAll(tmpDailyStories.getTopStories());
+                mDailyStories.getStories().clear();
+                mDailyStories.getStories().addAll(tmpDailyStories.getStories());
+                mAdapter.notifyDataSetChanged();
             }
         }
     };

@@ -22,11 +22,14 @@ public class ExploreFragment extends PlaceholderFragment {
     public static final String TAG = ExploreFragment.class.getSimpleName();
     public static final int TAB_NUM = 7;
     private ViewPagerTabAdapter mViewPagerTabAdapter;
-
+    ViewPager viewPager;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewPagerTabAdapter = new ViewPagerTabAdapter(getChildFragmentManager());
+        if(savedInstanceState == null){
+            mViewPagerTabAdapter = new ViewPagerTabAdapter(getChildFragmentManager());
+            setRetainInstance(true);
+        }
     }
 
     @Override
@@ -38,14 +41,20 @@ public class ExploreFragment extends PlaceholderFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        viewPager.setAdapter(mViewPagerTabAdapter);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        viewPager.setAdapter(mViewPagerTabAdapter);
+    }
 
+    @Override
+    public void onDestroyView() {
+        viewPager.removeAllViews();
+        super.onDestroyView();
+        viewPager = null;
     }
 
     protected final class ViewPagerTabAdapter extends FragmentStatePagerAdapter {

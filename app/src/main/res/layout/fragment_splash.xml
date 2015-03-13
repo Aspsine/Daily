@@ -24,7 +24,7 @@
         android:src="@drawable/splash_logo" />
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/tvCopyrightHolder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

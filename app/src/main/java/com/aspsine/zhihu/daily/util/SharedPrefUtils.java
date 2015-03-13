@@ -23,6 +23,9 @@ public class SharedPrefUtils {
      */
     public static final String SHARED_PREF_IS_USER_LEARNED_DRAWER = "shared_pref_is_user_learned_drawer";
 
+
+    public static final String SHARED_PREF_SPLASH_JSON = "shared_pref-splash_json";
+
     public static SharedPreferences getDefaultSharedPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
@@ -57,4 +60,15 @@ public class SharedPrefUtils {
         SharedPreferences sp = getDefaultSharedPreferences(context);
         sp.edit().putBoolean(SHARED_PREF_IS_USER_LEARNED_DRAWER, true).apply();
     }
+
+    public static String getSplashJson(Context context){
+        SharedPreferences sp = getDefaultSharedPreferences(context);
+        return sp.getString(SHARED_PREF_SPLASH_JSON, null);
+    }
+
+    public static void setSplashJson(Context context, String jsonString){
+        SharedPreferences sp = getDefaultSharedPreferences(context);
+        sp.edit().putString(SHARED_PREF_SPLASH_JSON, jsonString).commit();
+    }
+
 }

@@ -9,6 +9,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.aspsine.zhihu.daily.Constants;
+
 /**
  * Created by Aspsine on 2015/3/11.
  */
@@ -101,7 +103,7 @@ public class MyViewPager extends ViewPager {
         if (currentItem == count) {
             currentItem = 0;
         }
-        Log.i(TAG, currentItem + "");
+        if (Constants.Config.DEVELOPER_MODE) Log.i(TAG, currentItem + "");
         setCurrentItem(currentItem);
     }
 

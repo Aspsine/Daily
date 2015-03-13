@@ -25,8 +25,7 @@ public class SettingsActivity extends ActionBarActivity {
 
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new SettingsFragment()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.container, new SettingsFragment()).commit();
         }
     }
 

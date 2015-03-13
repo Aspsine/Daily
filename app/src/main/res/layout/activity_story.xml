@@ -17,5 +17,4 @@
         android:layout_below="@+id/actionbarToolbar"
         android:text="@string/hello_world"
         android:textColor="@color/black" />
-
 </RelativeLayout>

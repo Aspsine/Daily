@@ -15,6 +15,14 @@ public class Story {
     private String title;
     private String shareUrl;
     private String url;
+    private String body;
+    private String imageSource;
+    private String sectionThumbnail;
+    private String sectionId;
+    private List<String> jsList;
+    private String sectionName;
+    private List<String> cssList;
+
 
     public List<String> getImages() {
         return images;
@@ -86,5 +94,61 @@ public class Story {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getImageSource() {
+        return imageSource;
+    }
+
+    public void setImageSource(String imageSource) {
+        this.imageSource = imageSource;
+    }
+
+    public String getSectionThumbnail() {
+        return sectionThumbnail;
+    }
+
+    public void setSectionThumbnail(String sectionThumbnail) {
+        this.sectionThumbnail = sectionThumbnail;
+    }
+
+    public String getSectionId() {
+        return sectionId;
+    }
+
+    public void setSectionId(String sectionId) {
+        this.sectionId = sectionId;
+    }
+
+    public List<String> getJsList() {
+        return jsList;
+    }
+
+    public void setJsList(List<String> jsList) {
+        this.jsList = jsList;
+    }
+
+    public String getSectionName() {
+        return sectionName;
+    }
+
+    public void setSectionName(String sectionName) {
+        this.sectionName = sectionName;
+    }
+
+    public List<String> getCssList() {
+        return cssList;
+    }
+
+    public void setCssList(List<String> cssList) {
+        this.cssList = cssList;
     }
 }

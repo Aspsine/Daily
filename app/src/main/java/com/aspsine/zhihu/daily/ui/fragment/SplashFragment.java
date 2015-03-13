@@ -7,7 +7,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.network.Http;
 import com.aspsine.zhihu.daily.util.DensityUtil;
+import com.aspsine.zhihu.daily.util.L;
 import com.aspsine.zhihu.daily.util.NetWorkUtil;
 import com.aspsine.zhihu.daily.util.SharedPrefUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -123,7 +123,7 @@ public class SplashFragment extends Fragment {
             try {
                 String newJsonString = Http.get(Constants.Url.ZHIHU_DAILY_SPLASH + mWidth + "*" + mHeight);
                 if (!TextUtils.isEmpty(newJsonString) && TextUtils.isEmpty(mOldJsonString)) {
-                    Log.i(TAG, "splash has been updated");
+                    L.i(TAG, "splash has been updated");
                     SharedPrefUtils.setSplashJson(getActivity(), newJsonString);
                     mOldJsonString = newJsonString;
                 } else if (TextUtils.isEmpty(newJsonString) && TextUtils.isEmpty(mOldJsonString)) {
@@ -145,7 +145,7 @@ public class SplashFragment extends Fragment {
                     setDefaultData();
                     break;
                 case 10:
-                    Log.i(TAG, "use imageLoader set splash bg");
+                    L.i(TAG, "use imageLoader set splash bg");
                     setData(String.valueOf(msg.obj));
                     break;
             }

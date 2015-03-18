@@ -93,7 +93,7 @@ public class StoriesFragment extends Fragment implements OnItemClickListener, On
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                fresh();
+                refresh();
             }
         });
     }
@@ -101,7 +101,7 @@ public class StoriesFragment extends Fragment implements OnItemClickListener, On
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        fresh();
+        refresh();
     }
 
     @Override
@@ -116,7 +116,7 @@ public class StoriesFragment extends Fragment implements OnItemClickListener, On
         Toast.makeText(getActivity(), position + " long click", Toast.LENGTH_SHORT).show();
     }
 
-    private void fresh() {
+    private void refresh() {
         swipeRefreshLayout.setRefreshing(true);
         new Thread(new MyRunnable()).start();
     }

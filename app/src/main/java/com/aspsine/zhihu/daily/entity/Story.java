@@ -1,18 +1,32 @@
 package com.aspsine.zhihu.daily.entity;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
  * Created by Aspsine on 2015/2/27.
  */
 public class Story {
+    @Expose
     private List<String> images;
-    private String image;
-    private String thumbnail;
+    @Expose
     private String type;
+    @Expose
     private String id;
+    @Expose
+    @SerializedName("ga_prefix")
     private String gaPrefix;
+    @Expose
     private String title;
+    @Expose
+    @SerializedName("multipic")
+    private String multiPic;
+    @Expose
+    private String image;
+
+    private String thumbnail;
     private String shareUrl;
     private String url;
     private String body;
@@ -22,7 +36,6 @@ public class Story {
     private List<String> jsList;
     private String sectionName;
     private List<String> cssList;
-
 
     public List<String> getImages() {
         return images;
@@ -64,12 +77,12 @@ public class Story {
         this.title = title;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    public String getMultiPic() {
+        return multiPic;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setMultiPic(String multiPic) {
+        this.multiPic = multiPic;
     }
 
     public String getImage() {
@@ -78,6 +91,14 @@ public class Story {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public String getShareUrl() {

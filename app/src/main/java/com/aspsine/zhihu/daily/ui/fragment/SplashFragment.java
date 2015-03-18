@@ -122,17 +122,22 @@ public class SplashFragment extends Fragment {
         public void run() {
             try {
                 String newJsonString = Http.get(Constants.Url.ZHIHU_DAILY_SPLASH + mWidth + "*" + mHeight);
-                if (!TextUtils.isEmpty(newJsonString) && TextUtils.isEmpty(mOldJsonString)) {
-                    L.i(TAG, "splash has been updated");
-                    SharedPrefUtils.setSplashJson(getActivity(), newJsonString);
+                if (!TextUtils.isEmpty(newJsonString)) {
+                    if (!newJsonString.equals(mOldJsonString)) {
+                        L.i(TAG, "splash has been updated");
+                        SharedPrefUtils.setSplashJson(getActivity(), newJsonString);
+                    } else {
+                        L.i(TAG, "splash has no change");
+                    }
                     mOldJsonString = newJsonString;
                 } else if (TextUtils.isEmpty(newJsonString) && TextUtils.isEmpty(mOldJsonString)) {
                     handler.obtainMessage(0).sendToTarget();
+                    return;
                 }
+                handler.obtainMessage(10, mOldJsonString).sendToTarget();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            handler.obtainMessage(10, mOldJsonString).sendToTarget();
         }
     }
 

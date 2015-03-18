@@ -10,14 +10,14 @@ public class Constants {
         /**
          * add width*height in pixel;
          */
-        public static final String ZHIHU_DAILY_SPLASH = "http://news-at.zhihu.com/api/3/start-image/";
+        public static final String ZHIHU_DAILY_SPLASH = "http://news-at.zhihu.com/api/4/start-image/";
 
-        public static final String ZHIHU_DAILY_LATEST = "http://daily.zhihu.com/api/2/news/latest";
+        public static final String ZHIHU_DAILY_LATEST = "http://daily.zhihu.com/api/4/news/latest";
 
         /**
          * add yyyymmdd;
          */
-        public static final String ZHIHU_DAILY_BEFORE = "http://daily.zhihu.com/api/3/news/before/";
+        public static final String ZHIHU_DAILY_BEFORE = "http://daily.zhihu.com/api/4/news/before/";
 
         /**
          * add ga_prefix

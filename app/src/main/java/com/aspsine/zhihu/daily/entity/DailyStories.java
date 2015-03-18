@@ -1,14 +1,20 @@
 package com.aspsine.zhihu.daily.entity;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
  * Created by Aspsine on 2015/3/10.
  */
 public class DailyStories {
-    private String displayDate;
+    @Expose
     private String date;
+    @Expose
     private List<Story> stories;
+    @Expose
+    @SerializedName("top_stories")
     private List<Story> topStories;
 
     public String getDate() {
@@ -17,14 +23,6 @@ public class DailyStories {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public String getDisplayDate() {
-        return displayDate;
-    }
-
-    public void setDisplayDate(String displayDate) {
-        this.displayDate = displayDate;
     }
 
     public List<Story> getStories() {

@@ -32,11 +32,13 @@ public class PlaceholderFragment extends Fragment {
      * number.
      */
     public static PlaceholderFragment newInstance(int sectionNumber) {
-        PlaceholderFragment fragment;
+        PlaceholderFragment fragment = null;
         if (sectionNumber == 0) {
             fragment = new ExploreFragment();
-        } else {
+        } else if (sectionNumber == 1) {
             fragment = new StoryListFragment();
+        } else {
+            fragment = new NavigationFragment();
         }
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);

@@ -85,8 +85,10 @@ public class MyViewPager extends ViewPager {
     }
 
     private void sendScrollMessage(long delayTimeInMills) {
-        handler.removeMessages(WHAT_SCROLL);
-        handler.sendEmptyMessageDelayed(WHAT_SCROLL, delayTimeInMills);
+        if (isAutoScroll) {
+            handler.removeMessages(WHAT_SCROLL);
+            handler.sendEmptyMessageDelayed(WHAT_SCROLL, delayTimeInMills);
+        }
     }
 
     private void scrollOnce() {

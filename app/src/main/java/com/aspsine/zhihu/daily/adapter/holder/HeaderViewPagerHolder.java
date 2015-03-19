@@ -1,27 +1,23 @@
 package com.aspsine.zhihu.daily.adapter.holder;
 
-import android.media.Image;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.entity.Story;
-import com.aspsine.zhihu.daily.interfaces.OnItemClickListener;
-import com.aspsine.zhihu.daily.interfaces.OnItemLongClickListener;
 import com.aspsine.zhihu.daily.ui.widget.CirclePageIndicator;
 import com.aspsine.zhihu.daily.ui.widget.MyViewPager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,8 +29,6 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
     public MyViewPager viewPager;
     private CirclePageIndicator indicator;
     private PagerAdapter mPagerAdapter;
-    private OnItemClickListener mOnItemClickListener;
-    private OnItemLongClickListener mOnItemLongClickListener;
 
     private DisplayImageOptions mOptions;
 
@@ -54,21 +48,8 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
                 .build();
     }
 
-    public HeaderViewPagerHolder(@Nullable View itemView, OnItemClickListener onItemClickListener,
-                                 OnItemLongClickListener onItemLongClickListener) {
-        this(itemView);
-
-        this.mOnItemClickListener = onItemClickListener;
-        this.mOnItemLongClickListener = onItemLongClickListener;
-
-        // TODO Blind action to views
-    }
-
-    public void bindData(List<Story> stories, View itemView) {
+    public void bindHeaderView(List<Story> stories) {
         mStories = stories;
-    }
-
-    public void notifyDataSetChanged() {
         if (mStories == null || mStories.size() == 0){
             return;
         }
@@ -93,10 +74,7 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
                 }
             });
             title.setText(String.valueOf(mStories.get(0).getTitle()));
-            viewPager.setCurrentItem(0);
             viewPager.startAutoScroll();
-        } else {
-            mPagerAdapter.notifyDataSetChanged();
         }
     }
 
@@ -114,7 +92,7 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, final int position) {
+        public Object instantiateItem(final ViewGroup container, final int position) {
             ImageView imageView = new ImageView(itemView.getContext());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             imageView.setLayoutParams(layoutParams);
@@ -122,8 +100,7 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mOnItemClickListener == null) return;
-                    mOnItemClickListener.onItemClick(position, v);
+                    Toast.makeText(container.getContext(), mStories.get(position).getTitle(), Toast.LENGTH_SHORT).show();
                 }
             });
             ImageLoader.getInstance().displayImage(mStories.get(position).getImage(), imageView, mOptions);

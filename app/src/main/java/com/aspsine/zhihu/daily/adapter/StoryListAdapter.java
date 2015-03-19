@@ -10,8 +10,6 @@ import com.aspsine.zhihu.daily.adapter.holder.HeaderViewPagerHolder;
 import com.aspsine.zhihu.daily.adapter.holder.StoryViewHolder;
 import com.aspsine.zhihu.daily.entity.DailyStories;
 import com.aspsine.zhihu.daily.entity.Story;
-import com.aspsine.zhihu.daily.interfaces.OnItemClickListener;
-import com.aspsine.zhihu.daily.interfaces.OnItemLongClickListener;
 import com.aspsine.zhihu.daily.util.UIUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -24,8 +22,6 @@ import java.util.List;
 public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private DailyStories mDailyStories;
     private DisplayImageOptions mOptions;
-    private OnItemClickListener mOnItemClickListener;
-    private OnItemLongClickListener mOnItemLongClickListener;
 
     protected static class Type {
         private static final int ITEM_HEADER = -1;
@@ -45,25 +41,13 @@ public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 .build();
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.mOnItemClickListener = onItemClickListener;
-    }
-
-    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
-        this.mOnItemLongClickListener = onItemLongClickListener;
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = null;
         switch (viewType) {
             case Type.ITEM_HEADER:
                 itemView = UIUtils.inflate(R.layout.recycler_header_viewpager, parent);
-                HeaderViewPagerHolder holder = new HeaderViewPagerHolder(itemView, mOnItemClickListener, mOnItemLongClickListener);
-                if (mDailyStories != null) {
-                    holder.bindData(mDailyStories.getTopStories(), itemView);
-                }
-                return holder;
+                return new HeaderViewPagerHolder(itemView);
             case Type.ITEM_DATE:
                 itemView = UIUtils.inflate(R.layout.recycler_item_date, parent);
                 return new DateViewHolder(itemView);
@@ -79,7 +63,7 @@ public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         int viewType = getItemViewType(position);
         switch (viewType) {
             case Type.ITEM_HEADER:
-                bindHeaderView((HeaderViewPagerHolder) holder);
+                ((HeaderViewPagerHolder) holder).bindHeaderView(mDailyStories.getTopStories());
                 break;
             case Type.ITEM_DATE:
                 bindDateView((DateViewHolder) holder, position);
@@ -105,10 +89,6 @@ public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public int getItemViewType(int position) {
         return position == 0 ? Type.ITEM_HEADER : Type.ITEM_NORMAL;
-    }
-
-    private void bindHeaderView(HeaderViewPagerHolder holder) {
-        holder.notifyDataSetChanged();
     }
 
     private void bindDateView(DateViewHolder holder, int position) {

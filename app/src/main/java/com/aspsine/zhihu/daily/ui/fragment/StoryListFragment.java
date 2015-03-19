@@ -85,8 +85,23 @@ public class StoryListFragment extends BaseSectionFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        L.i(TAG, "onDestroyView");
+    public void onResume() {
+        L.i(TAG, "onResume");
+        super.onResume();
+        if (recyclerView != null) {
+            L.i(TAG, "recyclerView != null");
+            View view = recyclerView.findViewById(R.id.viewPager);
+            if (view != null) {
+                L.i(TAG, "MyViewPager startAutoScroll");
+                ((MyViewPager) view).startAutoScroll();
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        L.i(TAG, "onPause");
+        super.onPause();
         if (recyclerView != null) {
             L.i(TAG, "recyclerView != null");
             View view = recyclerView.findViewById(R.id.viewPager);
@@ -95,8 +110,12 @@ public class StoryListFragment extends BaseSectionFragment {
                 ((MyViewPager) view).stopAutoScroll();
             }
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        L.i(TAG, "onDestroyView");
         super.onDestroyView();
-        recyclerView = null;
     }
 
     private void refresh() {

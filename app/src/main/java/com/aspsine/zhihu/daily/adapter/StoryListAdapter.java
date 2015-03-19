@@ -1,6 +1,7 @@
 package com.aspsine.zhihu.daily.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,6 +11,7 @@ import com.aspsine.zhihu.daily.adapter.holder.HeaderViewPagerHolder;
 import com.aspsine.zhihu.daily.adapter.holder.StoryViewHolder;
 import com.aspsine.zhihu.daily.entity.DailyStories;
 import com.aspsine.zhihu.daily.entity.Story;
+import com.aspsine.zhihu.daily.util.L;
 import com.aspsine.zhihu.daily.util.UIUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -20,6 +22,7 @@ import java.util.List;
  * Created by Aspsine on 2015/3/11.
  */
 public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final String TAG = StoryListAdapter.class.getSimpleName();
     private DailyStories mDailyStories;
     private DisplayImageOptions mOptions;
 
@@ -47,6 +50,7 @@ public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         switch (viewType) {
             case Type.ITEM_HEADER:
                 itemView = UIUtils.inflate(R.layout.recycler_header_viewpager, parent);
+                Log.i(TAG, "onCreateViewHolder: ITEM_HEADER");
                 return new HeaderViewPagerHolder(itemView);
             case Type.ITEM_DATE:
                 itemView = UIUtils.inflate(R.layout.recycler_item_date, parent);
@@ -59,10 +63,33 @@ public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        if (holder instanceof HeaderViewPagerHolder) {
+            L.i(TAG, "onViewDetachedFromWindow: ITEM_HEADER");
+            HeaderViewPagerHolder headerHolder = (HeaderViewPagerHolder) holder;
+            if (headerHolder.isAutoScrolling()) {
+                headerHolder.stopAutoScroll();
+            }
+        }
+    }
+
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        if (holder instanceof HeaderViewPagerHolder) {
+            L.i(TAG, "onViewAttachedToWindow: ITEM_HEADER");
+            HeaderViewPagerHolder headerHolder = (HeaderViewPagerHolder) holder;
+            if (!headerHolder.isAutoScrolling()) {
+                headerHolder.startAutoScroll();
+            }
+        }
+    }
+
+    @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         int viewType = getItemViewType(position);
         switch (viewType) {
             case Type.ITEM_HEADER:
+                Log.i(TAG, "onBindViewHolder: ITEM_HEADER");
                 ((HeaderViewPagerHolder) holder).bindHeaderView(mDailyStories.getTopStories());
                 break;
             case Type.ITEM_DATE:

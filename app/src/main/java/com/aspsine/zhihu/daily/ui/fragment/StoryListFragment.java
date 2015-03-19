@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import com.aspsine.zhihu.daily.entity.DailyStories;
 import com.aspsine.zhihu.daily.entity.Story;
 import com.aspsine.zhihu.daily.network.Http;
 import com.aspsine.zhihu.daily.ui.widget.MyViewPager;
+import com.aspsine.zhihu.daily.util.L;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -86,13 +86,13 @@ public class StoryListFragment extends BaseSectionFragment {
 
     @Override
     public void onDestroyView() {
-        Log.i(TAG, "onDestroyView");
+        L.i(TAG, "onDestroyView");
         if (recyclerView != null) {
-            Log.i(TAG, "recyclerView != null");
+            L.i(TAG, "recyclerView != null");
             View view = recyclerView.findViewById(R.id.viewPager);
             if (view != null) {
-                Log.i(TAG, "MyViewPager onDestroy");
-                ((MyViewPager) view).destroyView();
+                L.i(TAG, "MyViewPager stopAutoScroll");
+                ((MyViewPager) view).stopAutoScroll();
             }
         }
         super.onDestroyView();

@@ -15,6 +15,7 @@ import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.entity.Story;
 import com.aspsine.zhihu.daily.ui.widget.CirclePageIndicator;
 import com.aspsine.zhihu.daily.ui.widget.MyViewPager;
+import com.aspsine.zhihu.daily.util.L;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -23,14 +24,13 @@ import java.util.List;
 /**
  * Created by Aspsine on 2015/3/11.
  */
-public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
+public class HeaderViewPagerHolder extends RecyclerView.ViewHolder implements ViewPager.OnPageChangeListener {
+    private static final String TAG = HeaderViewPagerHolder.class.getSimpleName();
     private List<Story> mStories;
     private TextView title;
     private MyViewPager viewPager;
     private CirclePageIndicator indicator;
     private PagerAdapter mPagerAdapter;
-
-    private DisplayImageOptions mOptions;
 
     public HeaderViewPagerHolder(@Nullable View itemView) {
         super(itemView);
@@ -38,51 +38,75 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
         title = (TextView) itemView.findViewById(R.id.title);
         viewPager = (MyViewPager) itemView.findViewById(R.id.viewPager);
         indicator = (CirclePageIndicator) itemView.findViewById(R.id.indicator);
-        this.mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_launcher)
-                .showImageForEmptyUri(R.drawable.ic_launcher)
-                .showImageOnFail(R.drawable.ic_launcher)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .build();
     }
 
     public void bindHeaderView(List<Story> stories) {
         mStories = stories;
-        if (mStories == null || mStories.size() == 0){
+        if (mStories == null || mStories.size() == 0) {
             return;
         }
-        if (mPagerAdapter == null) {
-            mPagerAdapter = new HeaderPagerAdapter();
+        if (viewPager.getAdapter() == null) {
+            L.i(TAG, "mPagerAdapter == null");
+            mPagerAdapter = new HeaderPagerAdapter(mStories);
             viewPager.setAdapter(mPagerAdapter);
             indicator.setViewPager(viewPager);
-            indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    title.setText(String.valueOf(mStories.get(position).getTitle()));
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
+            indicator.setOnPageChangeListener(this);
             title.setText(String.valueOf(mStories.get(0).getTitle()));
+        }
+    }
+
+    public boolean isAutoScrolling() {
+        if (viewPager != null) {
+            return viewPager.isAutoScrolling();
+        }
+        return false;
+    }
+
+    public void stopAutoScroll() {
+        if (viewPager != null) {
+            viewPager.stopAutoScroll();
+        }
+    }
+
+    public void startAutoScroll() {
+        if (viewPager != null) {
             viewPager.startAutoScroll();
         }
     }
 
-    protected class HeaderPagerAdapter extends PagerAdapter {
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        title.setText(String.valueOf(mStories.get(position).getTitle()));
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    private final static class HeaderPagerAdapter extends PagerAdapter {
+        private List<Story> mmStories;
+        private DisplayImageOptions mOptions;
+
+        public HeaderPagerAdapter(List<Story> stories) {
+            mmStories = stories;
+            this.mOptions = new DisplayImageOptions.Builder()
+                    .showImageOnLoading(R.drawable.ic_launcher)
+                    .showImageForEmptyUri(R.drawable.ic_launcher)
+                    .showImageOnFail(R.drawable.ic_launcher)
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .considerExifParams(true)
+                    .build();
+        }
 
         @Override
         public int getCount() {
-            return mStories == null ? 0 : mStories.size();
+            return mmStories == null ? 0 : mmStories.size();
         }
 
         @Override
@@ -92,24 +116,24 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
 
         @Override
         public Object instantiateItem(final ViewGroup container, final int position) {
-            ImageView imageView = new ImageView(itemView.getContext());
+            ImageView imageView = new ImageView(container.getContext());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             imageView.setLayoutParams(layoutParams);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(container.getContext(), mStories.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(container.getContext(), mmStories.get(position).getTitle(), Toast.LENGTH_SHORT).show();
                 }
             });
-            ImageLoader.getInstance().displayImage(mStories.get(position).getImage(), imageView, mOptions);
+            ImageLoader.getInstance().displayImage(mmStories.get(position).getImage(), imageView, mOptions);
             container.addView(imageView);
             return imageView;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((ImageView)object);
+            container.removeView((ImageView) object);
         }
     }
 }

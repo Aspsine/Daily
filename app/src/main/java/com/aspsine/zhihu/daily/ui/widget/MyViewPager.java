@@ -55,7 +55,12 @@ public class MyViewPager extends ViewPager {
                 }
                 break;
         }
-
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            stopAutoScroll();
+            isStopByTouch = true;
+        } else if (ev.getAction() == MotionEvent.ACTION_UP && isStopByTouch) {
+            startAutoScroll();
+        }
         return super.dispatchTouchEvent(ev);
     }
 
@@ -63,10 +68,6 @@ public class MyViewPager extends ViewPager {
         this.mDelayTime = delayTime;
     }
 
-    public void destroyView() {
-        stopAutoScroll();
-        this.removeAllViews();
-    }
 
     public void startAutoScroll() {
         isAutoScroll = true;
@@ -76,6 +77,10 @@ public class MyViewPager extends ViewPager {
     public void stopAutoScroll() {
         isAutoScroll = false;
         handler.removeMessages(WHAT_SCROLL);
+    }
+
+    public boolean isAutoScrolling() {
+        return isAutoScroll;
     }
 
     private void sendScrollMessage(long delayTimeInMills) {

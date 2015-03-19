@@ -2,7 +2,9 @@ package com.aspsine.zhihu.daily.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -12,8 +14,10 @@ import android.view.MenuItem;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
+import com.aspsine.zhihu.daily.ui.fragment.ExploreFragment;
 import com.aspsine.zhihu.daily.ui.fragment.NavigationDrawerFragment;
-import com.aspsine.zhihu.daily.ui.fragment.PlaceholderFragment;
+import com.aspsine.zhihu.daily.ui.fragment.NavigationFragment;
+import com.aspsine.zhihu.daily.ui.fragment.StoryListFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -32,7 +36,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         setContentView(R.layout.activity_navigation_drawer);
         ButterKnife.inject(this);
         setUpDrawer();
-        if(savedInstanceState == null ){
+        if (savedInstanceState == null) {
             mNavigationDrawerFragment.selectItem(NavigationDrawerFragment.getDefaultNavDrawerItem());
         }
     }
@@ -44,16 +48,56 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         mNavigationDrawerFragment.setup(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mActionBarToolbar);
     }
 
+    Fragment lastFragment = null;
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment fragment = fm.findFragmentByTag(getTag(position));
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position))
-                .commit();
+        if (lastFragment != null && lastFragment != fragment) {
+            ft.detach(lastFragment);
+        }
 
+        if (fragment != null) {
+            ft.attach(fragment);
+        } else {
+            fragment = getFragmentItem(position);
+            ft.add(R.id.container, fragment, getTag(position));
+        }
+        ft.commit();
+        lastFragment = fragment;
     }
+
+    private String getTag(int position) {
+        switch (position) {
+            case 0:
+                return ExploreFragment.TAG;
+            case 1:
+                return StoryListFragment.TAG;
+            case 2:
+                return NavigationFragment.TAG;
+            default:
+                return NavigationFragment.TAG;
+        }
+    }
+
+    private Fragment getFragmentItem(int position) {
+        switch (position) {
+            case 0:
+                return ExploreFragment.newInstance(position);
+            case 1:
+                return StoryListFragment.newInstance(position);
+            case 2:
+                return new NavigationFragment();
+            default:
+                return new NavigationFragment();
+        }
+    }
+
+
 
     public void onSectionAttached(int number) {
         mTitle = getString(NavigationDrawerFragment.NAVDRAWER_TITLE_RES_ID[number]);
@@ -96,10 +140,10 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
     public void onBackPressed() {
         if (mNavigationDrawerFragment.isDrawerOpen()) {
             mNavigationDrawerFragment.closeDrawer();
-        }else {
-            if(mNavigationDrawerFragment.getCurrentSelectedPosition() != NavigationDrawerFragment.getDefaultNavDrawerItem()){
+        } else {
+            if (mNavigationDrawerFragment.getCurrentSelectedPosition() != NavigationDrawerFragment.getDefaultNavDrawerItem()) {
                 mNavigationDrawerFragment.selectItem(NavigationDrawerFragment.getDefaultNavDrawerItem());
-            }else {
+            } else {
                 super.onBackPressed();
             }
         }

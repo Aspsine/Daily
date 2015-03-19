@@ -18,15 +18,28 @@ import java.util.Calendar;
 /**
  * Created by Aspsine on 2015/2/26.
  */
-public class ExploreFragment extends PlaceholderFragment {
+public class ExploreFragment extends BaseSectionFragment {
     public static final String TAG = ExploreFragment.class.getSimpleName();
     public static final int TAB_NUM = 7;
     private ViewPagerTabAdapter mViewPagerTabAdapter;
     ViewPager viewPager;
+
+    /**
+     * Returns a new instance of this fragment for the given section
+     * number.
+     */
+    public static Fragment newInstance(int sectionNumber) {
+        Fragment fragment = new ExploreFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             mViewPagerTabAdapter = new ViewPagerTabAdapter(getChildFragmentManager());
             setRetainInstance(true);
         }
@@ -78,11 +91,11 @@ public class ExploreFragment extends PlaceholderFragment {
         @Override
         public CharSequence getPageTitle(int position) {
             String title = null;
-            if(position == 0){
+            if (position == 0) {
                 title = "今天";
-            }else if(position == 1){
+            } else if (position == 1) {
                 title = "昨天";
-            } else{
+            } else {
                 Calendar calendar = Calendar.getInstance();
                 calendar.add(Calendar.DAY_OF_YEAR, 0 - position);
                 title = DateUtils.getDate(calendar.getTime(), "yyyy年MM月dd日");

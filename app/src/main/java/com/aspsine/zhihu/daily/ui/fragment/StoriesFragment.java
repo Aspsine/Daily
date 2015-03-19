@@ -36,6 +36,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class StoriesFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener {
+    public static final String TAG = StoriesFragment.class.getSimpleName();
     public static final String EXTRA_STORY_ID = "extra_Story_Id";
     public static final String EXTRA_DATE = "extra_date";
 

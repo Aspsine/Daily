@@ -24,9 +24,9 @@ import java.util.List;
  * Created by Aspsine on 2015/3/11.
  */
 public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
-    public List<Story> mStories;
+    private List<Story> mStories;
     private TextView title;
-    public MyViewPager viewPager;
+    private MyViewPager viewPager;
     private CirclePageIndicator indicator;
     private PagerAdapter mPagerAdapter;
 
@@ -79,7 +79,6 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
     }
 
     protected class HeaderPagerAdapter extends PagerAdapter {
-
 
         @Override
         public int getCount() {

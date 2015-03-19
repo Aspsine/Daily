@@ -23,7 +23,7 @@ public class MyViewPager extends ViewPager {
     private float mDownY;
 
     private boolean isAutoScroll;
-    private boolean isStopByTouch;
+    public boolean isStopByTouch;
 
     public MyViewPager(Context context) {
         this(context, null);
@@ -56,12 +56,6 @@ public class MyViewPager extends ViewPager {
                 break;
         }
 
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            stopAutoScroll();
-            isStopByTouch = true;
-        } else if (ev.getAction() == MotionEvent.ACTION_UP && isStopByTouch) {
-            startAutoScroll();
-        }
         return super.dispatchTouchEvent(ev);
     }
 

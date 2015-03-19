@@ -1,11 +1,11 @@
 package com.aspsine.zhihu.daily.ui.fragment;
 
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,15 +29,23 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoryListFragment extends PlaceholderFragment {
-    private static final String TAG = StoryListFragment.class.getSimpleName();
+public class StoryListFragment extends BaseSectionFragment {
+    public static final String TAG = StoryListFragment.class.getSimpleName();
     private SwipeRefreshLayout swipeRefreshLayout;
     private StoryListAdapter mAdapter;
     RecyclerView recyclerView;
     private DailyStories mDailyStories;
 
-    public StoryListFragment() {
-        // Required empty public constructor
+    /**
+     * Returns a new instance of this fragment for the given section
+     * number.
+     */
+    public static Fragment newInstance(int sectionNumber) {
+        Fragment fragment = new StoryListFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -78,14 +86,15 @@ public class StoryListFragment extends PlaceholderFragment {
 
     @Override
     public void onDestroyView() {
-        Log.i(TAG, "onDestroy");
+        Log.i(TAG, "onDestroyView");
         if (recyclerView != null) {
+            Log.i(TAG, "recyclerView != null");
             View view = recyclerView.findViewById(R.id.viewPager);
             if (view != null) {
+                Log.i(TAG, "MyViewPager onDestroy");
                 ((MyViewPager) view).destroyView();
             }
         }
-
         super.onDestroyView();
         recyclerView = null;
     }

@@ -6,10 +6,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.ui.fragment.StoriesFragment;
+import com.aspsine.zhihu.daily.ui.fragment.StoryFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -23,10 +23,15 @@ public class StoryActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
         ButterKnife.inject(this);
-
         setupActionBar();
-        TextView tv = (TextView) findViewById(R.id.text);
-        tv.setText(getIntent().getStringExtra(StoriesFragment.EXTRA_STORY_ID));
+        if (savedInstanceState == null) {
+            String storyId = getIntent().getStringExtra(StoriesFragment.EXTRA_STORY_ID);
+            StoryFragment storyFragment = StoryFragment.newInstance(storyId);
+            storyFragment.setToolBar(mActionBarToolbar);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, storyFragment, StoryFragment.TAG)
+                    .commit();
+        }
     }
 
     private void setupActionBar() {

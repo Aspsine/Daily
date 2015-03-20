@@ -14,10 +14,10 @@ import android.view.ViewGroup;
 
 import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.adapter.NavigationDrawerAdapter;
 import com.aspsine.zhihu.daily.entity.Theme;
 import com.aspsine.zhihu.daily.entity.Themes;
 import com.aspsine.zhihu.daily.network.Http;
+import com.aspsine.zhihu.daily.ui.adapter.NavigationDrawerAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

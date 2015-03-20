@@ -1,4 +1,4 @@
-package com.aspsine.zhihu.daily.adapter;
+package com.aspsine.zhihu.daily.ui.adapter;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;

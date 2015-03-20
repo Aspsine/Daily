@@ -17,12 +17,12 @@ import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.adapter.StoriesAdapter;
 import com.aspsine.zhihu.daily.entity.Story;
 import com.aspsine.zhihu.daily.interfaces.OnItemClickListener;
 import com.aspsine.zhihu.daily.interfaces.OnItemLongClickListener;
 import com.aspsine.zhihu.daily.network.Http;
 import com.aspsine.zhihu.daily.ui.activity.StoryActivity;
+import com.aspsine.zhihu.daily.ui.adapter.StoriesAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

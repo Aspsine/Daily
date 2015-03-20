@@ -1,4 +1,4 @@
-package com.aspsine.zhihu.daily.adapter.holder;
+package com.aspsine.zhihu.daily.ui.adapter.holder;
 
 import android.app.Activity;
 import android.support.annotation.Nullable;

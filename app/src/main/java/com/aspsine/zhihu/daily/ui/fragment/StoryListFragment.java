@@ -15,10 +15,10 @@ import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.adapter.StoryListAdapter;
 import com.aspsine.zhihu.daily.entity.DailyStories;
 import com.aspsine.zhihu.daily.entity.Story;
 import com.aspsine.zhihu.daily.network.Http;
+import com.aspsine.zhihu.daily.ui.adapter.StoryListAdapter;
 import com.aspsine.zhihu.daily.ui.widget.LoadMoreRecyclerView;
 import com.aspsine.zhihu.daily.ui.widget.MyViewPager;
 import com.aspsine.zhihu.daily.util.L;

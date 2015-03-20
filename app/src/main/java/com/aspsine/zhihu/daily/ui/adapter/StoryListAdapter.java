@@ -1,4 +1,4 @@
-package com.aspsine.zhihu.daily.adapter;
+package com.aspsine.zhihu.daily.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.adapter.holder.DateViewHolder;
-import com.aspsine.zhihu.daily.adapter.holder.HeaderViewPagerHolder;
-import com.aspsine.zhihu.daily.adapter.holder.StoryViewHolder;
 import com.aspsine.zhihu.daily.entity.DailyStories;
 import com.aspsine.zhihu.daily.entity.Story;
+import com.aspsine.zhihu.daily.ui.adapter.holder.DateViewHolder;
+import com.aspsine.zhihu.daily.ui.adapter.holder.HeaderViewPagerHolder;
+import com.aspsine.zhihu.daily.ui.adapter.holder.StoryViewHolder;
 import com.aspsine.zhihu.daily.util.L;
 import com.aspsine.zhihu.daily.util.UIUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;

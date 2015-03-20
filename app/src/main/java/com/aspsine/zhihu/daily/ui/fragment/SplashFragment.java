@@ -20,7 +20,7 @@ import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.network.Http;
 import com.aspsine.zhihu.daily.util.DensityUtil;
 import com.aspsine.zhihu.daily.util.L;
-import com.aspsine.zhihu.daily.util.NetWorkUtil;
+import com.aspsine.zhihu.daily.util.NetWorkUtils;
 import com.aspsine.zhihu.daily.util.SharedPrefUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -83,7 +83,7 @@ public class SplashFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (NetWorkUtil.isNetWorkAvailable(getActivity())) {
+        if (NetWorkUtils.isNetWorkAvailable(getActivity())) {
             new Thread(new GetSplashTask()).start();
         } else {
             if (TextUtils.isEmpty(mOldJsonString)) {

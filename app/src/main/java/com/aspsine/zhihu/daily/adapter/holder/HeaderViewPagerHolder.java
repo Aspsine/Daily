@@ -1,5 +1,6 @@
 package com.aspsine.zhihu.daily.adapter.holder;
 
+import android.app.Activity;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -9,12 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.entity.Story;
 import com.aspsine.zhihu.daily.ui.widget.CirclePageIndicator;
 import com.aspsine.zhihu.daily.ui.widget.MyViewPager;
+import com.aspsine.zhihu.daily.util.IntentUtils;
 import com.aspsine.zhihu.daily.util.L;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -123,7 +124,7 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder implements Vi
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(container.getContext(), mmStories.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                    IntentUtils.IntentToStoryActivity((Activity) v.getContext(), mmStories.get(position));
                 }
             });
             ImageLoader.getInstance().displayImage(mmStories.get(position).getImage(), imageView, mOptions);

@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 /**
  * Created by Aspsine on 2015/3/13.
  */
-public class NetWorkUtil {
+public class NetWorkUtils {
     public static final boolean isNetWorkAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {

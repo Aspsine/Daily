@@ -1,14 +1,14 @@
 package com.aspsine.zhihu.daily.ui.activity;
 
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.ui.fragment.ExploreFragment;
 import com.aspsine.zhihu.daily.ui.fragment.StoriesFragment;
 
 import butterknife.ButterKnife;
@@ -16,7 +16,7 @@ import butterknife.InjectView;
 
 public class StoryActivity extends ActionBarActivity {
     @InjectView(R.id.actionbarToolbar)
-    android.support.v7.widget.Toolbar mActionBarToolbar;
+    Toolbar mActionBarToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +29,10 @@ public class StoryActivity extends ActionBarActivity {
         tv.setText(getIntent().getStringExtra(StoriesFragment.EXTRA_STORY_ID));
     }
 
-    private void setupActionBar(){
+    private void setupActionBar() {
         setSupportActionBar(mActionBarToolbar);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
-            actionBar.setHomeButtonEnabled(true);
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
@@ -56,7 +55,17 @@ public class StoryActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

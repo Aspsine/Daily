@@ -14,7 +14,6 @@ import com.aspsine.zhihu.daily.entity.Story;
 import com.aspsine.zhihu.daily.util.L;
 import com.aspsine.zhihu.daily.util.UIUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -34,14 +33,7 @@ public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public StoryListAdapter(DailyStories dailyStories) {
         this.mDailyStories = dailyStories;
-        this.mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_launcher)
-                .showImageForEmptyUri(R.drawable.ic_launcher)
-                .showImageOnFail(R.drawable.ic_launcher)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .build();
+
     }
 
     @Override
@@ -96,7 +88,7 @@ public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 bindDateView((DateViewHolder) holder, position);
                 break;
             case Type.ITEM_NORMAL:
-                bindStoryView((StoryViewHolder) holder, position);
+                ((StoryViewHolder) holder).bindStoryView(mDailyStories.getStories());
                 break;
             default:
                 return;
@@ -122,10 +114,5 @@ public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     }
 
-    private void bindStoryView(StoryViewHolder holder, int position) {
-        Story story = mDailyStories.getStories().get(position - 1);
-        holder.text.setText(String.valueOf(story.getTitle()));
-        String imageUrl = story.getImages() == null ? "" : story.getImages().get(0);
-        ImageLoader.getInstance().displayImage(imageUrl, holder.image, mOptions);
-    }
+
 }

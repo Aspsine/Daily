@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import com.aspsine.zhihu.daily.adapter.StoryListAdapter;
 import com.aspsine.zhihu.daily.entity.DailyStories;
 import com.aspsine.zhihu.daily.entity.Story;
 import com.aspsine.zhihu.daily.network.Http;
+import com.aspsine.zhihu.daily.ui.widget.LoadMoreRecyclerView;
 import com.aspsine.zhihu.daily.ui.widget.MyViewPager;
 import com.aspsine.zhihu.daily.util.L;
 import com.google.gson.Gson;
@@ -34,8 +34,11 @@ public class StoryListFragment extends BaseSectionFragment {
     public static final String TAG = StoryListFragment.class.getSimpleName();
     private SwipeRefreshLayout swipeRefreshLayout;
     private StoryListAdapter mAdapter;
-    RecyclerView recyclerView;
+    private LoadMoreRecyclerView recyclerView;
+    private LinearLayoutManager mLayoutManager;
     private DailyStories mDailyStories;
+
+    private String mDate;
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -63,18 +66,26 @@ public class StoryListFragment extends BaseSectionFragment {
         return inflater.inflate(R.layout.fragment_story_list, container, false);
     }
 
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView = (LoadMoreRecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(mLayoutManager);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_light);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refresh();
+            }
+        });
+
+        recyclerView.setonLoadMoreListener(new LoadMoreRecyclerView.onLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                loadMore();
             }
         });
     }
@@ -114,34 +125,66 @@ public class StoryListFragment extends BaseSectionFragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        L.i(TAG, "onDestroyView");
-        super.onDestroyView();
-    }
-
     private void refresh() {
         new Handler().post(new Runnable() {
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
-                new Thread(new MyRunnable()).start();
+                new Thread(new GetDailyStoryTask(GetDailyStoryTask.TYPE_REFRESH)).start();
             }
         });
     }
 
-    private class MyRunnable implements Runnable {
+    private void loadMore() {
+        recyclerView.setLoadingMore(true);
+        new Thread(new GetDailyStoryTask(GetDailyStoryTask.TYPE_LOAD_MORE)).start();
+    }
+
+    private class GetDailyStoryTask implements Runnable {
+        private int type;
+        public static final int TYPE_REFRESH = 0;
+        public static final int TYPE_LOAD_MORE = 1;
+
+        public static final int TYPE_REFRESH_ERROR = -1;
+        public static final int TYPE_LOAD_MORE_ERROR = -2;
+
+        public GetDailyStoryTask(int type) {
+            this.type = type;
+        }
 
         @Override
         public void run() {
+            switch (type) {
+                case TYPE_REFRESH:
+                    runRefresh();
+                    break;
+                case TYPE_LOAD_MORE:
+                    runLoadMore();
+                    break;
+            }
+        }
+
+        private void runRefresh() {
             try {
                 String response = Http.get(Constants.Url.ZHIHU_DAILY_LATEST);
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 DailyStories dailyStories = gson.fromJson(response, DailyStories.class);
-                handler.obtainMessage(0, dailyStories).sendToTarget();
+                handler.obtainMessage(type, dailyStories).sendToTarget();
             } catch (Exception e) {
-                handler.obtainMessage(1).sendToTarget();
+                handler.obtainMessage(TYPE_REFRESH_ERROR).sendToTarget();
                 e.printStackTrace();
+            }
+        }
+
+        private void runLoadMore() {
+            try {
+                String response = Http.get(Constants.Url.ZHIHU_DAILY_BEFORE, mDate);
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                DailyStories dailyStories = gson.fromJson(response, DailyStories.class);
+                handler.obtainMessage(type, dailyStories).sendToTarget();
+            } catch (Exception e) {
+                e.printStackTrace();
+                handler.obtainMessage(TYPE_LOAD_MORE_ERROR).sendToTarget();
             }
         }
     }
@@ -150,17 +193,36 @@ public class StoryListFragment extends BaseSectionFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            swipeRefreshLayout.setRefreshing(false);
-            if (msg.what == 0) {
-                DailyStories tmpDailyStories = (DailyStories) msg.obj;
-                mDailyStories.setDate(tmpDailyStories.getDate());
-                mDailyStories.getTopStories().clear();
-                mDailyStories.getTopStories().addAll(tmpDailyStories.getTopStories());
-                mDailyStories.getStories().clear();
-                mDailyStories.getStories().addAll(tmpDailyStories.getStories());
-                mAdapter.notifyDataSetChanged();
-            } else {
-                Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
+            switch (msg.what) {
+                case GetDailyStoryTask.TYPE_LOAD_MORE_ERROR:
+                    recyclerView.setLoadingMore(false);
+                    Toast.makeText(getActivity(), "load more error", Toast.LENGTH_SHORT).show();
+                    break;
+
+                case GetDailyStoryTask.TYPE_REFRESH_ERROR:
+                    swipeRefreshLayout.setRefreshing(false);
+                    Toast.makeText(getActivity(), "refresh error", Toast.LENGTH_SHORT).show();
+                    break;
+
+                case GetDailyStoryTask.TYPE_REFRESH:
+                    swipeRefreshLayout.setRefreshing(false);
+                    DailyStories tmpDailyStories = (DailyStories) msg.obj;
+                    mDate = tmpDailyStories.getDate();
+                    mDailyStories.setDate(tmpDailyStories.getDate());
+                    mDailyStories.getTopStories().clear();
+                    mDailyStories.getTopStories().addAll(tmpDailyStories.getTopStories());
+                    mDailyStories.getStories().clear();
+                    mDailyStories.getStories().addAll(tmpDailyStories.getStories());
+                    mAdapter.notifyDataSetChanged();
+                    break;
+
+                case GetDailyStoryTask.TYPE_LOAD_MORE:
+                    recyclerView.setLoadingMore(false);
+                    DailyStories beforeDailyStories = (DailyStories) msg.obj;
+                    mDate = beforeDailyStories.getDate();
+                    mDailyStories.getStories().addAll(beforeDailyStories.getStories());
+                    mAdapter.notifyDataSetChanged();
+                    break;
             }
         }
     };

@@ -125,6 +125,7 @@ public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private void bindStoryView(StoryViewHolder holder, int position) {
         Story story = mDailyStories.getStories().get(position - 1);
         holder.text.setText(String.valueOf(story.getTitle()));
-        ImageLoader.getInstance().displayImage(story.getImages().get(0), holder.image, mOptions);
+        String imageUrl = story.getImages() == null ? "" : story.getImages().get(0);
+        ImageLoader.getInstance().displayImage(imageUrl, holder.image, mOptions);
     }
 }

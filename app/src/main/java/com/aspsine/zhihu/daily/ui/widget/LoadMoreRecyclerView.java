@@ -9,6 +9,10 @@ import com.aspsine.zhihu.daily.util.L;
 
 /**
  * Created by Aspsine on 2015/3/20.
+ * <p/>
+ * be careful! current version just support LinearLayoutManager
+ * <p/>
+ * Version 1.0 beta
  */
 public class LoadMoreRecyclerView extends RecyclerView {
     private static final String TAG = LoadMoreRecyclerView.class.getSimpleName();
@@ -32,9 +36,6 @@ public class LoadMoreRecyclerView extends RecyclerView {
         this.setOnScrollListener(new OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (!(getLayoutManager() instanceof LinearLayoutManager)) {
-                    return;
-                }
                 LinearLayoutManager layoutManager = (LinearLayoutManager) getLayoutManager();
                 int lastVisibleItem = layoutManager.findLastCompletelyVisibleItemPosition();
                 int itemCount = layoutManager.getItemCount();
@@ -59,5 +60,14 @@ public class LoadMoreRecyclerView extends RecyclerView {
 
     public interface onLoadMoreListener {
         public void onLoadMore();
+    }
+
+    @Override
+    public void setLayoutManager(LayoutManager layout) {
+        if (layout instanceof LinearLayoutManager) {
+            super.setLayoutManager(layout);
+        } else {
+            throw new IllegalArgumentException("LoadMoreRecyclerView must have a LinearLayoutManager!");
+        }
     }
 }

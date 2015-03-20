@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.entity.NavigationItem;
+import com.aspsine.zhihu.daily.entity.Theme;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
 
 import java.util.List;
@@ -18,14 +18,14 @@ import java.util.List;
  * Created by sf on 2015/1/15.
  */
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> {
-    private List<NavigationItem> mData;
+    private List<Theme> mThemes;
     private NavigationDrawerCallbacks mCallBacks;
     private int mSelectedPosition;
     private int mTouchedPosition = -1;
 
 
-    public NavigationDrawerAdapter(List<NavigationItem> data) {
-        mData = data;
+    public NavigationDrawerAdapter(List<Theme> themes) {
+        mThemes = themes;
     }
 
     public NavigationDrawerCallbacks getNavigationDrawerCallbacks() {
@@ -44,9 +44,9 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int i) {
-        NavigationItem navItem = mData.get(i);
-        viewHolder.tvItemName.setText(navItem.getText());
-        viewHolder.tvItemName.setCompoundDrawablesWithIntrinsicBounds(navItem.getDrawable(), null, null, null);
+        Theme navItem = mThemes.get(i);
+        viewHolder.tvItemName.setText(navItem.getName());
+//        viewHolder.tvItemName.setCompoundDrawablesWithIntrinsicBounds(navItem.getDrawable(), null, null, null);
 
         viewHolder.itemView.setOnTouchListener(
                 new View.OnTouchListener() {
@@ -84,10 +84,10 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         );
 
         //TODO: selected menu position, change layout accordingly
-        if(mSelectedPosition == i || mTouchedPosition == i){
+        if (mSelectedPosition == i || mTouchedPosition == i) {
             // viewHolder.itemView.getContext().getResources().getColor(R.color.navigation_item_selected)
             viewHolder.itemView.setBackgroundColor(Color.GRAY);
-        }else {
+        } else {
             viewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
 
@@ -95,7 +95,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     @Override
     public int getItemCount() {
-        return mData != null ? mData.size() : 0;
+        return mThemes != null ? mThemes.size() : 0;
     }
 
     private void touchPosition(int position) {
@@ -105,7 +105,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         if (position >= 0) notifyItemChanged(position);
     }
 
-    public void selectPosition(int position){
+    public void selectPosition(int position) {
         int lastPosition = mSelectedPosition;
         mSelectedPosition = position;
         notifyItemChanged(lastPosition);

@@ -2,6 +2,8 @@ package com.aspsine.zhihu.daily.ui.fragment;
 
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,9 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.adapter.NavigationDrawerAdapter;
-import com.aspsine.zhihu.daily.entity.NavigationItem;
+import com.aspsine.zhihu.daily.entity.Theme;
+import com.aspsine.zhihu.daily.entity.Themes;
+import com.aspsine.zhihu.daily.network.Http;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +29,8 @@ import java.util.List;
  */
 public class NavigationFragment extends Fragment {
     public static final String TAG = NavigationFragment.class.getSimpleName();
+    NavigationDrawerAdapter mAdapter;
+    List<Theme> mThemes;
 
     public NavigationFragment() {
         // Required empty public constructor
@@ -30,6 +39,8 @@ public class NavigationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mThemes = new ArrayList<Theme>();
+        mAdapter = new NavigationDrawerAdapter(mThemes);
     }
 
     @Override
@@ -43,20 +54,46 @@ public class NavigationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new NavigationDrawerAdapter(getMenu()));
+        recyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        refresh();
     }
 
-    private List<NavigationItem> getMenu() {
-        List<NavigationItem> items = new ArrayList<NavigationItem>();
-        items.add(new NavigationItem("item 1", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new NavigationItem("item 2", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new NavigationItem("item 3", getResources().getDrawable(R.drawable.ic_launcher)));
-        return items;
+    private void refresh() {
+        new Thread(new GetThemeTask()).start();
     }
+
+    private final class GetThemeTask implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                String jsonStr = Http.get(Constants.Url.ZHIHU_DAILY_THEME);
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                Themes themes = gson.fromJson(jsonStr, Themes.class);
+                handler.obtainMessage(0, themes).sendToTarget();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    mThemes.clear();
+                    mThemes.addAll(((Themes) msg.obj).getOthers());
+                    mAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
+    };
 
 }

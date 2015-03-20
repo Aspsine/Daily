@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
@@ -69,6 +70,7 @@ public class StoryListFragment extends BaseSectionFragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_dark, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_green_light);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -119,8 +121,13 @@ public class StoryListFragment extends BaseSectionFragment {
     }
 
     private void refresh() {
-        swipeRefreshLayout.setRefreshing(true);
-        new Thread(new MyRunnable()).start();
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+                new Thread(new MyRunnable()).start();
+            }
+        });
     }
 
     private class MyRunnable implements Runnable {
@@ -133,6 +140,7 @@ public class StoryListFragment extends BaseSectionFragment {
                 DailyStories dailyStories = gson.fromJson(response, DailyStories.class);
                 handler.obtainMessage(0, dailyStories).sendToTarget();
             } catch (Exception e) {
+                handler.obtainMessage(1).sendToTarget();
                 e.printStackTrace();
             }
         }
@@ -151,6 +159,8 @@ public class StoryListFragment extends BaseSectionFragment {
                 mDailyStories.getStories().clear();
                 mDailyStories.getStories().addAll(tmpDailyStories.getStories());
                 mAdapter.notifyDataSetChanged();
+            } else {
+                Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
             }
         }
     };

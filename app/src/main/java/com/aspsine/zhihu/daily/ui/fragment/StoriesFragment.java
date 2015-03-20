@@ -118,8 +118,13 @@ public class StoriesFragment extends Fragment implements OnItemClickListener, On
     }
 
     private void refresh() {
-        swipeRefreshLayout.setRefreshing(true);
-        new Thread(new MyRunnable()).start();
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+                new Thread(new MyRunnable()).start();
+            }
+        });
     }
 
     private final class MyRunnable implements Runnable {

@@ -12,6 +12,8 @@ public class Constants {
          */
         public static final String ZHIHU_DAILY_SPLASH = "http://news-at.zhihu.com/api/4/start-image/";
 
+        public static final String ZHIHU_DAILY_THEME = "http://news-at.zhihu.com/api/4/themes";
+
         public static final String ZHIHU_DAILY_LATEST = "http://daily.zhihu.com/api/4/news/latest";
 
         /**
@@ -22,7 +24,9 @@ public class Constants {
         /**
          * add ga_prefix
          */
-        public static final String ZHIHU_DAILY_DETAIL = "http://daily.zhihu.com/api/3/news/";
+        public static final String ZHIHU_DAILY_DETAIL = "http://daily.zhihu.com/api/4/news/";
+
+
     }
 
     public static class Config {

@@ -28,11 +28,11 @@ public class Section extends LinearLayout {
     public static final int TYPE_ICON_TEXT_COUNT = 5;
 
     public Section(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public Section(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, null, 0);
     }
 
     public Section(Context context, AttributeSet attrs, int defStyleAttr) {

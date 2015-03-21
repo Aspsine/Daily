@@ -1,7 +1,7 @@
 # Daily
 A demo app of Zhihu Daily.
 
-## Features:
+## Features
 - Full Material Design
 - New Widget: RecyclerView Toolbar SwipeRefreshLayout
 - RESTful API Design

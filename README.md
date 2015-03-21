@@ -3,7 +3,7 @@ A demo app of Zhihu Daily.
 
 ### Features
 - Full Material Design
-- New Widget: RecyclerView Toolbar SwipeRefreshLayout
+- New Widget: RecyclerView Toolbar SwipeRefreshLayout CardView
 - RESTful API Design
 
 ### Version

@@ -7,7 +7,7 @@ A demo app of Zhihu Daily.
 - RESTful API Design
 
 ### Version
-- Developing.
+- I am Developing.
 
 ### Copyright
 

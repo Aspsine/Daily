@@ -1,6 +1,6 @@
 # Daily
 A demo app of Zhihu Daily.
-
+Developing Now!
 ## Features
 - Full Material Design
 - New Widget: RecyclerView Toolbar SwipeRefreshLayout

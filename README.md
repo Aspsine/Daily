@@ -1,12 +1,15 @@
 # Daily
 A demo app of Zhihu Daily.
-Developing Now!
-## Features
+
+### Features
 - Full Material Design
 - New Widget: RecyclerView Toolbar SwipeRefreshLayout
 - RESTful API Design
 
-## Copyright
+### Version
+- Developing.
+
+### Copyright
 
     Copyright 2014 Zhihu Inc. All rights reserved.
 

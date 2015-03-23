@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="AppTheme" parent="AppTheme.Base">
         <item name="android:colorPrimary">@color/style_color_primary</item>
         <item name="android:colorPrimaryDark">@color/style_color_primary_dark</item>
         <item name="android:colorAccent">@color/style_color_accent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 </resources>

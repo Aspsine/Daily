@@ -3,6 +3,7 @@ package com.aspsine.zhihu.daily.ui.adapter.holder;
 import android.app.Activity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ public class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnC
     private CardView card;
     private TextView text;
     private ImageView image;
+    private ImageView ivMultiPic;
     private DisplayImageOptions mOptions;
     private Story mStory;
 
@@ -40,6 +42,7 @@ public class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnC
         card = (CardView) itemView.findViewById(R.id.card);
         text = (TextView) itemView.findViewById(R.id.text);
         image = (ImageView) itemView.findViewById(R.id.image);
+        ivMultiPic = (ImageView) itemView.findViewById(R.id.ivMultiPic);
         card.setOnClickListener(this);
     }
 
@@ -51,6 +54,11 @@ public class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public void bindStoryView(List<Story> stories) {
         mStory = stories.get(getPosition() - 1);
         text.setText(String.valueOf(mStory.getTitle()));
+        if (!TextUtils.isEmpty(mStory.getMultiPic()) && Boolean.valueOf(mStory.getMultiPic())) {
+            ivMultiPic.setVisibility(View.VISIBLE);
+        } else {
+            ivMultiPic.setVisibility(View.GONE);
+        }
         String imageUrl = mStory.getImages() == null ? "" : mStory.getImages().get(0);
         ImageLoader.getInstance().displayImage(imageUrl, image, mOptions);
     }

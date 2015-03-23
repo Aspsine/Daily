@@ -26,7 +26,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
     @InjectView(R.id.actionbarToolbar)
     Toolbar mActionBarToolbar;
 
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private NavigationFragment mNavigationDrawerFragment;
 
     private CharSequence mTitle = "";
 
@@ -43,7 +43,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
 
     private void setUpDrawer() {
         setSupportActionBar(mActionBarToolbar);
-        mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mNavigationDrawerFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
         mNavigationDrawerFragment.setup(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mActionBarToolbar);
     }
@@ -52,12 +52,13 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        mTitle = mNavigationDrawerFragment.getTitle(position);
         // update the main content by replacing fragments
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         Fragment fragment = fm.findFragmentByTag(getTag(position));
 
-        if (lastFragment != null && lastFragment != fragment) {
+        if (lastFragment != null) {
             ft.detach(lastFragment);
         }
 
@@ -74,33 +75,19 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
     private String getTag(int position) {
         switch (position) {
             case 0:
-                return ExploreFragment.TAG;
-            case 1:
                 return StoryListFragment.TAG;
-            case 2:
-                return NavigationFragment.TAG;
             default:
-                return NavigationFragment.TAG;
+                return ExploreFragment.TAG;
         }
     }
 
     private Fragment getFragmentItem(int position) {
         switch (position) {
             case 0:
-                return ExploreFragment.newInstance(position);
-            case 1:
                 return StoryListFragment.newInstance(position);
-            case 2:
-                return new NavigationFragment();
             default:
-                return new NavigationFragment();
+                return ExploreFragment.newInstance(position);
         }
-    }
-
-
-
-    public void onSectionAttached(int number) {
-        mTitle = getString(NavigationDrawerFragment.NAVDRAWER_TITLE_RES_ID[number]);
     }
 
     public void restoreActionBar() {
@@ -142,7 +129,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
             mNavigationDrawerFragment.closeDrawer();
         } else {
             if (mNavigationDrawerFragment.getCurrentSelectedPosition() != NavigationDrawerFragment.getDefaultNavDrawerItem()) {
-                mNavigationDrawerFragment.selectItem(NavigationDrawerFragment.getDefaultNavDrawerItem());
+                mNavigationDrawerFragment.onNavigationDrawerItemSelected(NavigationDrawerFragment.getDefaultNavDrawerItem());
             } else {
                 super.onBackPressed();
             }

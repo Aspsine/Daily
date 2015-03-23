@@ -132,7 +132,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
             imageView = (ImageView) itemView.findViewById(R.id.ivItemIcon);
             imageView.setVisibility(View.VISIBLE);
             imageView.setBackgroundResource(R.drawable.menu_home);
-            tvMainItem.setText("é¦–é¡µ");
+            tvMainItem.setText("Ê×Ò³");
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

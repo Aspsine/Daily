@@ -269,6 +269,6 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
     };
 
     public String getTitle(int sectionNumber) {
-        return sectionNumber == 0 ? "é¦–é¡µ" : mThemes.get(sectionNumber - 1).getName();
+        return sectionNumber == 0 ? "Ê×Ò³" : mThemes.get(sectionNumber - 1).getName();
     }
 }

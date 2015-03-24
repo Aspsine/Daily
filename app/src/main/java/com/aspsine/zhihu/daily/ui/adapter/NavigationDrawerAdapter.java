@@ -95,7 +95,6 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private void bindHeaderData(HeaderViewHolder viewHolder, int position) {
-
     }
 
     private void bindMainItemData(MainItemViewHolder viewHolder, int position) {
@@ -132,9 +131,11 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public static class HeaderViewHolder extends RecyclerView.ViewHolder {
+        ImageView ivHeader;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
+            ivHeader = (ImageView) itemView.findViewById(R.id.ivHeader);
         }
     }
 

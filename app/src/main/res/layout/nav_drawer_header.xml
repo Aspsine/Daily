@@ -2,7 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:background="@color/material_blue_grey_800">
+    android:layout_height="120dp">
 
+    <ImageView
+        android:id="@+id/ivHeader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/style_color_primary_dark"
+        android:scaleType="centerCrop" />
 </LinearLayout>

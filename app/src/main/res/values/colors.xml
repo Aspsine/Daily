@@ -17,12 +17,13 @@
     <color name="style_navigation_bar_color">#000000</color>
 
     <!--custom color-->
-    <color name="navigation_item_selected">#88666666</color>
+    <color name="navigation_item_selected">#12000000</color>
 
     <color name="navdrawer_background">#ffffffff</color>
     <color name="navdrawer_text_color">@color/black</color>
     <color name="navdrawer_text_color_selected">@color/style_color_primary</color>
     <color name="navdrawer_icon_tint">#888</color>
     <color name="navdrawer_icon_tint_selected">@color/style_color_primary</color>
+
 
 </resources>

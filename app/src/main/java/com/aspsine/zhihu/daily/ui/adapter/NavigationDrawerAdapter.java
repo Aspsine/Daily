@@ -1,5 +1,6 @@
 package com.aspsine.zhihu.daily.ui.adapter;
 
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,6 @@ import android.widget.TextView;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.entity.Theme;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
-import com.aspsine.zhihu.daily.ui.widget.CheckableLinearLayout;
 import com.aspsine.zhihu.daily.util.L;
 import com.aspsine.zhihu.daily.util.UIUtils;
 
@@ -34,12 +34,25 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
         mThemes = themes;
     }
 
-    public NavigationDrawerCallbacks getNavigationDrawerCallbacks() {
-        return mCallBacks;
-    }
-
     public void setNavigationDrawerCallbacks(NavigationDrawerCallbacks callbacks) {
         mCallBacks = callbacks;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        switch (position) {
+            case 0:
+                return Type.TYPE_HEADER;
+            case 1:
+                return Type.TYPE_MAIN_ITEM;
+            default:
+                return Type.TYPE_ITEM;
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return mThemes != null ? mThemes.size() + 2 : 2;
     }
 
     @Override
@@ -66,53 +79,56 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
         switch (viewType) {
             case Type.TYPE_HEADER:
                 HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
+                bindHeaderData(headerViewHolder, position);
                 break;
             case Type.TYPE_MAIN_ITEM:
                 MainItemViewHolder mainItemViewHolder = (MainItemViewHolder) viewHolder;
-
+                bindMainItemData(mainItemViewHolder, position);
                 break;
             case Type.TYPE_ITEM:
                 ItemViewHolder itemViewHolder = (ItemViewHolder) viewHolder;
-                itemViewHolder.tvItemName.setText(mThemes.get(position - 2).getName());
+                bindItemData(itemViewHolder, position);
                 break;
+            default:
+                throw new IllegalArgumentException(TAG + " error view type!");
         }
+    }
 
+    private void bindHeaderData(HeaderViewHolder viewHolder, int position) {
+
+    }
+
+    private void bindMainItemData(MainItemViewHolder viewHolder, int position) {
+        Resources resources = viewHolder.itemView.getContext().getResources();
         if (mSelectedPosition == position) {
             L.i(TAG, "selected = " + position);
-            ((CheckableLinearLayout) viewHolder.itemView).setChecked(true);
-//            viewHolder.itemView.setBackgroundColor(viewHolder.itemView.getContext().getResources().getColor(R.color.navigation_item_selected));
+            viewHolder.itemView.setBackgroundColor(resources.getColor(R.color.navigation_item_selected));
+            viewHolder.tvMainItem.setTextColor(resources.getColor(R.color.navdrawer_text_color_selected));
         } else if (position != 0) {
-//            viewHolder.itemView.setBackgroundColor(android.R.attr.selectableItemBackground);
-            ((CheckableLinearLayout) viewHolder.itemView).setChecked(false);
+            viewHolder.itemView.setBackgroundColor(android.R.attr.selectableItemBackground);
+            viewHolder.tvMainItem.setTextColor(resources.getColor(R.color.navdrawer_text_color));
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        switch (position) {
-            case 0:
-                return Type.TYPE_HEADER;
-            case 1:
-                return Type.TYPE_MAIN_ITEM;
-            default:
-                return Type.TYPE_ITEM;
+    private void bindItemData(ItemViewHolder viewHolder, int position) {
+        viewHolder.tvItemName.setText(mThemes.get(position - 2).getName());
+        Resources resources = viewHolder.itemView.getContext().getResources();
+        if (mSelectedPosition == position) {
+            L.i(TAG, "selected = " + position);
+            viewHolder.itemView.setBackgroundColor(resources.getColor(R.color.navigation_item_selected));
+            viewHolder.tvItemName.setTextColor(resources.getColor(R.color.navdrawer_text_color_selected));
+        } else if (position != 0) {
+            viewHolder.itemView.setBackgroundColor(android.R.attr.selectableItemBackground);
+            viewHolder.tvItemName.setTextColor(resources.getColor(R.color.navdrawer_text_color));
         }
     }
-
-    @Override
-    public int getItemCount() {
-        return mThemes != null ? mThemes.size() + 2 : 2;
-    }
-
 
     public void selectPosition(int position) {
         int lastPosition = mSelectedPosition;
         mSelectedPosition = position + 1;
 
         notifyItemChanged(lastPosition);
-        L.i(TAG, "lastPosition = " + lastPosition);
         notifyItemChanged(mSelectedPosition);
-        L.i(TAG, "position = " + mSelectedPosition);
     }
 
     public static class HeaderViewHolder extends RecyclerView.ViewHolder {

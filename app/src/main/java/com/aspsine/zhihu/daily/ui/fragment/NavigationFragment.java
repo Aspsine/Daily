@@ -228,6 +228,10 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        if (position == mCurrentSelectedPosition) {
+            closeDrawer();
+            return;
+        }
         selectItem(position);
     }
 

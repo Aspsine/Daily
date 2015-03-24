@@ -13,7 +13,7 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layerType="software">
+        android:layerType="hardware">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,7 +22,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="224dp" />
+                android:layout_height="@dimen/view_header_story_height"/>
 
             <WebView
                 android:id="@+id/webView"

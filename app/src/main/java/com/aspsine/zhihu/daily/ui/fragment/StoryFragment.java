@@ -1,15 +1,18 @@
 package com.aspsine.zhihu.daily.ui.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -20,8 +23,11 @@ import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.entity.Story;
 import com.aspsine.zhihu.daily.network.Http;
+import com.aspsine.zhihu.daily.ui.widget.StoryHeaderView;
+import com.aspsine.zhihu.daily.util.WebUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -45,7 +51,11 @@ public class StoryFragment extends Fragment {
     @InjectView(R.id.webView)
     WebView webView;
 
+    private StoryHeaderView storyHeaderView;
+
     private String mStoryId;
+
+    private DisplayImageOptions mOptions;
 
     public static StoryFragment newInstance(String storyId) {
         StoryFragment fragment = new StoryFragment();
@@ -62,14 +72,25 @@ public class StoryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mStoryId = getArguments().getString(StoriesFragment.EXTRA_STORY_ID);
         }
+
+        this.mOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ic_launcher)
+                .showImageForEmptyUri(R.drawable.ic_launcher)
+                .showImageOnFail(R.drawable.ic_launcher)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .build();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        storyHeaderView = StoryHeaderView.newInstance(container);
         return inflater.inflate(R.layout.fragment_story, container, false);
     }
 
@@ -77,10 +98,10 @@ public class StoryFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
-//        if (mActionBarToolbar != null) {
-//            mActionBarToolbar.setAlpha(80);
-//        }
-        Toast.makeText(getActivity(), mStoryId, Toast.LENGTH_SHORT).show();
+        if (mActionBarToolbar != null) {
+            mActionBarToolbar.getBackground().setAlpha(0);
+        }
+        rlStoryHeader.addView(storyHeaderView);
     }
 
     @Override
@@ -92,6 +113,55 @@ public class StoryFragment extends Fragment {
     public void setToolBar(Toolbar toolbar) {
         this.mActionBarToolbar = toolbar;
     }
+
+    private void bindData(Story story){
+        Context context = getActivity();
+        if(context == null){
+            return;
+        }
+        if(TextUtils.isEmpty(story.getBody())){
+            return;
+        }
+        String data = WebUtils.BuildHtmlWithCss(story.getBody(), story.getCssList(), false);
+        webView.loadDataWithBaseURL(WebUtils.BASE_URL, data, WebUtils.MIME_TYPE, WebUtils.ENCODING, WebUtils.FAIL_URL);
+        storyHeaderView.BindData(story.getTitle(), story.getImage(), mOptions);
+
+        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                changeHeaderPosition();
+                changeToolbarAlpha();
+            }
+
+        });
+    }
+
+    private void changeHeaderPosition(){
+
+    }
+
+    private void changeToolbarAlpha(){
+        int scrollY= scrollView.getScrollY();
+        int storyHeaderViewHeight = getResources().getDimensionPixelSize(R.dimen.view_header_story_height);
+        int toolbarHeight = mActionBarToolbar.getHeight();
+        float contentHeight = storyHeaderViewHeight - toolbarHeight;
+        float ratio = Math.min(scrollY / contentHeight, 1.0f);
+        if(scrollY <= contentHeight){
+            mActionBarToolbar.setY(0f);
+            return;
+        }
+
+        // Don't show toolbar if user has pulled up the whole article
+        if(scrollY + scrollView.getHeight() > webView.getMeasuredHeight()+storyHeaderViewHeight){
+            return;
+        }
+
+        // Show the toolbar if user is pulling down
+
+
+    }
+
 
     private final class GetStoryTask implements Runnable {
         String id;
@@ -118,10 +188,11 @@ public class StoryFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            progressBar.setVisibility(View.GONE);
             switch (msg.what) {
                 case 0:
                     Story story = (Story) msg.obj;
-                    Toast.makeText(getActivity(), story.getTitle(), Toast.LENGTH_SHORT).show();
+                    bindData(story);
                     break;
                 default:
                     break;

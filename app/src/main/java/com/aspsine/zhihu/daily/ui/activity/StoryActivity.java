@@ -17,7 +17,7 @@ public class StoryActivity extends BaseActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getSupportActionBar().setTitle(null);
         if (savedInstanceState == null) {
             String storyId = getIntent().getStringExtra(StoriesFragment.EXTRA_STORY_ID);
             StoryFragment storyFragment = StoryFragment.newInstance(storyId);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.aspsine.zhihu.daily.ui.widget.StoryHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="224dp">
+    android:layout_height="@dimen/view_header_story_height">
 
     <ImageView
         android:id="@+id/image"

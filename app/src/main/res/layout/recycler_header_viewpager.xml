@@ -12,32 +12,6 @@
 
     </com.aspsine.zhihu.daily.ui.widget.MyViewPager>
 
-    <ImageView
-        android:id="@+id/mask"
-        android:layout_width="fill_parent"
-        android:layout_height="100dip"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/mask" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_above="@+id/indicator"
-        android:layout_marginLeft="16.0dip"
-        android:layout_marginRight="16.0dip"
-        android:layout_marginBottom="8dp"
-        android:clickable="false"
-        android:focusable="false"
-        android:shadowColor="@color/black"
-        android:shadowDx="0.0"
-        android:shadowDy="1.0"
-        android:shadowRadius="1.0"
-        android:textColor="@color/white"
-        android:textSize="22sp"
-        android:textIsSelectable="false" />
-
     <com.aspsine.zhihu.daily.ui.widget.CirclePageIndicator
         android:id="@+id/indicator"
         android:layout_width="match_parent"
@@ -47,6 +21,5 @@
         CirclePageIndicator:fillColor="#ffffffff"
         CirclePageIndicator:pageColor="#9f888888"
         CirclePageIndicator:strokeWidth="0dp" />
-
 
 </RelativeLayout>

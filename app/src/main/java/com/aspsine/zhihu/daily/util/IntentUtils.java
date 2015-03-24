@@ -14,7 +14,7 @@ public class IntentUtils {
 
     public static final void IntentToStoryActivity(Activity activity, Story story) {
         Intent intent = new Intent(activity, StoryActivity.class);
-        intent.putExtra(EXTRA_STORY_ID, String.valueOf(story.getTitle()));
+        intent.putExtra(EXTRA_STORY_ID, String.valueOf(story.getId()));
         activity.startActivity(intent);
     }
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aspsine.zhihu.daily.ui.widget.StoryHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="224dp">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:background="@color/material_blue_grey_800" />
+
+    <ImageView
+        android:id="@+id/mask"
+        android:layout_width="fill_parent"
+        android:layout_height="100dip"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/mask" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16.0dip"
+        android:layout_marginRight="16.0dip"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:shadowColor="@color/black"
+        android:shadowDx="0.0"
+        android:shadowDy="1.0"
+        android:shadowRadius="1.0"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textIsSelectable="false"
+        android:text="test" />
+</com.aspsine.zhihu.daily.ui.widget.StoryHeaderView>

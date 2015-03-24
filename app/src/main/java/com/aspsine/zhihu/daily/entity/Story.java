@@ -25,17 +25,24 @@ public class Story {
     private String multiPic;
     @Expose
     private String image;
+    @Expose
+    private String shareUrl;
+    @Expose
+    private String body;
+    @Expose
+    private String imageSource;
+    @Expose
+    @SerializedName("js")
+    private List<String> jsList;
+    @Expose
+    @SerializedName("css")
+    private List<String> cssList;
 
     private String thumbnail;
-    private String shareUrl;
     private String url;
-    private String body;
-    private String imageSource;
     private String sectionThumbnail;
     private String sectionId;
-    private List<String> jsList;
     private String sectionName;
-    private List<String> cssList;
 
     public List<String> getImages() {
         return images;

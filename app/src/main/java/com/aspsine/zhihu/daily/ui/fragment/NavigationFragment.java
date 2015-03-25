@@ -1,12 +1,10 @@
 package com.aspsine.zhihu.daily.ui.fragment;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -127,6 +125,15 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
         mCallbacks = null;
     }
 
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
+        if (position == mCurrentSelectedPosition) {
+            closeDrawer();
+            return;
+        }
+        selectItem(position);
+    }
+
     public void selectItem(int position) {
         mCurrentSelectedPosition = position;
         mAdapter.selectPosition(position);
@@ -183,15 +190,12 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 if (!isAdded()) return;
-
                 if (!mUserLearnedDrawer) {
                     // The user manually opened the drawer; store this flag to prevent auto-showing
                     // the navigation drawer automatically in the future.
                     mUserLearnedDrawer = true;
-                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                    sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+                    SharedPrefUtils.markUserLearnedDrawer(getActivity());
                 }
-
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
         };
@@ -226,14 +230,6 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        if (position == mCurrentSelectedPosition) {
-            closeDrawer();
-            return;
-        }
-        selectItem(position);
-    }
 
     public int getCurrentSelectedPosition() {
         return mCurrentSelectedPosition;
@@ -274,5 +270,9 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
 
     public String getTitle(int sectionNumber) {
         return sectionNumber == 0 ? "首页" : mThemes.get(sectionNumber - 1).getName();
+    }
+
+    public static int getDefaultNavDrawerItem() {
+        return 0;
     }
 }

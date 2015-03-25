@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
 import com.aspsine.zhihu.daily.ui.fragment.ExploreFragment;
-import com.aspsine.zhihu.daily.ui.fragment.NavigationDrawerFragment;
 import com.aspsine.zhihu.daily.ui.fragment.NavigationFragment;
 import com.aspsine.zhihu.daily.ui.fragment.StoryListFragment;
 
@@ -26,7 +25,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
     @InjectView(R.id.actionbarToolbar)
     Toolbar mActionBarToolbar;
 
-    private NavigationFragment mNavigationDrawerFragment;
+    private NavigationFragment mNavigationFragment;
 
     private CharSequence mTitle = "";
 
@@ -37,22 +36,22 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         ButterKnife.inject(this);
         setUpDrawer();
         if (savedInstanceState == null) {
-            mNavigationDrawerFragment.selectItem(NavigationDrawerFragment.getDefaultNavDrawerItem());
+            mNavigationFragment.selectItem(NavigationFragment.getDefaultNavDrawerItem());
         }
     }
 
     private void setUpDrawer() {
         setSupportActionBar(mActionBarToolbar);
-        mNavigationDrawerFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mNavigationFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-        mNavigationDrawerFragment.setup(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mActionBarToolbar);
+        mNavigationFragment.setup(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mActionBarToolbar);
     }
 
     Fragment lastFragment = null;
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        mTitle = mNavigationDrawerFragment.getTitle(position);
+        mTitle = mNavigationFragment.getTitle(position);
         // update the main content by replacing fragments
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -99,7 +98,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+        if (!mNavigationFragment.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
@@ -125,11 +124,11 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
 
     @Override
     public void onBackPressed() {
-        if (mNavigationDrawerFragment.isDrawerOpen()) {
-            mNavigationDrawerFragment.closeDrawer();
+        if (mNavigationFragment.isDrawerOpen()) {
+            mNavigationFragment.closeDrawer();
         } else {
-            if (mNavigationDrawerFragment.getCurrentSelectedPosition() != NavigationDrawerFragment.getDefaultNavDrawerItem()) {
-                mNavigationDrawerFragment.onNavigationDrawerItemSelected(NavigationDrawerFragment.getDefaultNavDrawerItem());
+            if (mNavigationFragment.getCurrentSelectedPosition() != NavigationFragment.getDefaultNavDrawerItem()) {
+                mNavigationFragment.onNavigationDrawerItemSelected(NavigationFragment.getDefaultNavDrawerItem());
             } else {
                 super.onBackPressed();
             }

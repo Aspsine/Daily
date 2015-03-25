@@ -58,7 +58,7 @@ public class SharedPrefUtils {
 
     public static void markUserLearnedDrawer(Context context) {
         SharedPreferences sp = getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(SHARED_PREF_IS_USER_LEARNED_DRAWER, true).apply();
+        sp.edit().putBoolean(SHARED_PREF_IS_USER_LEARNED_DRAWER, true).commit();
     }
 
     public static String getSplashJson(Context context){

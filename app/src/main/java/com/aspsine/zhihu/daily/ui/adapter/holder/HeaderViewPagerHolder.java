@@ -39,7 +39,10 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
         mStories = stories;
         if (mStories == null || mStories.size() == 0) {
             return;
+        } else if (mStories.size() == 1) {
+            indicator.setVisibility(View.GONE);
         }
+
         if (viewPager.getAdapter() == null) {
             L.i(TAG, "mPagerAdapter == null");
             mPagerAdapter = new HeaderPagerAdapter(mStories);

@@ -18,7 +18,7 @@ import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.entity.DailyStories;
 import com.aspsine.zhihu.daily.entity.Story;
 import com.aspsine.zhihu.daily.network.Http;
-import com.aspsine.zhihu.daily.ui.adapter.StoryListAdapter;
+import com.aspsine.zhihu.daily.ui.adapter.DailyStoriesAdapter;
 import com.aspsine.zhihu.daily.ui.widget.LoadMoreRecyclerView;
 import com.aspsine.zhihu.daily.ui.widget.MyViewPager;
 import com.aspsine.zhihu.daily.util.L;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class DailyStoriesFragment extends BaseFragment {
     public static final String TAG = DailyStoriesFragment.class.getSimpleName();
     private SwipeRefreshLayout swipeRefreshLayout;
-    private StoryListAdapter mAdapter;
+    private DailyStoriesAdapter mAdapter;
     private LoadMoreRecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
     private DailyStories mDailyStories;
@@ -47,7 +47,7 @@ public class DailyStoriesFragment extends BaseFragment {
         mDailyStories = new DailyStories();
         mDailyStories.setStories(new ArrayList<Story>());
         mDailyStories.setTopStories(new ArrayList<Story>());
-        mAdapter = new StoryListAdapter(mDailyStories);
+        mAdapter = new DailyStoriesAdapter(mDailyStories);
     }
 
     @Override

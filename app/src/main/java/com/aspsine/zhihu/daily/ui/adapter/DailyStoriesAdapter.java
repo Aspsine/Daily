@@ -20,8 +20,8 @@ import java.util.List;
 /**
  * Created by Aspsine on 2015/3/11.
  */
-public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final String TAG = StoryListAdapter.class.getSimpleName();
+public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final String TAG = DailyStoriesAdapter.class.getSimpleName();
     private DailyStories mDailyStories;
     private DisplayImageOptions mOptions;
 
@@ -31,7 +31,7 @@ public class StoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         private static final int ITEM_NORMAL = 1;
     }
 
-    public StoryListAdapter(DailyStories dailyStories) {
+    public DailyStoriesAdapter(DailyStories dailyStories) {
         this.mDailyStories = dailyStories;
 
     }

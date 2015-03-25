@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.view.Menu;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.ui.fragment.StoriesFragment;
 import com.aspsine.zhihu.daily.ui.fragment.StoryFragment;
+import com.aspsine.zhihu.daily.ui.fragment.StoryListFragment;
 
 public class StoryActivity extends BaseActionBarActivity {
 
@@ -19,7 +19,7 @@ public class StoryActivity extends BaseActionBarActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle(null);
         if (savedInstanceState == null) {
-            String storyId = getIntent().getStringExtra(StoriesFragment.EXTRA_STORY_ID);
+            String storyId = getIntent().getStringExtra(StoryListFragment.EXTRA_STORY_ID);
             StoryFragment storyFragment = StoryFragment.newInstance(storyId);
             storyFragment.setToolBar(mActionBarToolbar);
             getSupportFragmentManager().beginTransaction()

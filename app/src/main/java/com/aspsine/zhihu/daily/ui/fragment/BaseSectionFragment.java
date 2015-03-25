@@ -19,6 +19,7 @@ public class BaseSectionFragment extends Fragment {
     public static final int SECTION_NUMBER_MAIN = 0;
 
     public static final String SECTION_ID_MAIN = "section_id_main";
+    public static final String EXTRA_STORY_ID = "extra_story_id";
 
     private int mArgSectionNumber;
 

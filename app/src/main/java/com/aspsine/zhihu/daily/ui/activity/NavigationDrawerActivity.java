@@ -15,8 +15,8 @@ import android.view.MenuItem;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
 import com.aspsine.zhihu.daily.ui.fragment.BaseSectionFragment;
-import com.aspsine.zhihu.daily.ui.fragment.ExploreFragment;
 import com.aspsine.zhihu.daily.ui.fragment.NavigationFragment;
+import com.aspsine.zhihu.daily.ui.fragment.SectionFragment;
 import com.aspsine.zhihu.daily.ui.fragment.StoryListFragment;
 import com.aspsine.zhihu.daily.util.L;
 
@@ -114,7 +114,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
             case 0:
                 return StoryListFragment.TAG;
             default:
-                return ExploreFragment.TAG + position;
+                return SectionFragment.TAG + position;
         }
     }
 

@@ -10,7 +10,7 @@ import com.aspsine.zhihu.daily.ui.activity.StoryActivity;
  * Created by Aspsine on 2015/3/20.
  */
 public class IntentUtils {
-    public static final String EXTRA_STORY_ID = "extra_Story_Id";
+    public static final String EXTRA_STORY_ID = "extra_story_id";
 
     public static final void IntentToStoryActivity(Activity activity, Story story) {
         Intent intent = new Intent(activity, StoryActivity.class);

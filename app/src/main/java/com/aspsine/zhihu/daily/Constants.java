@@ -12,8 +12,14 @@ public class Constants {
          */
         public static final String ZHIHU_DAILY_SPLASH = "http://news-at.zhihu.com/api/4/start-image/";
 
+        /**
+         * get navigation drawer sections
+         */
         public static final String ZHIHU_DAILY_THEME = "http://news-at.zhihu.com/api/4/themes";
 
+        /**
+         * latest stories
+         */
         public static final String ZHIHU_DAILY_LATEST = "http://daily.zhihu.com/api/4/news/latest";
 
         /**
@@ -22,7 +28,7 @@ public class Constants {
         public static final String ZHIHU_DAILY_BEFORE = "http://daily.zhihu.com/api/4/news/before/";
 
         /**
-         * add ga_prefix
+         * add id
          */
         public static final String ZHIHU_DAILY_DETAIL = "http://daily.zhihu.com/api/4/news/";
 

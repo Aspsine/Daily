@@ -2,6 +2,7 @@ package com.aspsine.zhihu.daily.ui.fragment;
 
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,13 +18,13 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.entity.Story;
 import com.aspsine.zhihu.daily.network.Http;
 import com.aspsine.zhihu.daily.ui.widget.StoryHeaderView;
+import com.aspsine.zhihu.daily.util.ScrollPullDownHelper;
 import com.aspsine.zhihu.daily.util.WebUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -57,6 +58,8 @@ public class StoryFragment extends Fragment {
 
     private DisplayImageOptions mOptions;
 
+    private ScrollPullDownHelper mScrollPullDownHelper;
+
     public static StoryFragment newInstance(String storyId) {
         StoryFragment fragment = new StoryFragment();
         Bundle bundle = new Bundle();
@@ -76,6 +79,8 @@ public class StoryFragment extends Fragment {
         if (getArguments() != null) {
             mStoryId = getArguments().getString(StoriesFragment.EXTRA_STORY_ID);
         }
+
+        mScrollPullDownHelper = new ScrollPullDownHelper();
 
         this.mOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.ic_launcher)
@@ -114,12 +119,12 @@ public class StoryFragment extends Fragment {
         this.mActionBarToolbar = toolbar;
     }
 
-    private void bindData(Story story){
+    private void bindData(Story story) {
         Context context = getActivity();
-        if(context == null){
+        if (context == null) {
             return;
         }
-        if(TextUtils.isEmpty(story.getBody())){
+        if (TextUtils.isEmpty(story.getBody())) {
             return;
         }
         String data = WebUtils.BuildHtmlWithCss(story.getBody(), story.getCssList(), false);
@@ -137,28 +142,50 @@ public class StoryFragment extends Fragment {
         });
     }
 
-    private void changeHeaderPosition(){
+    private void changeHeaderPosition() {
+        int scrollY = scrollView.getScrollY();
 
+        // Set height
+        float storyHeaderViewHeight = getResources().getDimensionPixelSize(R.dimen.view_header_story_height);
+        if (scrollY < 0) {
+            // Pull down, zoom in the image
+            storyHeaderViewHeight += Math.abs(scrollY);
+        }
+        storyHeaderView.getLayoutParams().height = (int) storyHeaderViewHeight;
+
+        // Set scroll
+        int headerScrollY = (scrollY > 0) ? (scrollY / 2) : 0;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            storyHeaderView.setScrollY(headerScrollY);
+            storyHeaderView.requestLayout();
+        }
     }
 
-    private void changeToolbarAlpha(){
-        int scrollY= scrollView.getScrollY();
+    private void changeToolbarAlpha() {
+        int scrollY = scrollView.getScrollY();
         int storyHeaderViewHeight = getResources().getDimensionPixelSize(R.dimen.view_header_story_height);
         int toolbarHeight = mActionBarToolbar.getHeight();
         float contentHeight = storyHeaderViewHeight - toolbarHeight;
         float ratio = Math.min(scrollY / contentHeight, 1.0f);
-        if(scrollY <= contentHeight){
+        mActionBarToolbar.getBackground().setAlpha((int) (ratio * 0xFF));
+        if (scrollY <= contentHeight) {
             mActionBarToolbar.setY(0f);
             return;
         }
 
         // Don't show toolbar if user has pulled up the whole article
-        if(scrollY + scrollView.getHeight() > webView.getMeasuredHeight()+storyHeaderViewHeight){
+        if (scrollY + scrollView.getHeight() > webView.getMeasuredHeight() + storyHeaderViewHeight) {
             return;
         }
 
         // Show the toolbar if user is pulling down
+        boolean isPullingDown = mScrollPullDownHelper.onScrollChanged(scrollY);
+        float toolBarPositionY = isPullingDown ? 0 : (contentHeight - scrollY);
+        if (scrollY < storyHeaderViewHeight + toolbarHeight) {
+            toolBarPositionY = storyHeaderViewHeight - scrollY - toolbarHeight;
+        }
 
+        mActionBarToolbar.setY(toolBarPositionY);
 
     }
 

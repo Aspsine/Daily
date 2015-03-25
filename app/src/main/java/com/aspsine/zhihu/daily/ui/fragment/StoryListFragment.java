@@ -40,17 +40,6 @@ public class StoryListFragment extends BaseSectionFragment {
 
     private String mDate;
 
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
-    public static Fragment newInstance(int sectionNumber) {
-        Fragment fragment = new StoryListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -14,18 +14,26 @@ import android.view.MenuItem;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
+import com.aspsine.zhihu.daily.ui.fragment.BaseSectionFragment;
 import com.aspsine.zhihu.daily.ui.fragment.ExploreFragment;
 import com.aspsine.zhihu.daily.ui.fragment.NavigationFragment;
 import com.aspsine.zhihu.daily.ui.fragment.StoryListFragment;
+import com.aspsine.zhihu.daily.util.L;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class NavigationDrawerActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
+    private static final String TAG = NavigationDrawerActivity.class.getSimpleName();
     @InjectView(R.id.actionbarToolbar)
     Toolbar mActionBarToolbar;
 
     private NavigationFragment mNavigationFragment;
+
+    private List<Fragment> mFragments = new ArrayList<>();
 
     private CharSequence mTitle = "";
 
@@ -47,7 +55,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         mNavigationFragment.setup(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mActionBarToolbar);
     }
 
-    Fragment lastFragment = null;
+    int lastPosition = 0;
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -55,20 +63,50 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         // update the main content by replacing fragments
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        Fragment fragment = fm.findFragmentByTag(getTag(position));
+
+        Fragment fragment = null;
+        Fragment lastFragment = null;
+
+        lastFragment = fm.findFragmentByTag(getTag(lastPosition));
 
         if (lastFragment != null) {
+            L.i(TAG, "last fragment " + lastPosition + " is not null, detach it.");
             ft.detach(lastFragment);
         }
 
-        if (fragment != null) {
-            ft.attach(fragment);
-        } else {
-            fragment = getFragmentItem(position);
+        fragment = fm.findFragmentByTag(getTag(position));
+
+        if (fragment == null) {
+
+            if (mFragments.size() > position) {
+                fragment = mFragments.get(position);
+                L.i(TAG, "get fragment from cache list " + position);
+            }
+
+            if (fragment == null) {
+                L.i(TAG, "renew fragment " + position);
+                fragment = getFragmentItem(position);
+                int j = 0;
+                while (mFragments.size() <= position) {
+                    mFragments.add(null);
+                    j++;
+                    L.i(TAG, "fill cache list" + j);
+                }
+                mFragments.set(position, fragment);
+                L.i(TAG, "set fragment to cache list" + position);
+            }
             ft.add(R.id.container, fragment, getTag(position));
+            L.i(TAG, "ft add fragment" + position);
+        } else {
+            ft.attach(fragment);
+            L.i(TAG, "ft attach fragment" + position);
         }
         ft.commit();
-        lastFragment = fragment;
+        lastPosition = position;
+    }
+
+    private int getId(Fragment fragment) {
+        return ((BaseSectionFragment) fragment).getSectionNumber();
     }
 
     private String getTag(int position) {
@@ -76,17 +114,12 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
             case 0:
                 return StoryListFragment.TAG;
             default:
-                return ExploreFragment.TAG;
+                return ExploreFragment.TAG + position;
         }
     }
 
     private Fragment getFragmentItem(int position) {
-        switch (position) {
-            case 0:
-                return StoryListFragment.newInstance(position);
-            default:
-                return ExploreFragment.newInstance(position);
-        }
+        return BaseSectionFragment.newInstance(position, mNavigationFragment.getSectionId(position));
     }
 
     public void restoreActionBar() {

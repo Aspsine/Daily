@@ -268,6 +268,14 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
         }
     };
 
+    public Theme getSection(int sectionNumber) {
+        return sectionNumber == 0 ? null : mThemes.get(sectionNumber - 1);
+    }
+
+    public String getSectionId(int sectionNumber) {
+        return sectionNumber == 0 ? null : mThemes.get(sectionNumber - 1).getId();
+    }
+
     public String getTitle(int sectionNumber) {
         return sectionNumber == 0 ? "首页" : mThemes.get(sectionNumber - 1).getName();
     }

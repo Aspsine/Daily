@@ -30,8 +30,8 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoryListFragment extends BaseSectionFragment {
-    public static final String TAG = StoryListFragment.class.getSimpleName();
+public class DailyStoriesFragment extends BaseFragment {
+    public static final String TAG = DailyStoriesFragment.class.getSimpleName();
     private SwipeRefreshLayout swipeRefreshLayout;
     private StoryListAdapter mAdapter;
     private LoadMoreRecyclerView recyclerView;
@@ -52,7 +52,7 @@ public class StoryListFragment extends BaseSectionFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_story_list, container, false);
+        return inflater.inflate(R.layout.fragment_daily_stories, container, false);
     }
 
 

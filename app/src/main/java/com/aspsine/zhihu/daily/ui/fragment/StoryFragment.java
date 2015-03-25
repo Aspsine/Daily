@@ -63,7 +63,7 @@ public class StoryFragment extends Fragment {
     public static StoryFragment newInstance(String storyId) {
         StoryFragment fragment = new StoryFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(StoryListFragment.EXTRA_STORY_ID, storyId);
+        bundle.putString(DailyStoriesFragment.EXTRA_STORY_ID, storyId);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -77,7 +77,7 @@ public class StoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mStoryId = getArguments().getString(StoryListFragment.EXTRA_STORY_ID);
+            mStoryId = getArguments().getString(DailyStoriesFragment.EXTRA_STORY_ID);
         }
 
         mScrollPullDownHelper = new ScrollPullDownHelper();

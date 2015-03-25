@@ -15,7 +15,9 @@ public class Constants {
         /**
          * get navigation drawer sections
          */
-        public static final String ZHIHU_DAILY_THEME = "http://news-at.zhihu.com/api/4/themes";
+        public static final String ZHIHU_DAILY_THEMES = "http://news-at.zhihu.com/api/4/themes";
+
+        public static final String ZHIHU_DAILY_THEME = "http//news-at.zhihu.com/api/4/theme/";
 
         /**
          * latest stories

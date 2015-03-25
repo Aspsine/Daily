@@ -14,11 +14,10 @@ import android.view.MenuItem;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
-import com.aspsine.zhihu.daily.ui.fragment.BaseSectionFragment;
+import com.aspsine.zhihu.daily.ui.fragment.BaseFragment;
+import com.aspsine.zhihu.daily.ui.fragment.DailyStoriesFragment;
 import com.aspsine.zhihu.daily.ui.fragment.NavigationFragment;
-import com.aspsine.zhihu.daily.ui.fragment.SectionFragment;
-import com.aspsine.zhihu.daily.ui.fragment.StoryListFragment;
-import com.aspsine.zhihu.daily.util.L;
+import com.aspsine.zhihu.daily.ui.fragment.ThemeStoriesFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         mNavigationFragment.setup(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mActionBarToolbar);
     }
 
-    int lastPosition = 0;
+    private int lastPosition = 0;
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -70,7 +69,6 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         lastFragment = fm.findFragmentByTag(getTag(lastPosition));
 
         if (lastFragment != null) {
-            L.i(TAG, "last fragment " + lastPosition + " is not null, detach it.");
             ft.detach(lastFragment);
         }
 
@@ -80,46 +78,40 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
 
             if (mFragments.size() > position) {
                 fragment = mFragments.get(position);
-                L.i(TAG, "get fragment from cache list " + position);
             }
 
             if (fragment == null) {
-                L.i(TAG, "renew fragment " + position);
                 fragment = getFragmentItem(position);
-                int j = 0;
                 while (mFragments.size() <= position) {
                     mFragments.add(null);
-                    j++;
-                    L.i(TAG, "fill cache list" + j);
                 }
                 mFragments.set(position, fragment);
-                L.i(TAG, "set fragment to cache list" + position);
             }
             ft.add(R.id.container, fragment, getTag(position));
-            L.i(TAG, "ft add fragment" + position);
+
         } else {
             ft.attach(fragment);
-            L.i(TAG, "ft attach fragment" + position);
         }
+
         ft.commit();
         lastPosition = position;
     }
 
     private int getId(Fragment fragment) {
-        return ((BaseSectionFragment) fragment).getSectionNumber();
+        return ((BaseFragment) fragment).getThemeNumber();
     }
 
     private String getTag(int position) {
         switch (position) {
             case 0:
-                return StoryListFragment.TAG;
+                return DailyStoriesFragment.TAG;
             default:
-                return SectionFragment.TAG + position;
+                return ThemeStoriesFragment.TAG + position;
         }
     }
 
     private Fragment getFragmentItem(int position) {
-        return BaseSectionFragment.newInstance(position, mNavigationFragment.getSectionId(position));
+        return BaseFragment.newInstance(position, mNavigationFragment.getSectionId(position));
     }
 
     public void restoreActionBar() {

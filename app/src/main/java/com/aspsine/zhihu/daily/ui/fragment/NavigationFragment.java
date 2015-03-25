@@ -244,7 +244,7 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
         @Override
         public void run() {
             try {
-                String jsonStr = Http.get(Constants.Url.ZHIHU_DAILY_THEME);
+                String jsonStr = Http.get(Constants.Url.ZHIHU_DAILY_THEMES);
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 Themes themes = gson.fromJson(jsonStr, Themes.class);
                 handler.obtainMessage(0, themes).sendToTarget();

@@ -16,6 +16,7 @@
         android:layerType="hardware">
 
         <LinearLayout
+            android:id="@+id/webViewContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -24,10 +25,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_header_story_height"/>
 
-            <WebView
-                android:id="@+id/webView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></WebView>
         </LinearLayout>
 
     </ScrollView>

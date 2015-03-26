@@ -32,6 +32,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.activity.StoryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_story">
 
         </activity>

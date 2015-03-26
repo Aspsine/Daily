@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -29,6 +30,8 @@ import com.aspsine.zhihu.daily.util.WebUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+
+import java.lang.ref.SoftReference;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -49,8 +52,11 @@ public class StoryFragment extends Fragment {
     @InjectView(R.id.scrollView)
     ScrollView scrollView;
 
-    @InjectView(R.id.webView)
-    WebView webView;
+    @InjectView(R.id.webViewContainer)
+    LinearLayout llWebViewContainer;
+
+    private SoftReference<WebView> refWebView;
+//    WebView webView;
 
     private StoryHeaderView storyHeaderView;
 
@@ -96,6 +102,12 @@ public class StoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         storyHeaderView = StoryHeaderView.newInstance(container);
+        refWebView = new SoftReference<WebView>(new WebView(getActivity().getApplicationContext()));
+
+        if (isWebViewOK()) {
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            refWebView.get().setLayoutParams(lp);
+        }
         return inflater.inflate(R.layout.fragment_story, container, false);
     }
 
@@ -107,12 +119,39 @@ public class StoryFragment extends Fragment {
             mActionBarToolbar.getBackground().setAlpha(0);
         }
         rlStoryHeader.addView(storyHeaderView);
+
+        if (isWebViewOK()) {
+            llWebViewContainer.addView(refWebView.get());
+        }
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         new Thread(new GetStoryTask(mStoryId)).start();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (isWebViewOK()) {
+            refWebView.get().removeAllViews();
+            refWebView.get().destroy();
+            llWebViewContainer.removeView(refWebView.get());
+            refWebView = null;
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
+    }
+
+    private boolean isWebViewOK() {
+        return refWebView != null && refWebView.get() != null;
     }
 
     public void setToolBar(Toolbar toolbar) {
@@ -128,13 +167,16 @@ public class StoryFragment extends Fragment {
             return;
         }
         String data = WebUtils.BuildHtmlWithCss(story.getBody(), story.getCssList(), false);
-        webView.loadDataWithBaseURL(WebUtils.BASE_URL, data, WebUtils.MIME_TYPE, WebUtils.ENCODING, WebUtils.FAIL_URL);
+        refWebView.get().loadDataWithBaseURL(WebUtils.BASE_URL, data, WebUtils.MIME_TYPE, WebUtils.ENCODING, WebUtils.FAIL_URL);
         storyHeaderView.BindData(story.getTitle(), story.getImage(), mOptions);
 
         scrollView.fullScroll(ScrollView.FOCUS_DOWN);
         scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
+                if (!isWebViewOK()) {
+                    return;
+                }
                 changeHeaderPosition();
                 changeToolbarAlpha();
             }
@@ -162,6 +204,7 @@ public class StoryFragment extends Fragment {
     }
 
     private void changeToolbarAlpha() {
+
         int scrollY = scrollView.getScrollY();
         int storyHeaderViewHeight = getResources().getDimensionPixelSize(R.dimen.view_header_story_height);
         int toolbarHeight = mActionBarToolbar.getHeight();
@@ -174,7 +217,7 @@ public class StoryFragment extends Fragment {
         }
 
         // Don't show toolbar if user has pulled up the whole article
-        if (scrollY + scrollView.getHeight() > webView.getMeasuredHeight() + storyHeaderViewHeight) {
+        if (scrollY + scrollView.getHeight() > refWebView.get().getMeasuredHeight() + storyHeaderViewHeight) {
             return;
         }
 

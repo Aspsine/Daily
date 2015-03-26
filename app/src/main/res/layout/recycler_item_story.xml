@@ -43,7 +43,6 @@
             android:layout_centerVertical="true"
             android:layout_margin="8dp"
             android:layout_toRightOf="@+id/fl_image"
-            android:text="hi"
             android:textColor="@color/black"
             android:textSize="18sp" />
     </RelativeLayout>

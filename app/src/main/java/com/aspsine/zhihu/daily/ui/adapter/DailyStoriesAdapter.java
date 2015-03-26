@@ -88,7 +88,7 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 bindDateView((DateViewHolder) holder, position);
                 break;
             case Type.ITEM_NORMAL:
-                ((StoryViewHolder) holder).bindStoryView(mDailyStories.getStories());
+                ((StoryViewHolder) holder).bindStoryView(mDailyStories.getStories(), position - 1);
                 break;
             default:
                 return;

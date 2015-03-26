@@ -8,12 +8,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.entity.Theme;
 import com.aspsine.zhihu.daily.network.Http;
+import com.aspsine.zhihu.daily.ui.adapter.ThemeStoriesAdapter;
 import com.aspsine.zhihu.daily.ui.widget.LoadMoreRecyclerView;
 import com.aspsine.zhihu.daily.util.L;
 import com.google.gson.Gson;
@@ -28,12 +28,18 @@ public class ThemeStoriesFragment extends BaseFragment {
     public static final String TAG = ThemeStoriesFragment.class.getSimpleName();
 
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private ThemeStoriesAdapter mAdapter;
+
     private String mThemeId;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            mAdapter = new ThemeStoriesAdapter();
+        }
     }
 
     @Override
@@ -136,7 +142,7 @@ public class ThemeStoriesFragment extends BaseFragment {
             switch (msg.what) {
                 case GetThemeTask.TYPE_REFRESH:
                     Theme theme = (Theme) msg.obj;
-                    Toast.makeText(getActivity(), theme.getName(), Toast.LENGTH_SHORT).show();
+
                     break;
                 case GetThemeTask.TYPE_LOAD_MORE:
                     break;

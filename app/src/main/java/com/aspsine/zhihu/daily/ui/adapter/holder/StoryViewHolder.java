@@ -5,6 +5,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ public class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnC
     private TextView text;
     private ImageView image;
     private ImageView ivMultiPic;
+    private FrameLayout frameLayout;
     private DisplayImageOptions mOptions;
     private Story mStory;
 
@@ -43,6 +45,7 @@ public class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnC
         text = (TextView) itemView.findViewById(R.id.text);
         image = (ImageView) itemView.findViewById(R.id.image);
         ivMultiPic = (ImageView) itemView.findViewById(R.id.ivMultiPic);
+        frameLayout = (FrameLayout) itemView.findViewById(R.id.fl_image);
         card.setOnClickListener(this);
     }
 
@@ -51,8 +54,8 @@ public class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnC
         IntentUtils.IntentToStoryActivity((Activity) v.getContext(), mStory);
     }
 
-    public void bindStoryView(List<Story> stories) {
-        mStory = stories.get(getPosition() - 1);
+    public void bindStoryView(List<Story> stories, int position) {
+        mStory = stories.get(position);
         text.setText(String.valueOf(mStory.getTitle()));
         if (!TextUtils.isEmpty(mStory.getMultiPic()) && Boolean.valueOf(mStory.getMultiPic())) {
             ivMultiPic.setVisibility(View.VISIBLE);
@@ -60,6 +63,11 @@ public class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnC
             ivMultiPic.setVisibility(View.GONE);
         }
         String imageUrl = mStory.getImages() == null ? "" : mStory.getImages().get(0);
-        ImageLoader.getInstance().displayImage(imageUrl, image, mOptions);
+        if (TextUtils.isEmpty(imageUrl)) {
+            frameLayout.setVisibility(View.GONE);
+        } else {
+            frameLayout.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(imageUrl, image, mOptions);
+        }
     }
 }

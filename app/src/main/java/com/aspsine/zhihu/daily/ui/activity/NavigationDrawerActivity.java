@@ -58,21 +58,18 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        mTitle = mNavigationFragment.getTitle(position);
+
         // update the main content by replacing fragments
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
-        Fragment fragment = null;
-        Fragment lastFragment = null;
-
-        lastFragment = fm.findFragmentByTag(getTag(lastPosition));
+        Fragment lastFragment = fm.findFragmentByTag(getTag(lastPosition));
 
         if (lastFragment != null) {
             ft.detach(lastFragment);
         }
 
-        fragment = fm.findFragmentByTag(getTag(position));
+        Fragment fragment = fm.findFragmentByTag(getTag(position));
 
         if (fragment == null) {
 
@@ -95,6 +92,9 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
 
         ft.commit();
         lastPosition = position;
+
+        mTitle = mNavigationFragment.getTitle(position);
+        restoreActionBar();
     }
 
     private int getId(Fragment fragment) {
@@ -128,7 +128,6 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.menu_navigation_drawer, menu);
-            restoreActionBar();
             return true;
         }
         return super.onCreateOptionsMenu(menu);

@@ -6,18 +6,33 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aspsine.zhihu.daily.R;
+import com.aspsine.zhihu.daily.entity.Editor;
 import com.aspsine.zhihu.daily.entity.Theme;
 import com.aspsine.zhihu.daily.ui.adapter.holder.StoryViewHolder;
+import com.aspsine.zhihu.daily.ui.widget.AvatarsView;
 import com.aspsine.zhihu.daily.ui.widget.StoryHeaderView;
 import com.aspsine.zhihu.daily.util.UIUtils;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Aspsine on 2015/3/26.
  */
 public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Theme mTheme;
+    private DisplayImageOptions mOptions;
 
     public ThemeStoriesAdapter() {
+        this.mOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ic_launcher)
+                .showImageForEmptyUri(R.drawable.ic_launcher)
+                .showImageOnFail(R.drawable.ic_launcher)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .build();
     }
 
     public void setTheme(Theme theme) {
@@ -27,7 +42,7 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public static final class Type {
         public static final int TYPE_HEADER = 0;
-        public static final int TYPE_AVATAR = 1;
+        public static final int TYPE_AVATARS = 1;
         public static final int TYPE_ITEM = 2;
     }
 
@@ -35,8 +50,8 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemViewType(int position) {
         if (!TextUtils.isEmpty(mTheme.getBackground()) && position == 0) {
             return Type.TYPE_HEADER;
-        } else if (mTheme.getEditors() != null && mTheme.getEditors().size() > 0 && position == 2) {
-            return Type.TYPE_AVATAR;
+        } else if (mTheme.getEditors() != null && mTheme.getEditors().size() > 0 && position == 1) {
+            return Type.TYPE_AVATARS;
         } else {
             return Type.TYPE_ITEM;
         }
@@ -66,14 +81,14 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case Type.TYPE_HEADER:
                 viewHolder = new HeaderViewHolder(StoryHeaderView.newInstance(parent));
                 break;
-            case Type.TYPE_AVATAR:
-                viewHolder = new AvatarViewHolder(UIUtils.inflate(R.layout.recycler_item_avatar, parent));
+            case Type.TYPE_AVATARS:
+                viewHolder = new AvatarViewHolder(new AvatarsView(parent.getContext()));
                 break;
             case Type.TYPE_ITEM:
                 viewHolder = new StoryViewHolder(UIUtils.inflate(R.layout.recycler_item_story, parent));
                 break;
         }
-        return null;
+        return viewHolder;
     }
 
     @Override
@@ -81,14 +96,19 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         int viewType = getItemViewType(position);
         switch (viewType) {
             case Type.TYPE_HEADER:
-
+                ((StoryHeaderView) holder.itemView)
+                        .BindData(mTheme.getName(), mTheme.getBackground(), mOptions);
                 break;
-            case Type.TYPE_AVATAR:
-
+            case Type.TYPE_AVATARS:
+                List<String> images = new ArrayList<>();
+                for (Editor editor : mTheme.getEditors()) {
+                    images.add(editor.getAvatar());
+                }
+                ((AvatarsView) holder.itemView).bindData("主编", images);
                 break;
             case Type.TYPE_ITEM:
                 StoryViewHolder storyViewHolder = (StoryViewHolder) holder;
-                storyViewHolder.bindStoryView(mTheme.getStories(), position);
+                storyViewHolder.bindStoryView(mTheme.getStories(), position - 2);
                 break;
             default:
                 throw new IllegalArgumentException("error view type!");
@@ -96,7 +116,6 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public static final class HeaderViewHolder extends RecyclerView.ViewHolder {
-
         public HeaderViewHolder(View itemView) {
             super(itemView);
         }

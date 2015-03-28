@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
@@ -28,6 +29,8 @@ public class ThemeStoriesFragment extends BaseFragment {
     public static final String TAG = ThemeStoriesFragment.class.getSimpleName();
 
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private LoadMoreRecyclerView recyclerView;
 
     private ThemeStoriesAdapter mAdapter;
 
@@ -52,10 +55,10 @@ public class ThemeStoriesFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
-        LoadMoreRecyclerView recyclerView = (LoadMoreRecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = (LoadMoreRecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         // TODO adapter
-
+        recyclerView.setAdapter(mAdapter);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -76,6 +79,13 @@ public class ThemeStoriesFragment extends BaseFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mThemeId = getThemeId();
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+                refresh();
+            }
+        });
     }
 
     private void refresh() {
@@ -141,15 +151,23 @@ public class ThemeStoriesFragment extends BaseFragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case GetThemeTask.TYPE_REFRESH:
-                    Theme theme = (Theme) msg.obj;
-
+                    swipeRefreshLayout.setRefreshing(false);
+                    if (msg.obj != null && mAdapter != null) {
+                        Theme theme = (Theme) msg.obj;
+                        mAdapter.setTheme(theme);
+                    }
                     break;
                 case GetThemeTask.TYPE_LOAD_MORE:
+                    recyclerView.setLoadingMore(false);
+                    Toast.makeText(getActivity(), "load more", Toast.LENGTH_SHORT).show();
                     break;
                 case GetThemeTask.TYPE_REFRESH_ERROR:
-
+                    swipeRefreshLayout.setRefreshing(false);
+                    Toast.makeText(getActivity(), "refresh error", Toast.LENGTH_SHORT).show();
                     break;
                 case GetThemeTask.TYPE_LOAD_MORE_ERROR:
+                    recyclerView.setLoadingMore(false);
+                    Toast.makeText(getActivity(), "load more error", Toast.LENGTH_SHORT).show();
                     break;
 
             }

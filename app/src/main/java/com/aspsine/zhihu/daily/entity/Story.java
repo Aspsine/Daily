@@ -26,6 +26,7 @@ public class Story {
     @Expose
     private String image;
     @Expose
+    @SerializedName("share_url")
     private String shareUrl;
     @Expose
     private String body;

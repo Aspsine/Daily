@@ -1,19 +1,33 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/style_color_primary_dark"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
     tools:context="com.aspsine.zhihu.daily.ui.fragment.GuideFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-    <Button
-        android:id="@+id/btnEnter"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Enter"/>
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/splash_logo"/>
+    <TextView
+        android:id="@+id/tvHello"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/btnEnter"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:textColor="@color/white"
+        android:background="@color/style_color_accent"
+        android:text="Ok, let's experience it!" />
+
+</LinearLayout>

@@ -14,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -119,7 +121,6 @@ public class StoryFragment extends Fragment {
             mActionBarToolbar.getBackground().setAlpha(0);
         }
         rlStoryHeader.addView(storyHeaderView);
-
         if (isWebViewOK()) {
             llWebViewContainer.addView(refWebView.get());
         }
@@ -163,25 +164,33 @@ public class StoryFragment extends Fragment {
         if (context == null) {
             return;
         }
-        if (TextUtils.isEmpty(story.getBody())) {
-            return;
-        }
-        String data = WebUtils.BuildHtmlWithCss(story.getBody(), story.getCssList(), false);
-        refWebView.get().loadDataWithBaseURL(WebUtils.BASE_URL, data, WebUtils.MIME_TYPE, WebUtils.ENCODING, WebUtils.FAIL_URL);
+
         storyHeaderView.BindData(story.getTitle(), story.getImage(), mOptions);
 
-        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                if (!isWebViewOK()) {
-                    return;
-                }
-                changeHeaderPosition();
-                changeToolbarAlpha();
-            }
+        if (TextUtils.isEmpty(story.getBody())) {
+            WebSettings settings = refWebView.get().getSettings();
+            settings.setJavaScriptEnabled(true);
+            settings.setDomStorageEnabled(true);
+            refWebView.get().setWebViewClient(new WebViewClient());
+            refWebView.get().loadUrl(story.getShareUrl());
+        } else {
+            String data = WebUtils.BuildHtmlWithCss(story.getBody(), story.getCssList(), false);
+            refWebView.get().loadDataWithBaseURL(WebUtils.BASE_URL, data, WebUtils.MIME_TYPE, WebUtils.ENCODING, WebUtils.FAIL_URL);
 
-        });
+            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                @Override
+                public void onScrollChanged() {
+                    if (!isWebViewOK()) {
+                        return;
+                    }
+                    changeHeaderPosition();
+                    changeToolbarAlpha();
+                }
+
+            });
+        }
+
     }
 
     private void changeHeaderPosition() {

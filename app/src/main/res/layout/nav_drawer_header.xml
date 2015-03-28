@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="120dp">
+    android:layout_height="120dp"
+    android:gravity="center"
+    android:background="@color/style_color_primary_dark">
 
     <ImageView
         android:id="@+id/ivHeader"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/style_color_primary_dark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/splash_logo"
         android:scaleType="centerCrop" />
 </LinearLayout>

@@ -44,176 +44,176 @@ import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
  * If this implementation doesn't meet your needs then consider <a
  * href="https://github.com/vinc3m1/RoundedImageView">this project</a> for
  * usage.
- * 
+ *
  * @author Sergey Tarasevich (nostra13[at]gmail[dot]com)
  * @since 1.5.6
  */
 public class CircleBitmapDisplayer implements BitmapDisplayer {
 
-	protected final int borderWidth;
-	protected final int borderColor;
+    protected final int borderWidth;
+    protected final int borderColor;
 
-	public CircleBitmapDisplayer() {
-		this(0);
-	}
+    public CircleBitmapDisplayer() {
+        this(0);
+    }
 
-	public CircleBitmapDisplayer(int borderWidthPixels) {
-		this(borderWidthPixels, 0);
-	}
+    public CircleBitmapDisplayer(int borderWidthPixels) {
+        this(borderWidthPixels, 0);
+    }
 
-	public CircleBitmapDisplayer(int borderWidthPixels, int borderColor) {
-		this.borderWidth = borderWidthPixels;
-		this.borderColor = borderColor;
-	}
-	
-	
-	@Override
-	public void display(Bitmap bitmap, ImageAware imageAware, LoadedFrom loadedFrom) {
-		if (!(imageAware instanceof ImageViewAware)) {
-			throw new IllegalArgumentException("ImageAware should wrap ImageView. ImageViewAware is expected.");
-		}
+    public CircleBitmapDisplayer(int borderWidthPixels, int borderColor) {
+        this.borderWidth = borderWidthPixels;
+        this.borderColor = borderColor;
+    }
 
-		imageAware.setImageDrawable(new CircleDrawable(bitmap, borderWidth, borderColor));
-	}
 
-	public class CircleDrawable extends Drawable {
-		public static final String TAG = "CircleDrawable";
+    @Override
+    public void display(Bitmap bitmap, ImageAware imageAware, LoadedFrom loadedFrom) {
+        if (!(imageAware instanceof ImageViewAware)) {
+            throw new IllegalArgumentException("ImageAware should wrap ImageView. ImageViewAware is expected.");
+        }
 
-		protected final Paint mPaint;
-		protected final Paint mBorderPaint;
+        imageAware.setImageDrawable(new CircleDrawable(bitmap, borderWidth, borderColor));
+    }
 
-		private Shader mBitmapShader;
+    public class CircleDrawable extends Drawable {
+        public static final String TAG = "CircleDrawable";
 
-		private final Matrix mShaderMatrix;
+        protected final Paint mPaint;
+        protected final Paint mBorderPaint;
 
-		private final RectF mDrawableRect;
-		private final RectF mBorderRect;
+        private Shader mBitmapShader;
 
-		private int mBitmapWidth;
-		private int mBitmapHeight;
+        private final Matrix mShaderMatrix;
 
-		private float mDrawableRadius;
-		private float mBorderRadius;
+        private final RectF mDrawableRect;
+        private final RectF mBorderRect;
 
-		protected final int mBorderColor;
-		protected final int mBorderWidth;
+        private int mBitmapWidth;
+        private int mBitmapHeight;
 
-		protected Bitmap oBitmap;// 原图
+        private float mDrawableRadius;
+        private float mBorderRadius;
 
-		public CircleDrawable(Bitmap bitmap) {
-			this(bitmap, 0);
-		}
+        protected final int mBorderColor;
+        protected final int mBorderWidth;
 
-		public CircleDrawable(Bitmap bitmap, int borderWidthPixels) {
-			this(bitmap, borderWidthPixels, Color.BLACK);
-		}
+        protected Bitmap oBitmap;// 原图
 
-		public CircleDrawable(Bitmap bitmap, int borderWidthPixels, int borderColor) {
-			this.mBorderWidth = borderWidthPixels;
-			this.mBorderColor = borderColor;
-			this.oBitmap = bitmap;
+        public CircleDrawable(Bitmap bitmap) {
+            this(bitmap, 0);
+        }
 
-			this.mBorderRect = new RectF();
-			this.mDrawableRect = new RectF();
+        public CircleDrawable(Bitmap bitmap, int borderWidthPixels) {
+            this(bitmap, borderWidthPixels, Color.BLACK);
+        }
 
-			this.mShaderMatrix = new Matrix();
+        public CircleDrawable(Bitmap bitmap, int borderWidthPixels, int borderColor) {
+            this.mBorderWidth = borderWidthPixels;
+            this.mBorderColor = borderColor;
+            this.oBitmap = bitmap;
 
-			mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            this.mBorderRect = new RectF();
+            this.mDrawableRect = new RectF();
 
-			mBorderPaint = new Paint();
-			mBorderPaint.setColor(mBorderColor);
+            this.mShaderMatrix = new Matrix();
 
-			mPaint = new Paint();
-			mPaint.setAntiAlias(true);
-			mPaint.setShader(mBitmapShader);
-		}
+            mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 
-		@Override
-		protected void onBoundsChange(Rect bounds) {
-			super.onBoundsChange(bounds);
-			setup();
-		}
+            mBorderPaint = new Paint();
+            mBorderPaint.setColor(mBorderColor);
 
-		@Override
-		public void draw(Canvas canvas) {
+            mPaint = new Paint();
+            mPaint.setAntiAlias(true);
+            mPaint.setShader(mBitmapShader);
+        }
 
-			canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mPaint);
-			if (mBorderWidth != 0) {
-				canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);
-			}
+        @Override
+        protected void onBoundsChange(Rect bounds) {
+            super.onBoundsChange(bounds);
+            setup();
+        }
 
-		}
+        @Override
+        public void draw(Canvas canvas) {
 
-		@Override
-		public int getOpacity() {
-			return PixelFormat.TRANSLUCENT;
-		}
+            canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mPaint);
+            if (mBorderWidth != 0) {
+                canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);
+            }
 
-		@Override
-		public void setAlpha(int alpha) {
-			mPaint.setAlpha(alpha);
-		}
+        }
 
-		@Override
-		public void setColorFilter(ColorFilter cf) {
-			mPaint.setColorFilter(cf);
-		}
+        @Override
+        public int getOpacity() {
+            return PixelFormat.TRANSLUCENT;
+        }
 
-		private int getWidth() {
-			Rect bounds = getBounds();
-			return bounds.width();
-		}
+        @Override
+        public void setAlpha(int alpha) {
+            mPaint.setAlpha(alpha);
+        }
 
-		private int getHeight() {
-			Rect bounds = getBounds();
-			return bounds.height();
-		}
+        @Override
+        public void setColorFilter(ColorFilter cf) {
+            mPaint.setColorFilter(cf);
+        }
 
-		private void setup() {
+        private int getWidth() {
+            Rect bounds = getBounds();
+            return bounds.width();
+        }
 
-			if (oBitmap == null) {
-				return;
-			}
-			mPaint.setAntiAlias(true);
-			mPaint.setShader(mBitmapShader);
+        private int getHeight() {
+            Rect bounds = getBounds();
+            return bounds.height();
+        }
 
-			mBorderPaint.setStyle(Paint.Style.STROKE);
-			mBorderPaint.setAntiAlias(true);
-			mBorderPaint.setColor(mBorderColor);
-			mBorderPaint.setStrokeWidth(mBorderWidth);
+        private void setup() {
 
-			mBitmapHeight = oBitmap.getHeight();
-			mBitmapWidth = oBitmap.getWidth();
+            if (oBitmap == null) {
+                return;
+            }
+            mPaint.setAntiAlias(true);
+            mPaint.setShader(mBitmapShader);
 
-			mBorderRect.set(0, 0, getWidth(), getHeight());
-			mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2, (mBorderRect.width() - mBorderWidth) / 2);
+            mBorderPaint.setStyle(Paint.Style.STROKE);
+            mBorderPaint.setAntiAlias(true);
+            mBorderPaint.setColor(mBorderColor);
+            mBorderPaint.setStrokeWidth(mBorderWidth);
 
-			mDrawableRect.set(mBorderWidth, mBorderWidth, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);
-			mDrawableRadius = Math.min(mDrawableRect.height() / 2, mDrawableRect.width() / 2);
+            mBitmapHeight = oBitmap.getHeight();
+            mBitmapWidth = oBitmap.getWidth();
 
-			updateShaderMatrix();
-		}
+            mBorderRect.set(0, 0, getWidth(), getHeight());
+            mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2, (mBorderRect.width() - mBorderWidth) / 2);
 
-		private void updateShaderMatrix() {
-			float scale;
-			float dx = 0;
-			float dy = 0;
+            mDrawableRect.set(mBorderWidth, mBorderWidth, mBorderRect.width() - mBorderWidth, mBorderRect.height() - mBorderWidth);
+            mDrawableRadius = Math.min(mDrawableRect.height() / 2, mDrawableRect.width() / 2);
 
-			mShaderMatrix.set(null);
+            updateShaderMatrix();
+        }
 
-			if (mBitmapWidth * mDrawableRect.height() > mDrawableRect.width() * mBitmapHeight) {
-				scale = mDrawableRect.height() / (float) mBitmapHeight;
-				dx = (mDrawableRect.width() - mBitmapWidth * scale) * 0.5f;
-			} else {
-				scale = mDrawableRect.width() / (float) mBitmapWidth;
-				dy = (mDrawableRect.height() - mBitmapHeight * scale) * 0.5f;
-			}
+        private void updateShaderMatrix() {
+            float scale;
+            float dx = 0;
+            float dy = 0;
 
-			mShaderMatrix.setScale(scale, scale);
-			mShaderMatrix.postTranslate((int) (dx + 0.5f) + mBorderWidth, (int) (dy + 0.5f) + mBorderWidth);
+            mShaderMatrix.set(null);
 
-			mBitmapShader.setLocalMatrix(mShaderMatrix);
-		}
+            if (mBitmapWidth * mDrawableRect.height() > mDrawableRect.width() * mBitmapHeight) {
+                scale = mDrawableRect.height() / (float) mBitmapHeight;
+                dx = (mDrawableRect.width() - mBitmapWidth * scale) * 0.5f;
+            } else {
+                scale = mDrawableRect.width() / (float) mBitmapWidth;
+                dy = (mDrawableRect.height() - mBitmapHeight * scale) * 0.5f;
+            }
 
-	}
+            mShaderMatrix.setScale(scale, scale);
+            mShaderMatrix.postTranslate((int) (dx + 0.5f) + mBorderWidth, (int) (dy + 0.5f) + mBorderWidth);
+
+            mBitmapShader.setLocalMatrix(mShaderMatrix);
+        }
+
+    }
 }

@@ -33,6 +33,5 @@
         android:shadowRadius="1.0"
         android:textColor="@color/white"
         android:textSize="22sp"
-        android:textIsSelectable="false"
-        android:text="test" />
+        android:textIsSelectable="false"/>
 </com.aspsine.zhihu.daily.ui.widget.StoryHeaderView>

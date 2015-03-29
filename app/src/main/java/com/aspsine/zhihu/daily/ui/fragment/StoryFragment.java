@@ -91,9 +91,6 @@ public class StoryFragment extends Fragment {
         mScrollPullDownHelper = new ScrollPullDownHelper();
 
         this.mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_launcher)
-                .showImageForEmptyUri(R.drawable.ic_launcher)
-                .showImageOnFail(R.drawable.ic_launcher)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .considerExifParams(true)

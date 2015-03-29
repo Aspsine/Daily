@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.entity.Editor;
+import com.aspsine.zhihu.daily.entity.Story;
 import com.aspsine.zhihu.daily.entity.Theme;
 import com.aspsine.zhihu.daily.ui.adapter.holder.StoryViewHolder;
 import com.aspsine.zhihu.daily.ui.widget.AvatarsView;
@@ -37,6 +38,11 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void setTheme(Theme theme) {
         mTheme = theme;
+        notifyDataSetChanged();
+    }
+
+    public void appendStories(List<Story> stories) {
+        mTheme.getStories().addAll(stories);
         notifyDataSetChanged();
     }
 

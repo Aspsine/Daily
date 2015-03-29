@@ -36,6 +36,7 @@ public class ThemeStoriesFragment extends BaseFragment {
 
     private String mThemeId;
 
+    private String mLastStoryId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,7 @@ public class ThemeStoriesFragment extends BaseFragment {
         recyclerView.setonLoadMoreListener(new LoadMoreRecyclerView.onLoadMoreListener() {
             @Override
             public void onLoadMore() {
+                recyclerView.setLoadingMore(true);
                 loadMore();
             }
         });
@@ -94,13 +96,14 @@ public class ThemeStoriesFragment extends BaseFragment {
     }
 
     private void loadMore() {
-        new Thread(new GetThemeTask(GetThemeTask.TYPE_LOAD_MORE, mThemeId))
+        new Thread(new GetThemeTask(GetThemeTask.TYPE_LOAD_MORE, mThemeId, mLastStoryId))
                 .start();
     }
 
     private final class GetThemeTask implements Runnable {
         private int type;
         private String id;
+        private String lastStoryId;
         public static final int TYPE_REFRESH = 0;
         public static final int TYPE_LOAD_MORE = 1;
 
@@ -109,8 +112,13 @@ public class ThemeStoriesFragment extends BaseFragment {
 
 
         public GetThemeTask(int type, String themeId) {
+            this(type, themeId, null);
+        }
+
+        public GetThemeTask(int type, String themeId, String storyId) {
             this.type = type;
             this.id = themeId;
+            this.lastStoryId = storyId;
         }
 
         @Override
@@ -141,6 +149,16 @@ public class ThemeStoriesFragment extends BaseFragment {
 
         private void runLoadMore() {
             // TODO loadMore
+            String url = Constants.Url.ZHIHU_DAILY_THEME + id + "/before/";
+            try {
+                String jsonStr = Http.get(url, lastStoryId);
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                Theme theme = gson.fromJson(jsonStr, Theme.class);
+                handler.obtainMessage(type, theme).sendToTarget();
+            } catch (Exception e) {
+                handler.obtainMessage(GetThemeTask.TYPE_LOAD_MORE_ERROR).sendToTarget();
+                e.printStackTrace();
+            }
         }
 
     }
@@ -154,12 +172,17 @@ public class ThemeStoriesFragment extends BaseFragment {
                     swipeRefreshLayout.setRefreshing(false);
                     if (msg.obj != null && mAdapter != null) {
                         Theme theme = (Theme) msg.obj;
+                        mLastStoryId = theme.getStories().get(theme.getStories().size() - 1).getId();
+                        L.i(TAG, "last story id: " + mLastStoryId);
                         mAdapter.setTheme(theme);
                     }
                     break;
                 case GetThemeTask.TYPE_LOAD_MORE:
                     recyclerView.setLoadingMore(false);
-                    Toast.makeText(getActivity(), "load more", Toast.LENGTH_SHORT).show();
+                    if (msg.obj != null && mAdapter != null) {
+                        Theme theme = (Theme) msg.obj;
+                        mAdapter.appendStories(theme.getStories());
+                    }
                     break;
                 case GetThemeTask.TYPE_REFRESH_ERROR:
                     swipeRefreshLayout.setRefreshing(false);

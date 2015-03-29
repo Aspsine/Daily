@@ -19,6 +19,8 @@ public class Constants {
 
         public static final String ZHIHU_DAILY_THEME = "http://news-at.zhihu.com/api/4/theme/";
 
+        public static final String ZHIHU_DAILY_THEME_BEFORE = "http://news.at.zhihu.com/api/4/theme/12/before/4621095";
+
         /**
          * latest stories
          */

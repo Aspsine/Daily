@@ -172,7 +172,9 @@ public class ThemeStoriesFragment extends BaseFragment {
                     swipeRefreshLayout.setRefreshing(false);
                     if (msg.obj != null && mAdapter != null) {
                         Theme theme = (Theme) msg.obj;
-                        mLastStoryId = theme.getStories().get(theme.getStories().size() - 1).getId();
+                        if(theme.getStories().size()>0){
+                            mLastStoryId = theme.getStories().get(theme.getStories().size() - 1).getId();
+                        }
                         L.i(TAG, "last story id: " + mLastStoryId);
                         mAdapter.setTheme(theme);
                     }
@@ -181,8 +183,10 @@ public class ThemeStoriesFragment extends BaseFragment {
                     recyclerView.setLoadingMore(false);
                     if (msg.obj != null && mAdapter != null) {
                         Theme theme = (Theme) msg.obj;
-                        mLastStoryId = theme.getStories().get(theme.getStories().size() - 1).getId();
-                        mAdapter.appendStories(theme.getStories());
+                        if(theme.getStories().size()>0){
+                            mLastStoryId = theme.getStories().get(theme.getStories().size() - 1).getId();
+                            mAdapter.appendStories(theme.getStories());
+                        }
                     }
                     break;
                 case GetThemeTask.TYPE_REFRESH_ERROR:

@@ -181,6 +181,7 @@ public class ThemeStoriesFragment extends BaseFragment {
                     recyclerView.setLoadingMore(false);
                     if (msg.obj != null && mAdapter != null) {
                         Theme theme = (Theme) msg.obj;
+                        mLastStoryId = theme.getStories().get(theme.getStories().size() - 1).getId();
                         mAdapter.appendStories(theme.getStories());
                     }
                     break;

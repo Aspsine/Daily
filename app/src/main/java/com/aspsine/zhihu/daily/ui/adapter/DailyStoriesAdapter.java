@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.entity.DailyStories;
-import com.aspsine.zhihu.daily.entity.Story;
+import com.aspsine.zhihu.daily.model.DailyStories;
+import com.aspsine.zhihu.daily.model.Story;
 import com.aspsine.zhihu.daily.ui.adapter.holder.DateViewHolder;
 import com.aspsine.zhihu.daily.ui.adapter.holder.HeaderViewPagerHolder;
 import com.aspsine.zhihu.daily.ui.adapter.holder.StoryViewHolder;

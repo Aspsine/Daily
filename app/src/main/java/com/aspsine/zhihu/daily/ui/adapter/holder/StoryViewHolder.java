@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.entity.Story;
+import com.aspsine.zhihu.daily.model.Story;
 import com.aspsine.zhihu.daily.util.IntentUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;

@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.entity.Editor;
-import com.aspsine.zhihu.daily.entity.Story;
-import com.aspsine.zhihu.daily.entity.Theme;
+import com.aspsine.zhihu.daily.model.Editor;
+import com.aspsine.zhihu.daily.model.Story;
+import com.aspsine.zhihu.daily.model.Theme;
 import com.aspsine.zhihu.daily.ui.adapter.holder.StoryViewHolder;
 import com.aspsine.zhihu.daily.ui.widget.AvatarsView;
 import com.aspsine.zhihu.daily.ui.widget.StoryHeaderView;

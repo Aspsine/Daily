@@ -1,4 +1,4 @@
-package com.aspsine.zhihu.daily.entity;
+package com.aspsine.zhihu.daily.model;
 
 import android.graphics.drawable.Drawable;
 

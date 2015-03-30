@@ -1,4 +1,4 @@
-package com.aspsine.zhihu.daily.entity;
+package com.aspsine.zhihu.daily.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

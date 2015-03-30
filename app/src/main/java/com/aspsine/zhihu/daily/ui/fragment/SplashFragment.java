@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.api.DailyApi;
-import com.aspsine.zhihu.daily.entity.StartImage;
+import com.aspsine.zhihu.daily.model.StartImage;
 import com.aspsine.zhihu.daily.util.DensityUtil;
 import com.aspsine.zhihu.daily.util.L;
 import com.aspsine.zhihu.daily.util.NetWorkUtils;

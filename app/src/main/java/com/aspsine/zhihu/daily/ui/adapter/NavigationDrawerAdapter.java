@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.entity.Theme;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
+import com.aspsine.zhihu.daily.model.Theme;
 import com.aspsine.zhihu.daily.util.L;
 import com.aspsine.zhihu.daily.util.UIUtils;
 

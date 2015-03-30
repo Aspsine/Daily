@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.api.DailyApi;
-import com.aspsine.zhihu.daily.entity.Theme;
+import com.aspsine.zhihu.daily.model.Theme;
 import com.aspsine.zhihu.daily.ui.adapter.ThemeStoriesAdapter;
 import com.aspsine.zhihu.daily.ui.widget.LoadMoreRecyclerView;
 import com.aspsine.zhihu.daily.util.L;

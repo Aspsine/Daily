@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.entity.Story;
+import com.aspsine.zhihu.daily.model.Story;
 import com.aspsine.zhihu.daily.ui.widget.CirclePageIndicator;
 import com.aspsine.zhihu.daily.ui.widget.MyViewPager;
 import com.aspsine.zhihu.daily.ui.widget.StoryHeaderView;

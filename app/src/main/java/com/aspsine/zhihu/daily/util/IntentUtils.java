@@ -3,7 +3,7 @@ package com.aspsine.zhihu.daily.util;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.aspsine.zhihu.daily.entity.Story;
+import com.aspsine.zhihu.daily.model.Story;
 import com.aspsine.zhihu.daily.ui.activity.StoryActivity;
 
 /**

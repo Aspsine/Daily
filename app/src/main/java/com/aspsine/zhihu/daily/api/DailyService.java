@@ -1,10 +1,10 @@
 package com.aspsine.zhihu.daily.api;
 
-import com.aspsine.zhihu.daily.entity.DailyStories;
-import com.aspsine.zhihu.daily.entity.StartImage;
-import com.aspsine.zhihu.daily.entity.Story;
-import com.aspsine.zhihu.daily.entity.Theme;
-import com.aspsine.zhihu.daily.entity.Themes;
+import com.aspsine.zhihu.daily.model.DailyStories;
+import com.aspsine.zhihu.daily.model.StartImage;
+import com.aspsine.zhihu.daily.model.Story;
+import com.aspsine.zhihu.daily.model.Theme;
+import com.aspsine.zhihu.daily.model.Themes;
 
 import retrofit.Callback;
 import retrofit.http.GET;

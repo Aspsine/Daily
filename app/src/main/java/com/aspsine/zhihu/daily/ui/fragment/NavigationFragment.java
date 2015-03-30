@@ -17,9 +17,9 @@ import android.view.ViewGroup;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.api.DailyApi;
-import com.aspsine.zhihu.daily.entity.Theme;
-import com.aspsine.zhihu.daily.entity.Themes;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
+import com.aspsine.zhihu.daily.model.Theme;
+import com.aspsine.zhihu.daily.model.Themes;
 import com.aspsine.zhihu.daily.ui.adapter.NavigationDrawerAdapter;
 import com.aspsine.zhihu.daily.util.SharedPrefUtils;
 

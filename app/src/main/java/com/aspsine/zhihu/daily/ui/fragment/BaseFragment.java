@@ -27,8 +27,6 @@ public class BaseFragment extends Fragment {
     public BaseFragment() {
     }
 
-    ;
-
     public static BaseFragment newInstance(int position, String sectionId) {
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_THEME_NUMBER, position);

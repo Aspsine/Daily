@@ -1,7 +1,6 @@
 package com.aspsine.zhihu.daily.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -42,7 +41,7 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         switch (viewType) {
             case Type.ITEM_HEADER:
                 itemView = UIUtils.inflate(R.layout.recycler_header_viewpager, parent);
-                Log.i(TAG, "onCreateViewHolder: ITEM_HEADER");
+                L.i(TAG, "onCreateViewHolder: ITEM_HEADER");
                 return new HeaderViewPagerHolder(itemView);
             case Type.ITEM_DATE:
                 itemView = UIUtils.inflate(R.layout.recycler_item_date, parent);
@@ -81,7 +80,7 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         int viewType = getItemViewType(position);
         switch (viewType) {
             case Type.ITEM_HEADER:
-                Log.i(TAG, "onBindViewHolder: ITEM_HEADER");
+                L.i(TAG, "onBindViewHolder: ITEM_HEADER");
                 ((HeaderViewPagerHolder) holder).bindHeaderView(mDailyStories.getTopStories());
                 break;
             case Type.ITEM_DATE:

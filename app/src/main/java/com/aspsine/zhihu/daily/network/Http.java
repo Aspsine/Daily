@@ -1,9 +1,8 @@
 package com.aspsine.zhihu.daily.network;
 
 import android.os.Build;
-import android.util.Log;
 
-import com.aspsine.zhihu.daily.Constants;
+import com.aspsine.zhihu.daily.util.L;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -18,9 +17,7 @@ public class Http {
     protected static final String CHARSET = "UTF-8";
 
     public static String get(String baseUrl) throws IOException {
-        if (Constants.Config.DEVELOPER_MODE) {
-            Log.i("url", baseUrl);
-        }
+        L.i("url", baseUrl);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
             return BaseHttpClient.get(baseUrl);
         } else {

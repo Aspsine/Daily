@@ -2,8 +2,6 @@ package com.aspsine.zhihu.daily;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.StrictMode;
 
@@ -32,7 +30,7 @@ public class App extends Application {
     }
 
     private void setStrictMode(){
-        if (Constants.Config.DEVELOPER_MODE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+        if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
             StrictMode.enableDefaults();
         }
     }

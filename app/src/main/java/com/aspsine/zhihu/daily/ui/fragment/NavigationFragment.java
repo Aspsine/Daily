@@ -229,7 +229,6 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-
     public int getCurrentSelectedPosition() {
         return mCurrentSelectedPosition;
     }

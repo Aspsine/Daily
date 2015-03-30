@@ -6,8 +6,17 @@ A demo app of Zhihu Daily.
 - New Widget: RecyclerView Toolbar SwipeRefreshLayout CardView
 - RESTful API Design
 
+### Libraris:
+- com.android.support:support-v4:21.0.3
+- com.android.support:appcompat-v7:21.0.3
+- com.android.support:recyclerview-v7:21.0.3
+- com.android.support:cardview-v7:21.0.3
+- com.google.code.gson:gson:2.3.1
+- com.jakewharton:butterknife:6.0.0
+- com.squareup.retrofit:retrofit:1.9.0
+
 ### Version
-- Developing.
+- 1.0
 
 ### Copyright
 

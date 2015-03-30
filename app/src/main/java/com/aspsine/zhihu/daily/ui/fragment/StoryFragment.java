@@ -4,8 +4,6 @@ package com.aspsine.zhihu.daily.ui.fragment;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -22,21 +20,21 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
-import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
+import com.aspsine.zhihu.daily.api.DailyApi;
 import com.aspsine.zhihu.daily.entity.Story;
-import com.aspsine.zhihu.daily.network.Http;
 import com.aspsine.zhihu.daily.ui.widget.StoryHeaderView;
 import com.aspsine.zhihu.daily.util.ScrollPullDownHelper;
 import com.aspsine.zhihu.daily.util.WebUtils;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.lang.ref.SoftReference;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -126,7 +124,7 @@ public class StoryFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new Thread(new GetStoryTask(mStoryId)).start();
+        refresh();
     }
 
     @Override
@@ -143,9 +141,22 @@ public class StoryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (handler != null) {
-            handler.removeCallbacksAndMessages(null);
-        }
+    }
+
+    private void refresh() {
+        DailyApi.createApi().getStoryDetail(mStoryId, new Callback<Story>() {
+            @Override
+            public void success(Story story, Response response) {
+                progressBar.setVisibility(View.GONE);
+                bindData(story);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                progressBar.setVisibility(View.GONE);
+                error.printStackTrace();
+            }
+        });
     }
 
     private boolean isWebViewOK() {
@@ -235,46 +246,5 @@ public class StoryFragment extends Fragment {
         }
 
         mActionBarToolbar.setY(toolBarPositionY);
-
     }
-
-
-    private final class GetStoryTask implements Runnable {
-        String id;
-
-        public GetStoryTask(String storyId) {
-            this.id = storyId;
-        }
-
-        @Override
-        public void run() {
-            try {
-                String jsonStr = Http.get(Constants.Url.ZHIHU_DAILY_DETAIL, id);
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                Story story = gson.fromJson(jsonStr, Story.class);
-                handler.obtainMessage(0, story).sendToTarget();
-            } catch (Exception e) {
-                handler.obtainMessage(-1).sendToTarget();
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private final Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            progressBar.setVisibility(View.GONE);
-            switch (msg.what) {
-                case 0:
-                    Story story = (Story) msg.obj;
-                    bindData(story);
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
-
 }

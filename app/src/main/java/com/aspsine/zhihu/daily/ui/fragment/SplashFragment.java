@@ -2,8 +2,6 @@ package com.aspsine.zhihu.daily.ui.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -15,20 +13,20 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.network.Http;
+import com.aspsine.zhihu.daily.api.DailyApi;
+import com.aspsine.zhihu.daily.entity.StartImage;
 import com.aspsine.zhihu.daily.util.DensityUtil;
 import com.aspsine.zhihu.daily.util.L;
 import com.aspsine.zhihu.daily.util.NetWorkUtils;
 import com.aspsine.zhihu.daily.util.SharedPrefUtils;
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by sf on 2015/1/13.
@@ -41,7 +39,8 @@ public class SplashFragment extends Fragment {
     public ImageView ivSplash;
     public Animation mIvSplashAnim;
 
-    private String mOldJsonString;
+    private StartImage mOldStartImage;
+
     private DisplayImageOptions mOptions;
 
     private int mWidth;
@@ -56,7 +55,11 @@ public class SplashFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mOldJsonString = SharedPrefUtils.getSplashJson(getActivity());
+        String mOldJsonString = SharedPrefUtils.getSplashJson(getActivity());
+        if (!TextUtils.isEmpty(mOldJsonString)) {
+            mOldStartImage = new Gson().fromJson(mOldJsonString, StartImage.class);
+        }
+
         mWidth = DensityUtil.getScreenWidth(getActivity());
         mHeight = DensityUtil.getScreenHeight(getActivity());
         this.mOptions = new DisplayImageOptions.Builder()
@@ -84,13 +87,9 @@ public class SplashFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         if (NetWorkUtils.isNetWorkAvailable(getActivity())) {
-            new Thread(new GetSplashTask()).start();
+            refresh();
         } else {
-            if (TextUtils.isEmpty(mOldJsonString)) {
-                setDefaultData();
-            } else {
-                setData(String.valueOf(mOldJsonString));
-            }
+            setDefaultData();
         }
     }
 
@@ -101,59 +100,35 @@ public class SplashFragment extends Fragment {
     }
 
     private void setDefaultData() {
-        ivSplash.setBackgroundResource(R.drawable.bg_splash);
-        tvCopyrightHolder.setText("@Aspsine");
-    }
-
-    private void setData(String json) {
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(json);
-            tvCopyrightHolder.setText(jsonObject.getString("text"));
-            ImageLoader.getInstance().displayImage(jsonObject.getString("img"), ivSplash, mOptions);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (mOldStartImage == null) {
+            L.i(TAG, "default image.");
+            ivSplash.setBackgroundResource(R.drawable.bg_splash);
+            tvCopyrightHolder.setText("@Aspsine");
+        } else {
+            L.i(TAG, "old image.");
+            setData(mOldStartImage);
         }
     }
 
-    private final class GetSplashTask implements Runnable {
+    private void setData(StartImage image) {
+        tvCopyrightHolder.setText(image.getText());
+        ImageLoader.getInstance().displayImage(image.getImg(), ivSplash, mOptions);
+    }
 
-        @Override
-        public void run() {
-            try {
-                String newJsonString = Http.get(Constants.Url.ZHIHU_DAILY_SPLASH + mWidth + "*" + mHeight);
-                if (!TextUtils.isEmpty(newJsonString)) {
-                    if (!newJsonString.equals(mOldJsonString)) {
-                        L.i(TAG, "splash has been updated");
-                        SharedPrefUtils.setSplashJson(getActivity(), newJsonString);
-                    } else {
-                        L.i(TAG, "splash has no change");
-                    }
-                    mOldJsonString = newJsonString;
-                } else if (TextUtils.isEmpty(newJsonString) && TextUtils.isEmpty(mOldJsonString)) {
-                    handler.obtainMessage(0).sendToTarget();
-                    return;
-                }
-                handler.obtainMessage(10, mOldJsonString).sendToTarget();
-            } catch (IOException e) {
-                e.printStackTrace();
+    private void refresh() {
+        DailyApi.createApi().getStartImage(mWidth, mHeight, new Callback<StartImage>() {
+            @Override
+            public void success(StartImage startImage, Response response) {
+                SharedPrefUtils.setSplashJson(getActivity(), new Gson().toJson(startImage));
+                L.i(TAG, "new image.");
+                setData(startImage);
             }
-        }
-    }
 
-    private final Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 0:
-                    setDefaultData();
-                    break;
-                case 10:
-                    L.i(TAG, "use imageLoader set splash bg");
-                    setData(String.valueOf(msg.obj));
-                    break;
+            @Override
+            public void failure(RetrofitError error) {
+                setDefaultData();
+                error.printStackTrace();
             }
-        }
-    };
+        });
+    }
 }

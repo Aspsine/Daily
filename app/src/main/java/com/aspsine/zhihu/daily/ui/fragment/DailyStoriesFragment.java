@@ -3,7 +3,6 @@ package com.aspsine.zhihu.daily.ui.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,19 +12,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
+import com.aspsine.zhihu.daily.api.DailyApi;
 import com.aspsine.zhihu.daily.entity.DailyStories;
 import com.aspsine.zhihu.daily.entity.Story;
-import com.aspsine.zhihu.daily.network.Http;
 import com.aspsine.zhihu.daily.ui.adapter.DailyStoriesAdapter;
 import com.aspsine.zhihu.daily.ui.widget.LoadMoreRecyclerView;
 import com.aspsine.zhihu.daily.ui.widget.MyViewPager;
 import com.aspsine.zhihu.daily.util.L;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -119,101 +119,48 @@ public class DailyStoriesFragment extends BaseFragment {
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
-                new Thread(new GetDailyStoryTask(GetDailyStoryTask.TYPE_REFRESH)).start();
+                DailyApi.createApi().getLatestDailyStories(new Callback<DailyStories>() {
+                    @Override
+                    public void success(DailyStories dailyStories, Response response) {
+                        swipeRefreshLayout.setRefreshing(false);
+                        mDate = dailyStories.getDate();
+                        mDailyStories.setDate(dailyStories.getDate());
+                        mDailyStories.getTopStories().clear();
+                        mDailyStories.getTopStories().addAll(dailyStories.getTopStories());
+                        mDailyStories.getStories().clear();
+                        mDailyStories.getStories().addAll(dailyStories.getStories());
+                        mAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getActivity(), "refresh error", Toast.LENGTH_SHORT).show();
+                        error.printStackTrace();
+                    }
+                });
             }
         });
     }
 
     private void loadMore() {
         recyclerView.setLoadingMore(true);
-        new Thread(new GetDailyStoryTask(GetDailyStoryTask.TYPE_LOAD_MORE)).start();
+        DailyApi.createApi().getBeforeDailyStories(mDate, new Callback<DailyStories>() {
+            @Override
+            public void success(DailyStories dailyStories, Response response) {
+                recyclerView.setLoadingMore(false);
+                mDate = dailyStories.getDate();
+                mDailyStories.getStories().addAll(dailyStories.getStories());
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                recyclerView.setLoadingMore(false);
+                Toast.makeText(getActivity(), "load more error", Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        });
     }
-
-    private class GetDailyStoryTask implements Runnable {
-        private int type;
-        public static final int TYPE_REFRESH = 0;
-        public static final int TYPE_LOAD_MORE = 1;
-
-        public static final int TYPE_REFRESH_ERROR = -1;
-        public static final int TYPE_LOAD_MORE_ERROR = -2;
-
-        public GetDailyStoryTask(int type) {
-            this.type = type;
-        }
-
-        @Override
-        public void run() {
-            switch (type) {
-                case TYPE_REFRESH:
-                    runRefresh();
-                    break;
-                case TYPE_LOAD_MORE:
-                    runLoadMore();
-                    break;
-            }
-        }
-
-        private void runRefresh() {
-            try {
-                String response = Http.get(Constants.Url.ZHIHU_DAILY_LATEST);
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                DailyStories dailyStories = gson.fromJson(response, DailyStories.class);
-                handler.obtainMessage(type, dailyStories).sendToTarget();
-            } catch (Exception e) {
-                handler.obtainMessage(TYPE_REFRESH_ERROR).sendToTarget();
-                e.printStackTrace();
-            }
-        }
-
-        private void runLoadMore() {
-            try {
-                String response = Http.get(Constants.Url.ZHIHU_DAILY_BEFORE, mDate);
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                DailyStories dailyStories = gson.fromJson(response, DailyStories.class);
-                handler.obtainMessage(type, dailyStories).sendToTarget();
-            } catch (Exception e) {
-                e.printStackTrace();
-                handler.obtainMessage(TYPE_LOAD_MORE_ERROR).sendToTarget();
-            }
-        }
-    }
-
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case GetDailyStoryTask.TYPE_LOAD_MORE_ERROR:
-                    recyclerView.setLoadingMore(false);
-                    Toast.makeText(getActivity(), "load more error", Toast.LENGTH_SHORT).show();
-                    break;
-
-                case GetDailyStoryTask.TYPE_REFRESH_ERROR:
-                    swipeRefreshLayout.setRefreshing(false);
-                    Toast.makeText(getActivity(), "refresh error", Toast.LENGTH_SHORT).show();
-                    break;
-
-                case GetDailyStoryTask.TYPE_REFRESH:
-                    swipeRefreshLayout.setRefreshing(false);
-                    DailyStories tmpDailyStories = (DailyStories) msg.obj;
-                    mDate = tmpDailyStories.getDate();
-                    mDailyStories.setDate(tmpDailyStories.getDate());
-                    mDailyStories.getTopStories().clear();
-                    mDailyStories.getTopStories().addAll(tmpDailyStories.getTopStories());
-                    mDailyStories.getStories().clear();
-                    mDailyStories.getStories().addAll(tmpDailyStories.getStories());
-                    mAdapter.notifyDataSetChanged();
-                    break;
-
-                case GetDailyStoryTask.TYPE_LOAD_MORE:
-                    recyclerView.setLoadingMore(false);
-                    DailyStories beforeDailyStories = (DailyStories) msg.obj;
-                    mDate = beforeDailyStories.getDate();
-                    mDailyStories.getStories().addAll(beforeDailyStories.getStories());
-                    mAdapter.notifyDataSetChanged();
-                    break;
-            }
-        }
-    };
 
 }

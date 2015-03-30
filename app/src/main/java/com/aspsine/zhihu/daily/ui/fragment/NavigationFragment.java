@@ -3,8 +3,6 @@ package com.aspsine.zhihu.daily.ui.fragment;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -17,19 +15,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.R;
+import com.aspsine.zhihu.daily.api.DailyApi;
 import com.aspsine.zhihu.daily.entity.Theme;
 import com.aspsine.zhihu.daily.entity.Themes;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
-import com.aspsine.zhihu.daily.network.Http;
 import com.aspsine.zhihu.daily.ui.adapter.NavigationDrawerAdapter;
 import com.aspsine.zhihu.daily.util.SharedPrefUtils;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -236,37 +235,20 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
     }
 
     private void refresh() {
-        new Thread(new GetThemeTask()).start();
-    }
-
-    private final class GetThemeTask implements Runnable {
-
-        @Override
-        public void run() {
-            try {
-                String jsonStr = Http.get(Constants.Url.ZHIHU_DAILY_THEMES);
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                Themes themes = gson.fromJson(jsonStr, Themes.class);
-                handler.obtainMessage(0, themes).sendToTarget();
-            } catch (Exception e) {
-                e.printStackTrace();
+        DailyApi.createApi().getThemes(new Callback<Themes>() {
+            @Override
+            public void success(Themes themes, Response response) {
+                mThemes.clear();
+                mThemes.addAll(themes.getOthers());
+                mAdapter.notifyDataSetChanged();
             }
-        }
-    }
 
-    private final Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 0:
-                    mThemes.clear();
-                    mThemes.addAll(((Themes) msg.obj).getOthers());
-                    mAdapter.notifyDataSetChanged();
-                    break;
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
             }
-        }
-    };
+        });
+    }
 
     public Theme getSection(int sectionNumber) {
         return sectionNumber == 0 ? null : mThemes.get(sectionNumber - 1);

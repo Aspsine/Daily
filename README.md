@@ -1,10 +1,10 @@
 # Daily
-A demo app of Zhihu Daily with full Materail Design and new widgets. It's more slim(less than 2mb) and smarter(no ad, no account) than official app.
+A demo app of Zhihu Daily with full Material Design and new widgets. It's more slimmer(less than 2mb) and smarter(no ad, no account) than official app.
 
-###Download
+### Download
 [download](https://raw.githubusercontent.com/Aspsine/Daily/master/art/daily.apk)
 
-###TODO List
+### TODO List
 - Actionbar date change
 - Item read status(set color grey)
 - Add News section List

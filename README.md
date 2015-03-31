@@ -3,7 +3,14 @@ A demo app of Zhihu Daily.
 
 ### Features
 - Full Material Design
-- New Widget: RecyclerView Toolbar SwipeRefreshLayout CardView
+- Android Compat Theme
+- RecyclerView 
+- Toolbar 
+- SwipeRefreshLayout 
+- CardView
+- DrawerLayout
+- ActionBarDrawerToggle
+- Animations 
 - RESTful API Design
 
 ### Libraris:

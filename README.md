@@ -6,7 +6,7 @@ A demo app of Zhihu Daily with full Materail Design and new widgets. It's more s
 
 ###TODO List
 - Actionbar date change
-- Item red status(set color grey)
+- Item read status(set color grey)
 - Add News section List
 - Off-line cache
 - Settings

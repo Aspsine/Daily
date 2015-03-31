@@ -12,6 +12,7 @@ import retrofit.converter.GsonConverter;
 
 /**
  * http://blog.robinchutaux.com/blog/using-retrofit-with-activeandroid/
+ * http://mattlogan.me/creating-a-retrofitlike-database-client
  * Created by Aspsine on 2015/3/30.
  */
 public class DailyApi {

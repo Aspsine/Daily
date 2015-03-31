@@ -1,9 +1,6 @@
 # Daily
 A demo app of Zhihu Daily with full Meterail Design and new widgets. It's more slim(only 1.8mb) and smarter(no ad, no account) than official app.
 
-### Contact Me:
-- Github: github.com/aspsine
-- Email: littleximail@gmail.com
 
 ### Features
 - Full Material Design
@@ -35,6 +32,11 @@ A demo app of Zhihu Daily with full Meterail Design and new widgets. It's more s
 ![drawer](https://raw.githubusercontent.com/Aspsine/Daily/master/art/drawer.jpeg)
 ![section](https://raw.githubusercontent.com/Aspsine/Daily/master/art/section.jpeg)
 ![detail](https://raw.githubusercontent.com/Aspsine/Daily/master/art/detail.jpeg)
+
+### Contact Me:
+- Github: github.com/aspsine
+- Email: littleximail@gmail.com
+- Linkedin: http://cn.linkedin.com/in/aspsine
 
 ### Copyright
 

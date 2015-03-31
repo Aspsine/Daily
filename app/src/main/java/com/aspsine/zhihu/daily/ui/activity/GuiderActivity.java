@@ -1,7 +1,5 @@
 package com.aspsine.zhihu.daily.ui.activity;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -13,6 +11,7 @@ import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.animation.AnimationEndListener;
 import com.aspsine.zhihu.daily.ui.fragment.GuideFragment;
 import com.aspsine.zhihu.daily.ui.fragment.SplashFragment;
+import com.aspsine.zhihu.daily.util.IntentUtils;
 import com.aspsine.zhihu.daily.util.SharedPrefUtils;
 
 public class GuiderActivity extends FragmentActivity {
@@ -52,9 +51,7 @@ public class GuiderActivity extends FragmentActivity {
     }
 
     public void intentToMainActivity() {
-        Intent intent = new Intent(this, NavigationDrawerActivity.class);
-        startActivity(intent);
-        finish();
+        IntentUtils.intentToMainActivity(this);
     }
 
     private final Animation.AnimationListener animListener = new AnimationEndListener() {

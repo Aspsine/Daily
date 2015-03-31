@@ -104,7 +104,7 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
             storyHeaderView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    IntentUtils.IntentToStoryActivity((Activity) v.getContext(), story);
+                    IntentUtils.intentToStoryActivity((Activity) v.getContext(), story);
                 }
             });
             container.addView(storyHeaderView);

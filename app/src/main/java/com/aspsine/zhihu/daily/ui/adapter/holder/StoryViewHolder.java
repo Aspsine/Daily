@@ -51,7 +51,7 @@ public class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     @Override
     public void onClick(View v) {
-        IntentUtils.IntentToStoryActivity((Activity) v.getContext(), mStory);
+        IntentUtils.intentToStoryActivity((Activity) v.getContext(), mStory);
     }
 
     public void bindStoryView(List<Story> stories, int position) {

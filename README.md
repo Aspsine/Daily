@@ -1,5 +1,5 @@
 # Daily
-A demo app of Zhihu Daily with full Meterail Design and new widgets. It's more slim(only 1.8mb) and smarter(no ad, no account) than official app.
+A demo app of Zhihu Daily with full Materail Design and new widgets. It's more slim(only 1.8mb) and smarter(no ad, no account) than official app.
 
 ###Download
 [download](https://raw.githubusercontent.com/Aspsine/Daily/master/art/daily.apk)

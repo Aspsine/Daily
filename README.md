@@ -1,5 +1,5 @@
 # Daily
-A demo app of Zhihu Daily.
+A demo app of Zhihu Daily with full Meterail Design and new widgets. It is more slim(only 1.8mb) and smarter(no ad, no account) than official app.
 
 ### Features
 - Full Material Design

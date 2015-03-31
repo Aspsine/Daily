@@ -25,6 +25,13 @@ A demo app of Zhihu Daily.
 ### Version
 - 1.0
 
+### ScreenShot
+![splash](https://raw.githubusercontent.com/Aspsine/Daily/master/art/splash.jpeg)
+![main](https://raw.githubusercontent.com/Aspsine/Daily/master/art/main.jpeg)
+![drawer](https://raw.githubusercontent.com/Aspsine/Daily/master/art/drawer.jpeg)
+![section](https://raw.githubusercontent.com/Aspsine/Daily/master/art/section.jpeg)
+![detail](https://raw.githubusercontent.com/Aspsine/Daily/master/art/detail.jpeg)
+
 ### Copyright
 
     Copyright 2015 Zhihu Inc. All rights reserved.

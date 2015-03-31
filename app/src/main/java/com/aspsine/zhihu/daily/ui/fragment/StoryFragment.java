@@ -99,7 +99,7 @@ public class StoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         storyHeaderView = StoryHeaderView.newInstance(container);
-        refWebView = new SoftReference<WebView>(new WebView(getActivity().getApplicationContext()));
+        refWebView = new SoftReference<WebView>(new WebView(getActivity()));
 
         if (isWebViewOK()) {
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -144,7 +144,7 @@ public class StoryFragment extends Fragment {
     }
 
     private void refresh() {
-        DailyApi.createApi().getStoryDetail(mStoryId, new Callback<Story>() {
+        DailyApi.createApi(getActivity().getApplicationContext()).getStoryDetail(mStoryId, new Callback<Story>() {
             @Override
             public void success(Story story, Response response) {
                 progressBar.setVisibility(View.GONE);

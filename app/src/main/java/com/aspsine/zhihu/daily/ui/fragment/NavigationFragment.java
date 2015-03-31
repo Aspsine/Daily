@@ -234,7 +234,7 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
     }
 
     private void refresh() {
-        DailyApi.createApi().getThemes(new Callback<Themes>() {
+        DailyApi.createApi(getActivity().getApplicationContext()).getThemes(new Callback<Themes>() {
             @Override
             public void success(Themes themes, Response response) {
                 mThemes.clear();

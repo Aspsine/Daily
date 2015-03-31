@@ -32,7 +32,6 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public DailyStoriesAdapter(DailyStories dailyStories) {
         this.mDailyStories = dailyStories;
-
     }
 
     @Override

@@ -119,7 +119,7 @@ public class DailyStoriesFragment extends BaseFragment {
     }
 
     private void refresh() {
-        DailyApi.createApi().getLatestDailyStories(new Callback<DailyStories>() {
+        DailyApi.createApi(getActivity().getApplicationContext()).getLatestDailyStories(new Callback<DailyStories>() {
             @Override
             public void success(DailyStories dailyStories, Response response) {
                 swipeRefreshLayout.setRefreshing(false);
@@ -143,7 +143,7 @@ public class DailyStoriesFragment extends BaseFragment {
 
     private void loadMore() {
         recyclerView.setLoadingMore(true);
-        DailyApi.createApi().getBeforeDailyStories(mDate, new Callback<DailyStories>() {
+        DailyApi.createApi(getActivity().getApplicationContext()).getBeforeDailyStories(mDate, new Callback<DailyStories>() {
             @Override
             public void success(DailyStories dailyStories, Response response) {
                 recyclerView.setLoadingMore(false);

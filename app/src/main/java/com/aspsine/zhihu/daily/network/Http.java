@@ -2,6 +2,7 @@ package com.aspsine.zhihu.daily.network;
 
 import android.os.Build;
 
+import com.aspsine.zhihu.daily.Constants;
 import com.aspsine.zhihu.daily.util.L;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.util.Map;
  * Created by Aspsine on 2015/2/28.
  */
 public class Http {
-    protected static final String CHARSET = "UTF-8";
+    protected static final String CHARSET = Constants.Config.CHARSET;
 
     public static String get(String baseUrl) throws IOException {
         L.i("url", baseUrl);

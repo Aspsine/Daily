@@ -1,9 +1,12 @@
 package com.aspsine.zhihu.daily.api;
 
+import android.content.Context;
+
 import com.aspsine.zhihu.daily.BuildConfig;
 import com.google.gson.GsonBuilder;
 
 import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 /**
@@ -15,12 +18,13 @@ public class DailyApi {
 
     private static RestAdapter restAdapter;
 
-    public static DailyService createApi() {
+    public static DailyService createApi(Context context) {
         if (restAdapter == null) {
             synchronized (DailyApi.class) {
                 if (restAdapter == null) {
                     restAdapter = new RestAdapter.Builder()
                             .setEndpoint(API)
+                            .setClient(new OkClient())
                             .setConverter(new GsonConverter(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()))
                             .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                             .build();
@@ -29,6 +33,5 @@ public class DailyApi {
         }
         return restAdapter.create(DailyService.class);
     }
-
 
 }

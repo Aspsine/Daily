@@ -1,5 +1,9 @@
 # Daily
-A demo app of Zhihu Daily with full Meterail Design and new widgets. It is more slim(only 1.8mb) and smarter(no ad, no account) than official app.
+A demo app of Zhihu Daily with full Meterail Design and new widgets. It's more slim(only 1.8mb) and smarter(no ad, no account) than official app.
+
+### Contact Me:
+- Github: github.com/aspsine
+- Email: littleximail@gmail.com
 
 ### Features
 - Full Material Design

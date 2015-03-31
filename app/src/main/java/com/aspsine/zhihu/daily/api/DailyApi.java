@@ -3,6 +3,7 @@ package com.aspsine.zhihu.daily.api;
 import android.content.Context;
 
 import com.aspsine.zhihu.daily.BuildConfig;
+import com.aspsine.zhihu.daily.network.OkHttp;
 import com.google.gson.GsonBuilder;
 
 import retrofit.RestAdapter;
@@ -10,6 +11,7 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 /**
+ * http://blog.robinchutaux.com/blog/using-retrofit-with-activeandroid/
  * Created by Aspsine on 2015/3/30.
  */
 public class DailyApi {
@@ -24,7 +26,7 @@ public class DailyApi {
                 if (restAdapter == null) {
                     restAdapter = new RestAdapter.Builder()
                             .setEndpoint(API)
-                            .setClient(new OkClient())
+                            .setClient(new OkClient(OkHttp.createHttpClient(context)))
                             .setConverter(new GsonConverter(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()))
                             .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                             .build();

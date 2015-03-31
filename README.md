@@ -4,16 +4,6 @@ A demo app of Zhihu Daily with full Material Design and new widgets. It's more s
 ### Download
 [download](https://raw.githubusercontent.com/Aspsine/Daily/master/art/daily.apk)
 
-### TODO List
-- Actionbar date change
-- Item read status(set color grey)
-- Add News section List
-- Off-line cache
-- Settings
-- MVC -> MVP project Refactoring
-- Network interface encryption
-- Proguard
-
 ### Features
 - Full Material Design
 - Android Compat Theme
@@ -36,7 +26,17 @@ A demo app of Zhihu Daily with full Material Design and new widgets. It's more s
 - com.squareup.retrofit:retrofit:1.9.0
 
 ### Version
-- 1.0
+- 1.0 Beta
+
+### TODO List
+- Actionbar date change
+- Item read status(set color grey)
+- Add News section List
+- Off-line data cache
+- Settings
+- MVC -> MVP project Refactoring
+- Network interface encryption
+- Proguard
 
 ### ScreenShot
 ![splash](https://raw.githubusercontent.com/Aspsine/Daily/master/art/splash.jpeg)
@@ -50,7 +50,7 @@ A demo app of Zhihu Daily with full Material Design and new widgets. It's more s
 - Email:    littleximail@gmail.com
 - Linkedin: cn.linkedin.com/in/aspsine
 
-### Copyright
+### License
 
     Copyright 2015 Zhihu Inc. All rights reserved.
 

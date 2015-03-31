@@ -1,5 +1,6 @@
 package com.aspsine.zhihu.daily.api;
 
+import com.aspsine.zhihu.daily.BuildConfig;
 import com.google.gson.GsonBuilder;
 
 import retrofit.RestAdapter;
@@ -21,6 +22,7 @@ public class DailyApi {
                     restAdapter = new RestAdapter.Builder()
                             .setEndpoint(API)
                             .setConverter(new GsonConverter(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()))
+                            .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                             .build();
                 }
             }

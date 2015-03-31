@@ -103,7 +103,7 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         switch (viewType) {
             case Type.TYPE_HEADER:
                 ((StoryHeaderView) holder.itemView)
-                        .BindData(mTheme.getName(), mTheme.getBackground(), mOptions);
+                        .BindData(mTheme.getDescription(), mTheme.getBackground(), mOptions);
                 break;
             case Type.TYPE_AVATARS:
                 List<String> images = new ArrayList<>();

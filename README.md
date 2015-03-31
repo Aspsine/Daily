@@ -6,9 +6,12 @@ A demo app of Zhihu Daily with full Meterail Design and new widgets. It's more s
 
 ###TODO List
 - Actionbar date change
+- Add News section List
 - Off-line cache
 - Settings
 - MVC -> MVP project Refactoring
+- Network interface encryption
+- Proguard
 
 ### Features
 - Full Material Design

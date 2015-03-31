@@ -1,5 +1,17 @@
 # Daily
-A demo app of Zhihu Daily.
+A demo app of Zhihu Daily with full Materail Design and new widgets. It's more slim(only 1.8mb) and smarter(no ad, no account) than official app.
+
+###Download
+[download](https://raw.githubusercontent.com/Aspsine/Daily/master/art/daily.apk)
+
+###TODO List
+- Actionbar date change
+- Add News section List
+- Off-line cache
+- Settings
+- MVC -> MVP project Refactoring
+- Network interface encryption
+- Proguard
 
 ### Features
 - Full Material Design
@@ -24,6 +36,18 @@ A demo app of Zhihu Daily.
 
 ### Version
 - 1.0
+
+### ScreenShot
+![splash](https://raw.githubusercontent.com/Aspsine/Daily/master/art/splash.jpeg)
+![main](https://raw.githubusercontent.com/Aspsine/Daily/master/art/main.jpeg)
+![drawer](https://raw.githubusercontent.com/Aspsine/Daily/master/art/drawer.jpeg)
+![section](https://raw.githubusercontent.com/Aspsine/Daily/master/art/section.jpeg)
+![detail](https://raw.githubusercontent.com/Aspsine/Daily/master/art/detail.jpeg)
+
+### Contact Me
+- Github:   github.com/aspsine
+- Email:    littleximail@gmail.com
+- Linkedin: cn.linkedin.com/in/aspsine
 
 ### Copyright
 

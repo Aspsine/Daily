@@ -81,7 +81,13 @@ public class DailyStoriesFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         recyclerView.setAdapter(mAdapter);
-        refresh();
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+                refresh();
+            }
+        });
     }
 
     @Override
@@ -113,30 +119,24 @@ public class DailyStoriesFragment extends BaseFragment {
     }
 
     private void refresh() {
-        new Handler().post(new Runnable() {
+        DailyApi.createApi().getLatestDailyStories(new Callback<DailyStories>() {
             @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                DailyApi.createApi().getLatestDailyStories(new Callback<DailyStories>() {
-                    @Override
-                    public void success(DailyStories dailyStories, Response response) {
-                        swipeRefreshLayout.setRefreshing(false);
-                        mDate = dailyStories.getDate();
-                        mDailyStories.setDate(dailyStories.getDate());
-                        mDailyStories.getTopStories().clear();
-                        mDailyStories.getTopStories().addAll(dailyStories.getTopStories());
-                        mDailyStories.getStories().clear();
-                        mDailyStories.getStories().addAll(dailyStories.getStories());
-                        mAdapter.notifyDataSetChanged();
-                    }
+            public void success(DailyStories dailyStories, Response response) {
+                swipeRefreshLayout.setRefreshing(false);
+                mDate = dailyStories.getDate();
+                mDailyStories.setDate(dailyStories.getDate());
+                mDailyStories.getTopStories().clear();
+                mDailyStories.getTopStories().addAll(dailyStories.getTopStories());
+                mDailyStories.getStories().clear();
+                mDailyStories.getStories().addAll(dailyStories.getStories());
+                mAdapter.notifyDataSetChanged();
+            }
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getActivity(), "refresh error", Toast.LENGTH_SHORT).show();
-                        error.printStackTrace();
-                    }
-                });
+            @Override
+            public void failure(RetrofitError error) {
+                swipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(getActivity(), "refresh error", Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
             }
         });
     }

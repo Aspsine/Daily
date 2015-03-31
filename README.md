@@ -1,11 +1,12 @@
 # Daily
-A demo app of Zhihu Daily with full Materail Design and new widgets. It's more slim(only 1.8mb) and smarter(no ad, no account) than official app.
+A demo app of Zhihu Daily with full Materail Design and new widgets. It's more slim(less than 2mb) and smarter(no ad, no account) than official app.
 
 ###Download
 [download](https://raw.githubusercontent.com/Aspsine/Daily/master/art/daily.apk)
 
 ###TODO List
 - Actionbar date change
+- Item red status(set color grey)
 - Add News section List
 - Off-line cache
 - Settings

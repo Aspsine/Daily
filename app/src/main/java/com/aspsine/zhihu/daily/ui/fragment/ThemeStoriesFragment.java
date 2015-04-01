@@ -91,7 +91,7 @@ public class ThemeStoriesFragment extends BaseFragment {
 
     private void refresh() {
 
-        DailyApi.createApi(getActivity()).getTheme(mThemeId, new Callback<Theme>() {
+        DailyApi.createApi().getTheme(mThemeId, new Callback<Theme>() {
             @Override
             public void success(Theme theme, Response response) {
                 swipeRefreshLayout.setRefreshing(false);
@@ -115,7 +115,7 @@ public class ThemeStoriesFragment extends BaseFragment {
 
     private void loadMore() {
 
-        DailyApi.createApi(getActivity().getApplicationContext()).getThemeBeforeStory(mThemeId, mLastStoryId, new Callback<Theme>() {
+        DailyApi.createApi().getThemeBeforeStory(mThemeId, mLastStoryId, new Callback<Theme>() {
             @Override
             public void success(Theme theme, Response response) {
                 recyclerView.setLoadingMore(false);

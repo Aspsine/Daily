@@ -144,7 +144,7 @@ public class StoryFragment extends Fragment {
     }
 
     private void refresh() {
-        DailyApi.createApi(getActivity().getApplicationContext()).getStoryDetail(mStoryId, new Callback<Story>() {
+        DailyApi.createApi().getStoryDetail(mStoryId, new Callback<Story>() {
             @Override
             public void success(Story story, Response response) {
                 progressBar.setVisibility(View.GONE);

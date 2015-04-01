@@ -16,6 +16,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
  * Application of the app
  */
 public class App extends Application {
+    private static Context applicationContext;
 
     @Override
     public void onCreate() {
@@ -23,6 +24,8 @@ public class App extends Application {
         setStrictMode();
 
         super.onCreate();
+
+        applicationContext = getApplicationContext();
 
         CrashHandler.getInstance(getApplicationContext());
 
@@ -47,5 +50,7 @@ public class App extends Application {
         ImageLoader.getInstance().init(config);
     };
 
-
+    public static Context getContext() {
+        return applicationContext;
+    }
 }

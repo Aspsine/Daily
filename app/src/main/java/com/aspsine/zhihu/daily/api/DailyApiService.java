@@ -13,7 +13,7 @@ import retrofit.http.Path;
 /**
  * Created by Aspsine on 2015/3/30.
  */
-public interface DailyService {
+public interface DailyApiService {
 
     @GET("/start-image/{width}*{height}")
     void getStartImage(@Path("width") int width, @Path("height") int height, Callback<StartImage> callback);

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.aspsine.zhihu.daily.ui.widget.StoryHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/view_header_story_height">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
         android:id="@+id/image"
@@ -34,4 +32,4 @@
         android:textColor="@color/white"
         android:textSize="22sp"
         android:textIsSelectable="false"/>
-</com.aspsine.zhihu.daily.ui.widget.StoryHeaderView>
+</merge>

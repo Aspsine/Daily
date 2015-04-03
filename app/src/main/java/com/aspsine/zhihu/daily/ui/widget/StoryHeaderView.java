@@ -2,13 +2,13 @@ package com.aspsine.zhihu.daily.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.util.UIUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -34,15 +34,12 @@ public class StoryHeaderView extends RelativeLayout {
 
     public StoryHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
-    public static StoryHeaderView newInstance(ViewGroup parent) {
-        return (StoryHeaderView) UIUtils.inflate(R.layout.view_header_story, parent);
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
+    private void init() {
+        setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.view_header_story_height)));
+        LayoutInflater.from(this.getContext()).inflate(R.layout.view_header_story, this, true);
         ButterKnife.inject(this);
     }
 
@@ -51,4 +48,7 @@ public class StoryHeaderView extends RelativeLayout {
         ImageLoader.getInstance().displayImage(url, image, options);
     }
 
+    public static StoryHeaderView newInstance(ViewGroup container) {
+        return new StoryHeaderView(container.getContext());
+    }
 }

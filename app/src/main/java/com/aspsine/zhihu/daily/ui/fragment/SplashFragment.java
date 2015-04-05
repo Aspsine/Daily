@@ -103,7 +103,7 @@ public class SplashFragment extends Fragment {
         if (mOldStartImage == null) {
             L.i(TAG, "default image.");
             ivSplash.setBackgroundResource(R.drawable.bg_splash);
-            tvCopyrightHolder.setText("@Aspsine");
+            tvCopyrightHolder.setText(getResources().getString(R.string.splash_text));
         } else {
             L.i(TAG, "old image.");
             setData(mOldStartImage);

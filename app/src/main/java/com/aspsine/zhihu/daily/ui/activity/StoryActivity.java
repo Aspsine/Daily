@@ -1,11 +1,14 @@
 package com.aspsine.zhihu.daily.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.ui.fragment.DailyStoriesFragment;
 import com.aspsine.zhihu.daily.ui.fragment.StoryFragment;
+import com.aspsine.zhihu.daily.util.L;
 
 public class StoryActivity extends BaseActionBarActivity {
 
@@ -39,5 +42,24 @@ public class StoryActivity extends BaseActionBarActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void finish() {
+        FragmentManager fm;
+        Fragment fragment;
+        if ((fm = getSupportFragmentManager()) != null && (fragment = fm.findFragmentByTag(StoryFragment.TAG)) != null) {
+            fm.beginTransaction().remove(fragment).commitAllowingStateLoss();
+        }
+        if(mActionBarToolbar != null){
+            mActionBarToolbar.getBackground().setAlpha(255);
+        }
+        super.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        L.i("StoryActivity", "onDestroy");
+        super.onDestroy();
     }
 }

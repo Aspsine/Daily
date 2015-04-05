@@ -247,6 +247,9 @@ public class StoryFragment extends Fragment {
         scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
+                if (!isAdded()){
+                    return;
+                }
                 changeHeaderPosition();
                 changeToolbarAlpha();
             }
@@ -304,4 +307,5 @@ public class StoryFragment extends Fragment {
     private int getStoryHeaderViewHeight() {
         return getResources().getDimensionPixelSize(R.dimen.view_header_story_height);
     }
+
 }

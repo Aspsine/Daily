@@ -38,16 +38,21 @@ public class App extends Application {
         }
     }
 
-    private void initImageLoader(Context context){
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory()
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-                .diskCacheSize(Constants.Config.IMAGE_CACHE_SIZE) // 50 Mb
-                .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .writeDebugLogs() // Remove for release app
-                .build();
-        ImageLoader.getInstance().init(config);
+    private void initImageLoader(final Context context){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                        .threadPriority(Thread.NORM_PRIORITY - 2)
+                        .denyCacheImageMultipleSizesInMemory()
+                        .diskCacheFileNameGenerator(new Md5FileNameGenerator())
+                        .diskCacheSize(Constants.Config.IMAGE_CACHE_SIZE) // 50 Mb
+                        .tasksProcessingOrder(QueueProcessingType.LIFO)
+                        .writeDebugLogs() // Remove for release app
+                        .build();
+                ImageLoader.getInstance().init(config);
+            }
+        }).start();
     };
 
     public static Context getContext() {

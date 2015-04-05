@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:background="@color/material_blue_grey_800" />
+        android:background="@color/material_blue_grey_950" />
 
     <ImageView
         android:id="@+id/mask"
@@ -22,7 +22,7 @@
         android:layout_marginLeft="16.0dip"
         android:layout_marginRight="16.0dip"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="24dp"
         android:clickable="false"
         android:focusable="false"
         android:shadowColor="@color/black"
@@ -32,4 +32,16 @@
         android:textColor="@color/white"
         android:textSize="22sp"
         android:textIsSelectable="false"/>
+
+    <TextView
+        android:id="@+id/tvAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="8dip"
+        android:layout_marginRight="8dp"
+        android:alpha="0.3"
+        android:textColor="#ffffffff"
+        android:textSize="9.0sp"/>
 </merge>

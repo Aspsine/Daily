@@ -31,6 +31,7 @@ public class Story {
     @Expose
     private String body;
     @Expose
+    @SerializedName("image_source")
     private String imageSource;
     @Expose
     @SerializedName("js")
@@ -38,6 +39,8 @@ public class Story {
     @Expose
     @SerializedName("css")
     private List<String> cssList;
+    @Expose
+    private List<Editor> recommenders;
 
     private String thumbnail;
     private String url;
@@ -179,5 +182,13 @@ public class Story {
 
     public void setCssList(List<String> cssList) {
         this.cssList = cssList;
+    }
+
+    public List<Editor> getRecommenders() {
+        return recommenders;
+    }
+
+    public void setRecommenders(List<Editor> recommenders) {
+        this.recommenders = recommenders;
     }
 }

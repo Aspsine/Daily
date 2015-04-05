@@ -77,7 +77,7 @@ public class SplashFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvCopyrightHolder = (TextView) view.findViewById(R.id.tvCopyrightHolder);
+        tvCopyrightHolder = (TextView) view.findViewById(R.id.tvAuthor);
         ivSplash = (ImageView) view.findViewById(R.id.splash);
         ivSplash.startAnimation(mIvSplashAnim);
     }

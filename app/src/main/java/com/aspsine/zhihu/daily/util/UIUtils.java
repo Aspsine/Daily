@@ -1,6 +1,9 @@
 package com.aspsine.zhihu.daily.util;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,4 +24,19 @@ public class UIUtils {
     public static final View inflate(int resId, ViewGroup parent) {
         return LayoutInflater.from(parent.getContext()).inflate(resId, parent, false);
     }
+
+    private int getStatusBarHeight(Context context) {
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        int height = resources.getDimensionPixelSize(resourceId);
+        return height;
+    }
+
+    private int getNavigationBarHeight(Context context) {
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+        int height = resources.getDimensionPixelSize(resourceId);
+        return height;
+    }
+
 }

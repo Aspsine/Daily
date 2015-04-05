@@ -1,7 +1,6 @@
 package com.aspsine.zhihu.daily.ui.fragment;
 
 
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,13 +21,17 @@ import android.widget.ScrollView;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.api.DailyApi;
+import com.aspsine.zhihu.daily.model.Editor;
 import com.aspsine.zhihu.daily.model.Story;
+import com.aspsine.zhihu.daily.ui.widget.AvatarsView;
 import com.aspsine.zhihu.daily.ui.widget.StoryHeaderView;
 import com.aspsine.zhihu.daily.util.ScrollPullDownHelper;
 import com.aspsine.zhihu.daily.util.WebUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.lang.ref.SoftReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -55,16 +58,25 @@ public class StoryFragment extends Fragment {
     @InjectView(R.id.webViewContainer)
     LinearLayout llWebViewContainer;
 
+    @InjectView(R.id.avatarsView)
+    AvatarsView avatarsView;
+
+    @InjectView(R.id.spaceView)
+    View spaceView;
+
     private SoftReference<WebView> refWebView;
 //    WebView webView;
 
     private StoryHeaderView storyHeaderView;
 
-    private String mStoryId;
-
     private DisplayImageOptions mOptions;
 
     private ScrollPullDownHelper mScrollPullDownHelper;
+
+    private String mStoryId;
+
+    private Story mStory;
+
 
     public static StoryFragment newInstance(String storyId) {
         StoryFragment fragment = new StoryFragment();
@@ -99,8 +111,9 @@ public class StoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         storyHeaderView = StoryHeaderView.newInstance(container);
+        avatarsView = (AvatarsView) inflater.inflate(R.layout.layout_avatars, container, false);
         refWebView = new SoftReference<WebView>(new WebView(getActivity()));
-
+        refWebView.get().setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         if (isWebViewOK()) {
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             refWebView.get().setLayoutParams(lp);
@@ -112,10 +125,9 @@ public class StoryFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
-        if (mActionBarToolbar != null) {
-            mActionBarToolbar.getBackground().setAlpha(0);
-        }
-        rlStoryHeader.addView(storyHeaderView);
+
+        scrollView.setOverScrollMode(ScrollView.OVER_SCROLL_NEVER);
+
         if (isWebViewOK()) {
             llWebViewContainer.addView(refWebView.get());
         }
@@ -147,7 +159,11 @@ public class StoryFragment extends Fragment {
         DailyApi.createApi().getStoryDetail(mStoryId, new Callback<Story>() {
             @Override
             public void success(Story story, Response response) {
+                if (getActivity() == null) {
+                    return;
+                }
                 progressBar.setVisibility(View.GONE);
+                mStory = story;
                 bindData(story);
             }
 
@@ -168,44 +184,81 @@ public class StoryFragment extends Fragment {
     }
 
     private void bindData(Story story) {
-        Context context = getActivity();
-        if (context == null) {
-            return;
-        }
+        boolean hasImage = !TextUtils.isEmpty(story.getImage());
+        bindHeaderView(hasImage);
+        bindAvatarsView();
+        bindWebView(hasImage);
+    }
 
-        storyHeaderView.BindData(story.getTitle(), story.getImage(), mOptions);
 
-        if (TextUtils.isEmpty(story.getBody())) {
-            WebSettings settings = refWebView.get().getSettings();
-            settings.setJavaScriptEnabled(true);
-            settings.setDomStorageEnabled(true);
-            refWebView.get().setWebViewClient(new WebViewClient());
-            refWebView.get().loadUrl(story.getShareUrl());
+    private void bindHeaderView(boolean hasImage) {
+        // bind header view
+        if (hasImage) {
+            if (mActionBarToolbar != null) {
+                mActionBarToolbar.getBackground().setAlpha(0);
+            }
+            spaceView.setVisibility(View.VISIBLE);
+            rlStoryHeader.addView(storyHeaderView);
+            storyHeaderView.BindData(mStory.getTitle(), mStory.getImageSource(), mStory.getImage(), mOptions);
         } else {
-            String data = WebUtils.BuildHtmlWithCss(story.getBody(), story.getCssList(), false);
-            refWebView.get().loadDataWithBaseURL(WebUtils.BASE_URL, data, WebUtils.MIME_TYPE, WebUtils.ENCODING, WebUtils.FAIL_URL);
-
-            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-            scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-                @Override
-                public void onScrollChanged() {
-                    if (!isWebViewOK()) {
-                        return;
-                    }
-                    changeHeaderPosition();
-                    changeToolbarAlpha();
-                }
-
-            });
+            spaceView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mActionBarToolbar.getHeight()));
         }
 
     }
+
+    private void bindAvatarsView() {
+        List<Editor> recommenders = mStory.getRecommenders();
+        if (recommenders != null && recommenders.size() > 0) {
+            avatarsView.setVisibility(View.VISIBLE);
+            List<String> avatars = new ArrayList<>(recommenders.size());
+            for (Editor editor : recommenders) {
+                avatars.add(editor.getAvatar());
+            }
+            avatarsView.bindData("推荐人", avatars);
+        } else {
+            avatarsView.setVisibility(View.GONE);
+        }
+    }
+
+    private void bindWebView(boolean hasImage) {
+        if (TextUtils.isEmpty(mStory.getBody())) {
+            WebSettings settings = refWebView.get().getSettings();
+            settings.setJavaScriptEnabled(true);
+            settings.setDomStorageEnabled(true);
+            settings.setAppCacheEnabled(true);
+            refWebView.get().setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    return false;
+                }
+            });
+            refWebView.get().loadUrl(mStory.getShareUrl());
+        } else {
+            String data = WebUtils.BuildHtmlWithCss(mStory.getBody(), mStory.getCssList(), false);
+            refWebView.get().loadDataWithBaseURL(WebUtils.BASE_URL, data, WebUtils.MIME_TYPE, WebUtils.ENCODING, WebUtils.FAIL_URL);
+            if (hasImage) {
+                addSrollListener();
+            }
+        }
+
+    }
+
+    private void addSrollListener() {
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                changeHeaderPosition();
+                changeToolbarAlpha();
+            }
+        });
+    }
+
 
     private void changeHeaderPosition() {
         int scrollY = scrollView.getScrollY();
 
         // Set height
-        float storyHeaderViewHeight = getResources().getDimensionPixelSize(R.dimen.view_header_story_height);
+        float storyHeaderViewHeight = getStoryHeaderViewHeight();
         if (scrollY < 0) {
             // Pull down, zoom in the image
             storyHeaderViewHeight += Math.abs(scrollY);
@@ -223,7 +276,7 @@ public class StoryFragment extends Fragment {
     private void changeToolbarAlpha() {
 
         int scrollY = scrollView.getScrollY();
-        int storyHeaderViewHeight = getResources().getDimensionPixelSize(R.dimen.view_header_story_height);
+        int storyHeaderViewHeight = getStoryHeaderViewHeight();
         int toolbarHeight = mActionBarToolbar.getHeight();
         float contentHeight = storyHeaderViewHeight - toolbarHeight;
         float ratio = Math.min(scrollY / contentHeight, 1.0f);
@@ -234,7 +287,7 @@ public class StoryFragment extends Fragment {
         }
 
         // Don't show toolbar if user has pulled up the whole article
-        if (scrollY + scrollView.getHeight() > refWebView.get().getMeasuredHeight() + storyHeaderViewHeight) {
+        if (scrollY + scrollView.getHeight() > llWebViewContainer.getMeasuredHeight() + storyHeaderViewHeight) {
             return;
         }
 
@@ -246,5 +299,9 @@ public class StoryFragment extends Fragment {
         }
 
         mActionBarToolbar.setY(toolBarPositionY);
+    }
+
+    private int getStoryHeaderViewHeight() {
+        return getResources().getDimensionPixelSize(R.dimen.view_header_story_height);
     }
 }

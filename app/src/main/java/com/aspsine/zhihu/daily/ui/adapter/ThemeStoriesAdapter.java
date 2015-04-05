@@ -1,9 +1,13 @@
 package com.aspsine.zhihu.daily.ui.adapter;
 
+import android.app.ActionBar;
+import android.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.model.Editor;
@@ -12,11 +16,15 @@ import com.aspsine.zhihu.daily.model.Theme;
 import com.aspsine.zhihu.daily.ui.adapter.holder.StoryViewHolder;
 import com.aspsine.zhihu.daily.ui.widget.AvatarsView;
 import com.aspsine.zhihu.daily.ui.widget.StoryHeaderView;
+import com.aspsine.zhihu.daily.util.DensityUtil;
 import com.aspsine.zhihu.daily.util.UIUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * Created by Aspsine on 2015/3/26.
@@ -88,7 +96,11 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 viewHolder = new HeaderViewHolder(StoryHeaderView.newInstance(parent));
                 break;
             case Type.TYPE_AVATARS:
-                viewHolder = new AvatarViewHolder(new AvatarsView(parent.getContext()));
+                AvatarsView avatarsView = new AvatarsView(parent.getContext());
+                RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(0, DensityUtil.dip2px(parent.getContext(), 8), 0, 0);
+                avatarsView.setLayoutParams(lp);
+                viewHolder = new AvatarViewHolder(avatarsView);
                 break;
             case Type.TYPE_ITEM:
                 viewHolder = new StoryViewHolder(UIUtils.inflate(R.layout.recycler_item_story, parent));
@@ -103,7 +115,7 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         switch (viewType) {
             case Type.TYPE_HEADER:
                 ((StoryHeaderView) holder.itemView)
-                        .BindData(mTheme.getDescription(), mTheme.getBackground(), mOptions);
+                        .BindData(mTheme.getDescription(), null, mTheme.getBackground(), mOptions);
                 break;
             case Type.TYPE_AVATARS:
                 List<String> images = new ArrayList<>();

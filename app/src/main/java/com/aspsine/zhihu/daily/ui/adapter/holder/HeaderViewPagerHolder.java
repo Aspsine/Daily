@@ -100,7 +100,7 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
         public Object instantiateItem(final ViewGroup container, final int position) {
             StoryHeaderView storyHeaderView = StoryHeaderView.newInstance(container);
             final Story story = mmStories.get(position);
-            storyHeaderView.BindData(story.getTitle(), story.getImage(), mOptions);
+            storyHeaderView.BindData(story.getTitle(), story.getImageSource(), story.getImage(), mOptions);
             storyHeaderView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

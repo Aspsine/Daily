@@ -1,8 +1,10 @@
 package com.aspsine.zhihu.daily.ui.widget;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,6 +25,8 @@ public class StoryHeaderView extends RelativeLayout {
     ImageView image;
     @InjectView(R.id.title)
     TextView title;
+    @InjectView(R.id.tvAuthor)
+    TextView author;
 
     public StoryHeaderView(Context context) {
         this(context, null);
@@ -43,9 +47,17 @@ public class StoryHeaderView extends RelativeLayout {
         ButterKnife.inject(this);
     }
 
-    public void BindData(String txt, String url, DisplayImageOptions options) {
-        title.setText(txt);
+    public void BindData(String title, String author, String url, DisplayImageOptions options) {
+        this.title.setText(title);
+        if(TextUtils.isEmpty(author)){
+            this.author.setVisibility(View.GONE);
+        }else {
+            this.author.setVisibility(View.VISIBLE);
+            this.author.setText(author);
+        }
+
         ImageLoader.getInstance().displayImage(url, image, options);
+
     }
 
     public static StoryHeaderView newInstance(ViewGroup container) {

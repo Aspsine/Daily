@@ -92,7 +92,7 @@ public class SplashFragment extends Fragment {
         ivLogo = (ImageView)view.findViewById(R.id.ivLogo);
 
         // if api >= 19 use themes in values-v19 has a full screen splash.
-        // so we need relayout the tvAuthor and ivLogo by a bigger marginBottom
+        // so we need relayout the tvAuthor and ivLogo by set a bigger marginBottom
         int navigationBarHeight = UIUtils.getNavigationBarHeight(getActivity());
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
 

@@ -26,4 +26,12 @@ public class IntentUtils {
         activity.startActivity(intent);
     }
 
+    public static final void share(Activity activity, Story story) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TITLE, story.getTitle());
+        intent.putExtra(Intent.EXTRA_TEXT, story.getTitle() + "链接" + story.getShareUrl() + " -来自Daily的分享");
+        activity.startActivity(intent);
+    }
+
 }

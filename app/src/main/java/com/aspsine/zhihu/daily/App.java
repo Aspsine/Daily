@@ -32,28 +32,24 @@ public class App extends Application {
         initImageLoader(getApplicationContext());
     }
 
-    private void setStrictMode(){
+    private void setStrictMode() {
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
             StrictMode.enableDefaults();
         }
     }
 
-    private void initImageLoader(final Context context){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                        .threadPriority(Thread.NORM_PRIORITY - 2)
-                        .denyCacheImageMultipleSizesInMemory()
-                        .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-                        .diskCacheSize(Constants.Config.IMAGE_CACHE_SIZE) // 50 Mb
-                        .tasksProcessingOrder(QueueProcessingType.LIFO)
-                        .writeDebugLogs() // Remove for release app
-                        .build();
-                ImageLoader.getInstance().init(config);
-            }
-        }).start();
-    };
+    private void initImageLoader(final Context context) {
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
+                .diskCacheSize(Constants.Config.IMAGE_CACHE_SIZE) // 50 Mb
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .writeDebugLogs() // Remove for release app
+                .build();
+        ImageLoader.getInstance().init(config);
+    }
+
 
     public static Context getContext() {
         return applicationContext;

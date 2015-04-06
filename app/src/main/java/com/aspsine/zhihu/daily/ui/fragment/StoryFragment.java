@@ -8,6 +8,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -25,6 +28,7 @@ import com.aspsine.zhihu.daily.model.Editor;
 import com.aspsine.zhihu.daily.model.Story;
 import com.aspsine.zhihu.daily.ui.widget.AvatarsView;
 import com.aspsine.zhihu.daily.ui.widget.StoryHeaderView;
+import com.aspsine.zhihu.daily.util.IntentUtils;
 import com.aspsine.zhihu.daily.util.ScrollPullDownHelper;
 import com.aspsine.zhihu.daily.util.WebUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -93,7 +97,7 @@ public class StoryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             mStoryId = getArguments().getString(DailyStoriesFragment.EXTRA_STORY_ID);
         }
@@ -153,6 +157,23 @@ public class StoryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_story, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_share) {
+            if (mStory != null) {
+                IntentUtils.share(getActivity(), mStory);
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void refresh() {
@@ -247,7 +268,7 @@ public class StoryFragment extends Fragment {
         scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
-                if (!isAdded()){
+                if (!isAdded()) {
                     return;
                 }
                 changeHeaderPosition();
@@ -307,5 +328,6 @@ public class StoryFragment extends Fragment {
     private int getStoryHeaderViewHeight() {
         return getResources().getDimensionPixelSize(R.dimen.view_header_story_height);
     }
+
 
 }

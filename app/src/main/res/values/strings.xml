@@ -2,28 +2,18 @@
 <resources>
 
     <string name="app_name">Daily</string>
-    <string name="app_sub_name">hi</string>
-    <string name="hello_world">Hello world!</string>
+
     <string name="action_settings">Settings</string>
-    <string name="splash_text">Artist: @littlexi</string>
-    <string name="title_activity_guider">GuiderActivity</string>
+    <string name="action_share">Share</string>
+
+    <string name="title_activity_guider">Guider</string>
     <string name="title_activity_main_drawer">Main</string>
-
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-
-    <string name="navdrawer_item_explore">Explore</string>
-    <string name="navdrawer_item_my_schedule">History</string>
-    <string name="navdrawer_item_people_met">Friends</string>
-    <string name="navdrawer_item_settings">Settings</string>
-
+    <string name="title_activity_story">StoryActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
-    <string name="hello">Hello blank fragment</string>
-    <string name="title_activity_story">StoryActivity</string>
+
+    <string name="splash_text">Artist: @littlexi</string>
 
 
 </resources>

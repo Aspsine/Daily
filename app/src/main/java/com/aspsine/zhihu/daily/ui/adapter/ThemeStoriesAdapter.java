@@ -126,7 +126,7 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 break;
             case Type.TYPE_ITEM:
                 StoryViewHolder storyViewHolder = (StoryViewHolder) holder;
-                storyViewHolder.bindStoryView(mTheme.getStories(), position - 2);
+                storyViewHolder.bindStoryView(mTheme.getStories().get(position - 2));
                 break;
             default:
                 throw new IllegalArgumentException("error view type!");

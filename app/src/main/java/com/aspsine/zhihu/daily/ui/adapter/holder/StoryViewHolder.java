@@ -54,8 +54,8 @@ public class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnC
         IntentUtils.intentToStoryActivity((Activity) v.getContext(), mStory);
     }
 
-    public void bindStoryView(List<Story> stories, int position) {
-        mStory = stories.get(position);
+    public void bindStoryView(Story story) {
+        mStory = story;
         text.setText(String.valueOf(mStory.getTitle()));
         if (!TextUtils.isEmpty(mStory.getMultiPic()) && Boolean.valueOf(mStory.getMultiPic())) {
             ivMultiPic.setVisibility(View.VISIBLE);

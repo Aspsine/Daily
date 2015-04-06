@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +16,10 @@ import android.widget.Toast;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.api.DailyApi;
 import com.aspsine.zhihu.daily.model.DailyStories;
-import com.aspsine.zhihu.daily.model.Story;
 import com.aspsine.zhihu.daily.ui.adapter.DailyStoriesAdapter;
 import com.aspsine.zhihu.daily.ui.widget.LoadMoreRecyclerView;
 import com.aspsine.zhihu.daily.ui.widget.MyViewPager;
 import com.aspsine.zhihu.daily.util.L;
-
-import java.util.ArrayList;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -36,23 +34,21 @@ public class DailyStoriesFragment extends BaseFragment {
     private DailyStoriesAdapter mAdapter;
     private LoadMoreRecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
-    private DailyStories mDailyStories;
 
     private String mDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDailyStories = new DailyStories();
-        mDailyStories.setStories(new ArrayList<Story>());
-        mDailyStories.setTopStories(new ArrayList<Story>());
-        mAdapter = new DailyStoriesAdapter(mDailyStories);
+        mAdapter = new DailyStoriesAdapter();
+        mAdapter.setActionBar(((ActionBarActivity) getActivity()).getSupportActionBar());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_daily_stories, container, false);
     }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -124,12 +120,7 @@ public class DailyStoriesFragment extends BaseFragment {
             public void success(DailyStories dailyStories, Response response) {
                 swipeRefreshLayout.setRefreshing(false);
                 mDate = dailyStories.getDate();
-                mDailyStories.setDate(dailyStories.getDate());
-                mDailyStories.getTopStories().clear();
-                mDailyStories.getTopStories().addAll(dailyStories.getTopStories());
-                mDailyStories.getStories().clear();
-                mDailyStories.getStories().addAll(dailyStories.getStories());
-                mAdapter.notifyDataSetChanged();
+                mAdapter.setList(dailyStories);
             }
 
             @Override
@@ -146,10 +137,9 @@ public class DailyStoriesFragment extends BaseFragment {
         DailyApi.createApi().getBeforeDailyStories(mDate, new Callback<DailyStories>() {
             @Override
             public void success(DailyStories dailyStories, Response response) {
-                recyclerView.setLoadingMore(false);
                 mDate = dailyStories.getDate();
-                mDailyStories.getStories().addAll(dailyStories.getStories());
-                mAdapter.notifyDataSetChanged();
+                recyclerView.setLoadingMore(false);
+                mAdapter.appendList(dailyStories);
             }
 
             @Override

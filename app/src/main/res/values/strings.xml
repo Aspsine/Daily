@@ -14,6 +14,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="splash_text">Artist: @littlexi</string>
-
+    <string name="main_page_today_hottest">Today Hottest</string>
 
 </resources>

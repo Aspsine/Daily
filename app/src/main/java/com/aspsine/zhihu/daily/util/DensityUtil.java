@@ -7,6 +7,8 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * Created by aspsine on 15-3-13.
  */
@@ -22,6 +24,24 @@ public class DensityUtil {
         DisplayMetrics dm = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
         return dm.heightPixels;
+    }
+
+    public static int getScreenHeightWithDecorations(Context context) {
+        int heightPixels;
+        WindowManager w = ((Activity) context).getWindowManager();
+        Display d = w.getDefaultDisplay();
+        android.graphics.Point realSize = new android.graphics.Point();
+        try {
+            Display.class.getMethod("getRealSize", android.graphics.Point.class).invoke(d, realSize);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        heightPixels = realSize.y;
+        return heightPixels;
     }
 
 

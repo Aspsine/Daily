@@ -1,6 +1,7 @@
 package com.aspsine.zhihu.daily.ui.fragment;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aspsine.zhihu.daily.R;
@@ -20,6 +22,7 @@ import com.aspsine.zhihu.daily.util.DensityUtil;
 import com.aspsine.zhihu.daily.util.L;
 import com.aspsine.zhihu.daily.util.NetWorkUtils;
 import com.aspsine.zhihu.daily.util.SharedPrefUtils;
+import com.aspsine.zhihu.daily.util.UIUtils;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -35,7 +38,8 @@ import retrofit.client.Response;
 public class SplashFragment extends Fragment {
     public static final String TAG = SplashFragment.class.getSimpleName();
 
-    private TextView tvCopyrightHolder;
+    private TextView tvAuthor;
+    private ImageView ivLogo;
     public ImageView ivSplash;
     public Animation mIvSplashAnim;
 
@@ -60,8 +64,14 @@ public class SplashFragment extends Fragment {
             mOldStartImage = new Gson().fromJson(mOldJsonString, StartImage.class);
         }
 
+        // if api >= 19 use themes in values-v19 has a full screen splash.
         mWidth = DensityUtil.getScreenWidth(getActivity());
-        mHeight = DensityUtil.getScreenHeight(getActivity());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mHeight = DensityUtil.getScreenHeightWithDecorations(getActivity());
+        } else {
+            mHeight = DensityUtil.getScreenHeight(getActivity());
+        }
+        L.i(TAG, "screen height = " + mHeight);
         this.mOptions = new DisplayImageOptions.Builder()
                 .cacheInMemory(false)
                 .cacheOnDisk(true)
@@ -77,8 +87,24 @@ public class SplashFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvCopyrightHolder = (TextView) view.findViewById(R.id.tvAuthor);
+        tvAuthor = (TextView) view.findViewById(R.id.tvAuthor);
         ivSplash = (ImageView) view.findViewById(R.id.splash);
+        ivLogo = (ImageView)view.findViewById(R.id.ivLogo);
+
+        // if api >= 19 use themes in values-v19 has a full screen splash.
+        // so we need relayout the tvAuthor and ivLogo by a bigger marginBottom
+        int navigationBarHeight = UIUtils.getNavigationBarHeight(getActivity());
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+
+            int tvMarginBottom = navigationBarHeight + DensityUtil.dip2px(getActivity(), 8);
+            int logoMarginBottom = navigationBarHeight + DensityUtil.dip2px(getActivity() , 48);
+            ((RelativeLayout.LayoutParams) tvAuthor.getLayoutParams()).setMargins(0, 0, 0, tvMarginBottom);
+            ((RelativeLayout.LayoutParams) ivLogo.getLayoutParams()).setMargins(0, 0, 0, logoMarginBottom);
+
+            tvAuthor.requestLayout();
+            ivLogo.requestLayout();
+        }
+
         ivSplash.startAnimation(mIvSplashAnim);
     }
 
@@ -103,7 +129,7 @@ public class SplashFragment extends Fragment {
         if (mOldStartImage == null) {
             L.i(TAG, "default image.");
             ivSplash.setBackgroundResource(R.drawable.bg_splash);
-            tvCopyrightHolder.setText(getResources().getString(R.string.splash_text));
+            tvAuthor.setText(getResources().getString(R.string.splash_text));
         } else {
             L.i(TAG, "old image.");
             setData(mOldStartImage);
@@ -111,7 +137,7 @@ public class SplashFragment extends Fragment {
     }
 
     private void setData(StartImage image) {
-        tvCopyrightHolder.setText(image.getText());
+        tvAuthor.setText(image.getText());
         ImageLoader.getInstance().displayImage(image.getImg(), ivSplash, mOptions);
     }
 

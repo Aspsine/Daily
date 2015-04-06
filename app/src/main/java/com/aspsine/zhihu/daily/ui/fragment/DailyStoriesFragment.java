@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.api.DailyApi;
 import com.aspsine.zhihu.daily.model.DailyStories;
 import com.aspsine.zhihu.daily.ui.adapter.DailyStoriesAdapter;
+import com.aspsine.zhihu.daily.ui.adapter.holder.DateViewHolder;
 import com.aspsine.zhihu.daily.ui.widget.LoadMoreRecyclerView;
 import com.aspsine.zhihu.daily.ui.widget.MyViewPager;
 import com.aspsine.zhihu.daily.util.L;
@@ -65,10 +67,34 @@ public class DailyStoriesFragment extends BaseFragment {
             }
         });
 
-        recyclerView.setonLoadMoreListener(new LoadMoreRecyclerView.onLoadMoreListener() {
+        recyclerView.setOnLoadMoreListener(new LoadMoreRecyclerView.onLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 loadMore();
+            }
+            String title = "";
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                //TODO
+                if(mAdapter == null){
+                    return;
+                }
+                int position = mLayoutManager.findFirstVisibleItemPosition();
+                DailyStoriesAdapter.Item item = mAdapter.getItem(position);
+                if(dy > 0){
+                    if(item.getType() == DailyStoriesAdapter.Type.TYPE_HEADER){
+                        title = "首页";
+                    }else if(item.getType() == DailyStoriesAdapter.Type.TYPE_DATE){
+                        title = DateViewHolder.getDate(item.getDate(), getActivity());
+                    }
+                }else{
+                    if(item.getType() == DailyStoriesAdapter.Type.TYPE_HEADER){
+                        title = "首页";
+                    }else{
+                        title = DateViewHolder.getDate(mAdapter.getTitleBeforePosition(position), getActivity());
+                    }
+                }
+                ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(title);
             }
         });
     }

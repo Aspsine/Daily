@@ -1,5 +1,6 @@
 package com.aspsine.zhihu.daily.ui.adapter.holder;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -20,10 +21,15 @@ public class DateViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindDateView(String date) {
+        tvDate.setText(getDate(date, itemView.getContext()));
+    }
+
+    public static String getDate(String date, Context context) {
         if (DateUtils.isToday(date)) {
-            tvDate.setText(itemView.getResources().getString(R.string.main_page_today_hottest));
+            return context.getResources().getString(R.string.main_page_today_hottest);
         } else {
-            tvDate.setText(DateUtils.getMainPageDate(date));
+            return DateUtils.getMainPageDate(date);
         }
     }
+
 }

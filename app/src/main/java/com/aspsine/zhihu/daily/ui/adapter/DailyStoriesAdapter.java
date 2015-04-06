@@ -11,9 +11,11 @@ import com.aspsine.zhihu.daily.model.Story;
 import com.aspsine.zhihu.daily.ui.adapter.holder.DateViewHolder;
 import com.aspsine.zhihu.daily.ui.adapter.holder.HeaderViewPagerHolder;
 import com.aspsine.zhihu.daily.ui.adapter.holder.StoryViewHolder;
+import com.aspsine.zhihu.daily.util.L;
 import com.aspsine.zhihu.daily.util.UIUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,11 +26,11 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     protected List<Item> mItems;
     protected ActionBar mActionBar;
 
-    protected class Type {
-        protected static final int TYPE_HEADER = 0;
-        protected static final int TYPE_DATE = 1;
-        protected static final int TYPE_STORY = 2;
-        protected static final int TYPE_COLLECTION = 3;
+    public class Type {
+        public static final int TYPE_HEADER = 0;
+        public static final int TYPE_DATE = 1;
+        public static final int TYPE_STORY = 2;
+        public static final int TYPE_COLLECTION = 3;
     }
 
 
@@ -149,6 +151,25 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public int getItemCount() {
         return mItems.size();
+    }
+
+    public Item getItem(int position) {
+        return mItems.get(position);
+    }
+
+    public String getTitleBeforePosition(int position) {
+
+        List<Item> tmpItem = new ArrayList<Item>();
+        //[0 , 1)
+        tmpItem.addAll(mItems.subList(0, position + 1));
+        Collections.reverse(tmpItem);
+        for (Item item : tmpItem) {
+            if (item.getType() == Type.TYPE_DATE) {
+                return item.getDate();
+            }
+        }
+        L.i(TAG, "POSITION = " + position);
+        return "";
     }
 
     public static class Item {

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,11 +67,16 @@ public class ThemeStoriesFragment extends BaseFragment {
             }
         });
 
-        recyclerView.setonLoadMoreListener(new LoadMoreRecyclerView.onLoadMoreListener() {
+        recyclerView.setOnLoadMoreListener(new LoadMoreRecyclerView.onLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 recyclerView.setLoadingMore(true);
                 loadMore();
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
             }
         });
 

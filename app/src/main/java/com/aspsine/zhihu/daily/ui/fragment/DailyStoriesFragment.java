@@ -2,7 +2,6 @@ package com.aspsine.zhihu.daily.ui.fragment;
 
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -72,29 +71,10 @@ public class DailyStoriesFragment extends BaseFragment {
             public void onLoadMore() {
                 loadMore();
             }
-            String title = "";
+
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                //TODO
-                if(mAdapter == null){
-                    return;
-                }
-                int position = mLayoutManager.findFirstVisibleItemPosition();
-                DailyStoriesAdapter.Item item = mAdapter.getItem(position);
-                if(dy > 0){
-                    if(item.getType() == DailyStoriesAdapter.Type.TYPE_HEADER){
-                        title = "首页";
-                    }else if(item.getType() == DailyStoriesAdapter.Type.TYPE_DATE){
-                        title = DateViewHolder.getDate(item.getDate(), getActivity());
-                    }
-                }else{
-                    if(item.getType() == DailyStoriesAdapter.Type.TYPE_HEADER){
-                        title = "首页";
-                    }else{
-                        title = DateViewHolder.getDate(mAdapter.getTitleBeforePosition(position), getActivity());
-                    }
-                }
-                ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(title);
+                changeActionBarTitle(dy);
             }
         });
     }
@@ -103,7 +83,7 @@ public class DailyStoriesFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         recyclerView.setAdapter(mAdapter);
-        new Handler().post(new Runnable() {
+        swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
@@ -111,6 +91,39 @@ public class DailyStoriesFragment extends BaseFragment {
             }
         });
     }
+
+    private String mTitle;
+    private int lastPosition = -1;
+
+    private void changeActionBarTitle(int dy) {
+
+        if (mAdapter == null) {
+            return;
+        }
+        int position = mLayoutManager.findFirstVisibleItemPosition();
+        if (lastPosition == position) {
+            return;
+        }
+        L.i(TAG, "position = " + position);
+        DailyStoriesAdapter.Item item = mAdapter.getItem(position);
+        int type = item.getType();
+        if (dy > 0) {
+            if (type == DailyStoriesAdapter.Type.TYPE_HEADER) {
+                mTitle = "首页";
+            } else if (type == DailyStoriesAdapter.Type.TYPE_DATE) {
+                mTitle = DateViewHolder.getDate(item.getDate(), getActivity());
+            }
+        } else {
+            if (type == DailyStoriesAdapter.Type.TYPE_HEADER) {
+                mTitle = "首页";
+            } else {
+                mTitle = DateViewHolder.getDate(mAdapter.getTitleBeforePosition(position), getActivity());
+            }
+        }
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(mTitle);
+        lastPosition = position;
+    }
+
 
     @Override
     public void onResume() {
@@ -176,5 +189,6 @@ public class DailyStoriesFragment extends BaseFragment {
             }
         });
     }
+
 
 }

@@ -24,6 +24,7 @@ import java.util.List;
 public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final String TAG = DailyStoriesAdapter.class.getSimpleName();
     protected List<Item> mItems;
+    protected List<Item> mTmpItem;
     protected ActionBar mActionBar;
 
     public class Type {
@@ -36,6 +37,7 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public DailyStoriesAdapter() {
         mItems = new ArrayList<Item>();
+        mTmpItem = new ArrayList<Item>();
     }
 
     public void setActionBar(ActionBar actionBar) {
@@ -158,12 +160,11 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public String getTitleBeforePosition(int position) {
-
-        List<Item> tmpItem = new ArrayList<Item>();
+        mTmpItem.clear();
         //[0 , 1)
-        tmpItem.addAll(mItems.subList(0, position + 1));
-        Collections.reverse(tmpItem);
-        for (Item item : tmpItem) {
+        mTmpItem.addAll(mItems.subList(0, position + 1));
+        Collections.reverse(mTmpItem);
+        for (Item item : mTmpItem) {
             if (item.getType() == Type.TYPE_DATE) {
                 return item.getDate();
             }

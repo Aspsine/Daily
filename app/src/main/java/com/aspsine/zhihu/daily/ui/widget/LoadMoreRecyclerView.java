@@ -55,8 +55,6 @@ public class LoadMoreRecyclerView extends RecyclerView {
                 super.onScrolled(recyclerView, dx, dy);
             }
         }
-
-
     }
 
 

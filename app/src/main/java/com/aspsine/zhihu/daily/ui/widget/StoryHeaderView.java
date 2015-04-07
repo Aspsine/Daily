@@ -55,9 +55,7 @@ public class StoryHeaderView extends RelativeLayout {
             this.author.setVisibility(View.VISIBLE);
             this.author.setText(author);
         }
-
         ImageLoader.getInstance().displayImage(url, image, options);
-
     }
 
     public static StoryHeaderView newInstance(ViewGroup container) {

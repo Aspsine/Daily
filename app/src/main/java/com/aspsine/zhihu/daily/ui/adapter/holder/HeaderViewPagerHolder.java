@@ -30,7 +30,6 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
 
     public HeaderViewPagerHolder(@Nullable View itemView) {
         super(itemView);
-        // TODO findViewById
         viewPager = (MyViewPager) itemView.findViewById(R.id.viewPager);
         indicator = (CirclePageIndicator) itemView.findViewById(R.id.indicator);
     }

@@ -145,9 +145,11 @@ public class SplashFragment extends Fragment {
         DailyApi.createApi().getStartImage(mWidth, mHeight, new Callback<StartImage>() {
             @Override
             public void success(StartImage startImage, Response response) {
-                SharedPrefUtils.setSplashJson(getActivity().getApplicationContext(), new Gson().toJson(startImage));
-                L.i(TAG, "new image.");
-                setData(startImage);
+                if(isAdded()){
+                    SharedPrefUtils.setSplashJson(getActivity().getApplicationContext(), new Gson().toJson(startImage));
+                    L.i(TAG, "new image.");
+                    setData(startImage);
+                }
             }
 
             @Override

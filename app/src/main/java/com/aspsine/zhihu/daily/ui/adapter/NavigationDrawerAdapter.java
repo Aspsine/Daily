@@ -149,7 +149,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
             imageView = (ImageView) itemView.findViewById(R.id.ivItemIcon);
             imageView.setVisibility(View.VISIBLE);
             imageView.setBackgroundResource(R.drawable.menu_home);
-            tvMainItem.setText("首页");
+            tvMainItem.setText(itemView.getResources().getString(R.string.title_activity_main));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

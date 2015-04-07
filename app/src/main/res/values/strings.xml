@@ -7,7 +7,7 @@
     <string name="action_share">Share</string>
 
     <string name="title_activity_guider">Guider</string>
-    <string name="title_activity_main_drawer">Main</string>
+    <string name="title_activity_main">Main</string>
     <string name="title_activity_story">StoryActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

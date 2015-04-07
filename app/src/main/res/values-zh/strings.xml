@@ -8,7 +8,7 @@
     <string name="navigation_drawer_open">打开导航</string>
     <string name="pref_default_display_name"></string>
     <string name="title_activity_guider">引导</string>
-    <string name="title_activity_main_drawer">首页</string>
+    <string name="title_activity_main">首页</string>
     <string name="title_activity_settings">设置</string>
     <string name="title_activity_story">详情页</string>
     <string name="splash_text">艺术家:@littlexi</string>

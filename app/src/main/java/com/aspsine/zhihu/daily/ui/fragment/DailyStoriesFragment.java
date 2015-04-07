@@ -42,7 +42,6 @@ public class DailyStoriesFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new DailyStoriesAdapter();
-        mAdapter.setActionBar(((ActionBarActivity) getActivity()).getSupportActionBar());
     }
 
     @Override
@@ -93,35 +92,24 @@ public class DailyStoriesFragment extends BaseFragment {
     }
 
     private String mTitle;
-    private int lastPosition = -1;
+    private int lastTitlePos = -1;
 
     private void changeActionBarTitle(int dy) {
-
-        if (mAdapter == null) {
-            return;
-        }
         int position = mLayoutManager.findFirstVisibleItemPosition();
-        if (lastPosition == position) {
+        if (lastTitlePos == position) {
             return;
         }
-        L.i(TAG, "position = " + position);
         DailyStoriesAdapter.Item item = mAdapter.getItem(position);
         int type = item.getType();
-        if (dy > 0) {
-            if (type == DailyStoriesAdapter.Type.TYPE_HEADER) {
-                mTitle = "首页";
-            } else if (type == DailyStoriesAdapter.Type.TYPE_DATE) {
-                mTitle = DateViewHolder.getDate(item.getDate(), getActivity());
-            }
-        } else {
-            if (type == DailyStoriesAdapter.Type.TYPE_HEADER) {
-                mTitle = "首页";
-            } else {
-                mTitle = DateViewHolder.getDate(mAdapter.getTitleBeforePosition(position), getActivity());
-            }
+        if (type == DailyStoriesAdapter.Type.TYPE_HEADER) {
+            mTitle = getString(R.string.title_activity_main);
+        } else if (dy > 0 && type == DailyStoriesAdapter.Type.TYPE_DATE) {
+            mTitle = DateViewHolder.getDate(item.getDate(), getActivity());
+        } else if (dy < 0) {
+            mTitle = DateViewHolder.getDate(mAdapter.getTitleBeforePosition(position), getActivity());
         }
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(mTitle);
-        lastPosition = position;
+        lastTitlePos = position;
     }
 
 

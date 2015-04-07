@@ -258,7 +258,7 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
     }
 
     public String getTitle(int sectionNumber) {
-        return sectionNumber == 0 ? "首页" : mThemes.get(sectionNumber - 1).getName();
+        return sectionNumber == 0 ? getString(R.string.title_activity_main) : mThemes.get(sectionNumber - 1).getName();
     }
 
     public static int getDefaultNavDrawerItem() {

@@ -25,7 +25,6 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static final String TAG = DailyStoriesAdapter.class.getSimpleName();
     protected List<Item> mItems;
     protected List<Item> mTmpItem;
-    protected ActionBar mActionBar;
 
     public class Type {
         public static final int TYPE_HEADER = 0;
@@ -38,10 +37,6 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public DailyStoriesAdapter() {
         mItems = new ArrayList<Item>();
         mTmpItem = new ArrayList<Item>();
-    }
-
-    public void setActionBar(ActionBar actionBar) {
-        mActionBar = actionBar;
     }
 
     public void setList(DailyStories dailyStories) {

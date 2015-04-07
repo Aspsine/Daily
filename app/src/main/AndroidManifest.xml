@@ -27,7 +27,7 @@
         </activity>
         <activity
             android:name=".ui.activity.NavigationDrawerActivity"
-            android:label="@string/title_activity_main_drawer"
+            android:label="@string/title_activity_main"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme" />
         <activity

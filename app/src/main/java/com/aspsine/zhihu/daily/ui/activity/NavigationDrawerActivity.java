@@ -41,7 +41,6 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
         ButterKnife.inject(this);
-        getLastCustomNonConfigurationInstance();
         setUpDrawer();
         if (savedInstanceState == null) {
             mNavigationFragment.onNavigationDrawerItemSelected(NavigationFragment.getDefaultNavDrawerItem());

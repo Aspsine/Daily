@@ -38,6 +38,11 @@ public class DailyStoriesFragment extends BaseFragment {
 
     private String mDate;
 
+    /**
+     * Flag to indicate whither the data is successful loaded
+     */
+    private boolean isDataLoaded;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +90,10 @@ public class DailyStoriesFragment extends BaseFragment {
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                refresh();
+                if (!isDataLoaded) {
+                    swipeRefreshLayout.setRefreshing(true);
+                    refresh();
+                }
             }
         });
     }
@@ -142,9 +149,11 @@ public class DailyStoriesFragment extends BaseFragment {
     }
 
     private void refresh() {
+        isDataLoaded = false;
         DailyApi.createApi().getLatestDailyStories(new Callback<DailyStories>() {
             @Override
             public void success(DailyStories dailyStories, Response response) {
+                isDataLoaded = true;
                 swipeRefreshLayout.setRefreshing(false);
                 mDate = dailyStories.getDate();
                 mAdapter.setList(dailyStories);
@@ -152,6 +161,7 @@ public class DailyStoriesFragment extends BaseFragment {
 
             @Override
             public void failure(RetrofitError error) {
+                isDataLoaded = false;
                 swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(getActivity(), "refresh error", Toast.LENGTH_SHORT).show();
                 error.printStackTrace();

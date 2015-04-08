@@ -4,47 +4,68 @@
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardBackgroundColor="#ffffff"
-    card_view:cardCornerRadius="4dp">
+    android:layout_margin="8dp"
+    android:foreground="?attr/selectableItemBackground"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardBackgroundColor="#ffffff">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="4dp">
 
-        <FrameLayout
-            android:id="@+id/fl_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp">
+        <RelativeLayout
+            android:id="@+id/rl_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
 
             <ImageView
                 android:id="@+id/image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="true" />
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentLeft="true"
+                android:background="@color/black" />
 
             <ImageView
                 android:id="@+id/ivMultiPic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
                 android:background="@drawable/home_pic" />
-        </FrameLayout>
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="80dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center_vertical"
+                android:layout_toRightOf="@+id/image"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="#999" />
 
         <TextView
-            android:id="@+id/text"
-            android:layout_width="wrap_content"
+            android:id="@+id/theme"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_margin="8dp"
-            android:layout_toRightOf="@+id/fl_image"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-    </RelativeLayout>
+            android:padding="8dp"
+            android:textColor="#666666"
+            android:gravity="right"
+            android:textSize="10sp"
+            android:layout_below="@+id/rl_content" />
+    </LinearLayout>
+
 </android.support.v7.widget.CardView>

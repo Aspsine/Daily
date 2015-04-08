@@ -12,5 +12,6 @@
     <string name="title_activity_settings">设置</string>
     <string name="title_activity_story">详情页</string>
     <string name="splash_text">艺术家:@littlexi</string>
-    <string name="main_page_today_hottest">今日热文</string>
+    <string name="recycler_item_main_today_hottest">今日热文</string>
+    <string name="recycler_item_main_select_from">选自</string>
 </resources>

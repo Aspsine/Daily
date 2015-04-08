@@ -1,6 +1,5 @@
 package com.aspsine.zhihu.daily.ui.adapter;
 
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import com.aspsine.zhihu.daily.model.Story;
 import com.aspsine.zhihu.daily.ui.adapter.holder.DateViewHolder;
 import com.aspsine.zhihu.daily.ui.adapter.holder.HeaderViewPagerHolder;
 import com.aspsine.zhihu.daily.ui.adapter.holder.StoryViewHolder;
-import com.aspsine.zhihu.daily.util.L;
 import com.aspsine.zhihu.daily.util.UIUtils;
 
 import java.util.ArrayList;
@@ -30,9 +28,8 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public static final int TYPE_HEADER = 0;
         public static final int TYPE_DATE = 1;
         public static final int TYPE_STORY = 2;
-        public static final int TYPE_COLLECTION = 3;
+        public static final int TYPE_STORY_WITH_THEME = 3;
     }
-
 
     public DailyStoriesAdapter() {
         mItems = new ArrayList<Item>();
@@ -58,15 +55,14 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         dateItem.setDate(dailyStories.getDate());
         mItems.add(dateItem);
         List<Story> stories = dailyStories.getStories();
-        for (int j = 0, num = stories.size(); j < num; j++) {
+        for (int i = 0, num = stories.size(); i < num; i++) {
             Item storyItem = new Item();
             storyItem.setType(Type.TYPE_STORY);
-            storyItem.setStory(stories.get(j));
+            storyItem.setStory(stories.get(i));
             mItems.add(storyItem);
         }
 
         int itemCount = mItems.size() - positionStart;
-
 
         if (positionStart == 0) {
             notifyDataSetChanged();
@@ -129,20 +125,14 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case Type.TYPE_STORY:
                 ((StoryViewHolder) holder).bindStoryView(item.getStory());
                 break;
-            case Type.TYPE_COLLECTION:
+            case Type.TYPE_STORY_WITH_THEME:
                 break;
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        Item daily = mItems.get(position);
-        int type = daily.getType();
-        if (type == Type.TYPE_STORY) {
-            Story story = daily.getStory();
-
-        }
-        return type;
+        return mItems.get(position).getType();
     }
 
     @Override
@@ -156,7 +146,7 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public String getTitleBeforePosition(int position) {
         mTmpItem.clear();
-        //[0 , 1)
+        //subList [0 , position)
         mTmpItem.addAll(mItems.subList(0, position + 1));
         Collections.reverse(mTmpItem);
         for (Item item : mTmpItem) {
@@ -164,7 +154,7 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 return item.getDate();
             }
         }
-        L.i(TAG, "POSITION = " + position);
+        //L.i(TAG, "POSITION = " + position);
         return "";
     }
 

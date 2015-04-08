@@ -26,7 +26,7 @@ public class DateViewHolder extends RecyclerView.ViewHolder {
 
     public static String getDate(String date, Context context) {
         if (DateUtils.isToday(date)) {
-            return context.getResources().getString(R.string.main_page_today_hottest);
+            return context.getResources().getString(R.string.recycler_item_main_today_hottest);
         } else {
             return DateUtils.getMainPageDate(date);
         }

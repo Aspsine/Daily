@@ -59,7 +59,7 @@ public class AvatarsView extends HorizontalScrollView {
 
     public void bindData(String name, List<String> images) {
         title.setText(name);
-        int hw = DensityUtil.dip2px(getContext(), 40);
+        int hw = DensityUtil.dip2px(getContext(), 36);
         int margin = DensityUtil.dip2px(getContext(), 8);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(hw, hw);
         lp.setMargins(margin, margin, margin, margin);

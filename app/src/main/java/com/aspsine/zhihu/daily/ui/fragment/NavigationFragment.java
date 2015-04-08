@@ -62,7 +62,7 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
     private DrawerLayout mDrawerLayout;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition = -1;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
@@ -102,10 +102,12 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
         return inflater.inflate(R.layout.fragment_navigation, container, false);
     }
 
+    RecyclerView recyclerView;
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mAdapter);
     }
@@ -133,12 +135,24 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
         selectItem(position);
     }
 
-    public void selectItem(int position) {
+    private void selectItem(int position) {
         mCurrentSelectedPosition = position;
         mAdapter.selectPosition(position);
         closeDrawer();
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
+        }
+    }
+
+    public void selectTheme(Theme t) {
+        int size = 0;
+        if (mThemes != null && (size = mThemes.size()) > 0 && isAdded()) {
+            for (int i = 0; i < size; i++) {
+                if (mThemes.get(i).getId().equals(t.getId())) {
+                    onNavigationDrawerItemSelected(i + 1);
+                    break;
+                }
+            }
         }
     }
 

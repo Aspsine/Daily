@@ -41,6 +41,8 @@ public class Story {
     private List<String> cssList;
     @Expose
     private List<Editor> recommenders;
+    @Expose
+    private  Theme theme;
 
     private String thumbnail;
     private String url;
@@ -190,5 +192,13 @@ public class Story {
 
     public void setRecommenders(List<Editor> recommenders) {
         this.recommenders = recommenders;
+    }
+
+    public Theme getTheme() {
+        return theme;
+    }
+
+    public void setTheme(Theme theme) {
+        this.theme = theme;
     }
 }

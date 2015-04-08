@@ -36,6 +36,11 @@ public class ThemeStoriesFragment extends BaseFragment {
 
     private String mLastStoryId;
 
+    /**
+     * Flag to indicate whither the data is successful loaded
+     */
+    private boolean isDataLoaded;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,17 +93,20 @@ public class ThemeStoriesFragment extends BaseFragment {
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                refresh();
+                if (!isDataLoaded) {
+                    swipeRefreshLayout.setRefreshing(true);
+                    refresh();
+                }
             }
         });
     }
 
     private void refresh() {
-
+        isDataLoaded = false;
         DailyApi.createApi().getTheme(mThemeId, new Callback<Theme>() {
             @Override
             public void success(Theme theme, Response response) {
+                isDataLoaded = true;
                 swipeRefreshLayout.setRefreshing(false);
                 if (theme != null && mAdapter != null) {
                     if (theme.getStories().size() > 0) {
@@ -111,6 +119,7 @@ public class ThemeStoriesFragment extends BaseFragment {
 
             @Override
             public void failure(RetrofitError error) {
+                isDataLoaded = false;
                 swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(getActivity(), "refresh error", Toast.LENGTH_SHORT).show();
                 error.printStackTrace();

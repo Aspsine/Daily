@@ -41,9 +41,10 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
         ButterKnife.inject(this);
+        getLastCustomNonConfigurationInstance();
         setUpDrawer();
         if (savedInstanceState == null) {
-            mNavigationFragment.selectItem(NavigationFragment.getDefaultNavDrawerItem());
+            mNavigationFragment.onNavigationDrawerItemSelected(NavigationFragment.getDefaultNavDrawerItem());
         }
     }
 
@@ -119,7 +120,6 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

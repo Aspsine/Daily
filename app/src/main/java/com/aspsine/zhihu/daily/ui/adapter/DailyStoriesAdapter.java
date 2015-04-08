@@ -28,7 +28,6 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public static final int TYPE_HEADER = 0;
         public static final int TYPE_DATE = 1;
         public static final int TYPE_STORY = 2;
-        public static final int TYPE_STORY_WITH_THEME = 3;
     }
 
     public DailyStoriesAdapter() {
@@ -124,8 +123,6 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 break;
             case Type.TYPE_STORY:
                 ((StoryViewHolder) holder).bindStoryView(item.getStory());
-                break;
-            case Type.TYPE_STORY_WITH_THEME:
                 break;
         }
     }

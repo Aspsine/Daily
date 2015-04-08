@@ -17,4 +17,7 @@
 
     <string name="recycler_item_main_today_hottest">Today Hottest</string>
     <string name="recycler_item_main_select_from">Selected from</string>
+
+    <string name="share_link">link:</string>
+    <string name="share_from">-shared from Daily</string>
 </resources>

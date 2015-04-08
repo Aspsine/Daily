@@ -3,6 +3,7 @@ package com.aspsine.zhihu.daily.util;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.model.Story;
 import com.aspsine.zhihu.daily.ui.activity.NavigationDrawerActivity;
 import com.aspsine.zhihu.daily.ui.activity.StoryActivity;
@@ -27,10 +28,15 @@ public class IntentUtils {
     }
 
     public static final void share(Activity activity, Story story) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(story.getTitle()).append(" ")
+                .append(activity.getString(R.string.share_link))
+                .append(story.getShareUrl())
+                .append(activity.getString(R.string.share_from));
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TITLE, story.getTitle());
-        intent.putExtra(Intent.EXTRA_TEXT, story.getTitle() + "链接" + story.getShareUrl() + " -来自Daily的分享");
+        intent.putExtra(Intent.EXTRA_TEXT, sb.toString());
         activity.startActivity(intent);
     }
 

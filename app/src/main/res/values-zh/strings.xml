@@ -14,4 +14,6 @@
     <string name="splash_text">艺术家:@littlexi</string>
     <string name="recycler_item_main_today_hottest">今日热文</string>
     <string name="recycler_item_main_select_from">选自</string>
+    <string name="share_from">-来自日报的分享</string>
+    <string name="share_link">链接：</string>
 </resources>

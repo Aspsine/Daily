@@ -19,9 +19,6 @@ import com.aspsine.zhihu.daily.ui.fragment.DailyStoriesFragment;
 import com.aspsine.zhihu.daily.ui.fragment.NavigationFragment;
 import com.aspsine.zhihu.daily.ui.fragment.ThemeStoriesFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -31,8 +28,6 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
     Toolbar mActionBarToolbar;
 
     private NavigationFragment mNavigationFragment;
-
-    private List<Fragment> mFragments = new ArrayList<>();
 
     private CharSequence mTitle = "";
 
@@ -58,34 +53,19 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-
         // update the main content by replacing fragments
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
         Fragment lastFragment = fm.findFragmentByTag(getTag(lastPosition));
-
         if (lastFragment != null) {
             ft.detach(lastFragment);
         }
 
         Fragment fragment = fm.findFragmentByTag(getTag(position));
-
         if (fragment == null) {
-
-            if (mFragments.size() > position) {
-                fragment = mFragments.get(position);
-            }
-
-            if (fragment == null) {
-                fragment = getFragmentItem(position);
-                while (mFragments.size() <= position) {
-                    mFragments.add(null);
-                }
-                mFragments.set(position, fragment);
-            }
+            fragment = getFragmentItem(position);
             ft.add(R.id.container, fragment, getTag(position));
-
         } else {
             ft.attach(fragment);
         }

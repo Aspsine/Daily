@@ -105,7 +105,7 @@ public class StoryFragment extends Fragment {
         mScrollPullDownHelper = new ScrollPullDownHelper();
 
         this.mOptions = new DisplayImageOptions.Builder()
-                .cacheInMemory(true)
+                .cacheInMemory(false)
                 .cacheOnDisk(true)
                 .considerExifParams(true)
                 .build();
@@ -220,7 +220,7 @@ public class StoryFragment extends Fragment {
             }
             spaceView.setVisibility(View.VISIBLE);
             rlStoryHeader.addView(storyHeaderView);
-            storyHeaderView.BindData(mStory.getTitle(), mStory.getImageSource(), mStory.getImage(), mOptions);
+            storyHeaderView.bindData(mStory.getTitle(), mStory.getImageSource(), mStory.getImage(), mOptions);
         } else {
             spaceView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mActionBarToolbar.getHeight()));
         }

@@ -76,9 +76,6 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
         public HeaderPagerAdapter(List<Story> stories) {
             mmStories = stories;
             this.mOptions = new DisplayImageOptions.Builder()
-                    .showImageOnLoading(R.drawable.ic_launcher)
-                    .showImageForEmptyUri(R.drawable.ic_launcher)
-                    .showImageOnFail(R.drawable.ic_launcher)
                     .cacheInMemory(true)
                     .cacheOnDisk(true)
                     .considerExifParams(true)
@@ -99,7 +96,7 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
         public Object instantiateItem(final ViewGroup container, final int position) {
             StoryHeaderView storyHeaderView = StoryHeaderView.newInstance(container);
             final Story story = mmStories.get(position);
-            storyHeaderView.BindData(story.getTitle(), story.getImageSource(), story.getImage(), mOptions);
+            storyHeaderView.bindData(story.getTitle(), story.getImageSource(), story.getImage(), mOptions);
             storyHeaderView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

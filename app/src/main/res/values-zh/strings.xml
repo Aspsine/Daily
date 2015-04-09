@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">日报</string>
-    <string name="action_example"></string>
     <string name="action_settings">设置</string>
     <string name="action_share">分享</string>
     <string name="navigation_drawer_close">关闭导航</string>

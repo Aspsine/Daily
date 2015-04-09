@@ -36,9 +36,9 @@ public class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnC
         super(itemView);
 
         this.mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_launcher)
-                .showImageForEmptyUri(R.drawable.ic_launcher)
-                .showImageOnFail(R.drawable.ic_launcher)
+                .showImageOnLoading(R.drawable.image_small_default)
+                .showImageForEmptyUri(R.drawable.image_small_default)
+                .showImageOnFail(R.drawable.image_small_default)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .considerExifParams(true)

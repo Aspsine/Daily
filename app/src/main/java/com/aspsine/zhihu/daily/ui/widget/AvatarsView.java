@@ -47,9 +47,9 @@ public class AvatarsView extends HorizontalScrollView {
         LayoutInflater.from(getContext()).inflate(R.layout.view_avatars, this, true);
         ButterKnife.inject(this);
         mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_launcher)
-                .showImageForEmptyUri(R.drawable.ic_launcher)
-                .showImageOnFail(R.drawable.ic_launcher)
+                .showImageOnLoading(R.drawable.comment_avatar)
+                .showImageForEmptyUri(R.drawable.comment_avatar)
+                .showImageOnFail(R.drawable.comment_avatar)
                 .displayer(new CircleBitmapDisplayer())
                 .cacheInMemory(true)
                 .cacheOnDisk(true)

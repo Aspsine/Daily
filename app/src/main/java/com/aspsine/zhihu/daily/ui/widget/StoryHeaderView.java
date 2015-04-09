@@ -47,11 +47,20 @@ public class StoryHeaderView extends RelativeLayout {
         ButterKnife.inject(this);
     }
 
-    public void BindData(String title, String author, String url, DisplayImageOptions options) {
+    public void bindData(String title, String author, String url) {
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .build();
+        this.bindData(title, author, url, options);
+    }
+
+    public void bindData(String title, String author, String url, DisplayImageOptions options) {
         this.title.setText(title);
-        if(TextUtils.isEmpty(author)){
+        if (TextUtils.isEmpty(author)) {
             this.author.setVisibility(View.GONE);
-        }else {
+        } else {
             this.author.setVisibility(View.VISIBLE);
             this.author.setText(author);
         }

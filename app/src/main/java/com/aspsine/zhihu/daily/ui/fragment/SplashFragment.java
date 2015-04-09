@@ -26,6 +26,7 @@ import com.aspsine.zhihu.daily.util.UIUtils;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -111,11 +112,9 @@ public class SplashFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        setData();
         if (NetWorkUtils.isNetWorkAvailable(getActivity())) {
             refresh();
-        } else {
-            setDefaultData();
         }
     }
 
@@ -125,36 +124,35 @@ public class SplashFragment extends Fragment {
         mIvSplashAnim = null;
     }
 
-    private void setDefaultData() {
+    private void setData() {
         if (mOldStartImage == null) {
             L.i(TAG, "default image.");
             ivSplash.setBackgroundResource(R.drawable.bg_splash);
             tvAuthor.setText(getResources().getString(R.string.splash_text));
         } else {
             L.i(TAG, "old image.");
-            setData(mOldStartImage);
+            tvAuthor.setText(mOldStartImage.getText());
+            ImageLoader.getInstance().displayImage(mOldStartImage.getImg(), ivSplash, mOptions);
         }
-    }
-
-    private void setData(StartImage image) {
-        tvAuthor.setText(image.getText());
-        ImageLoader.getInstance().displayImage(image.getImg(), ivSplash, mOptions);
     }
 
     private void refresh() {
         DailyApi.createApi().getStartImage(mWidth, mHeight, new Callback<StartImage>() {
             @Override
             public void success(StartImage startImage, Response response) {
-                if(isAdded()){
-                    SharedPrefUtils.setSplashJson(getActivity().getApplicationContext(), new Gson().toJson(startImage));
+                if (mOldStartImage == null || !mOldStartImage.getImg().equals(startImage.getImg())) {
+                    ImageLoader.getInstance().loadImage(startImage.getImg(), new ImageSize(mWidth, mHeight), mOptions, null);
                     L.i(TAG, "new image.");
-                    setData(startImage);
+                } else {
+                    L.i(TAG, "image is not change.");
+                }
+                if (isAdded()) {
+                    SharedPrefUtils.setSplashJson(getActivity().getApplicationContext(), new Gson().toJson(startImage));
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                setDefaultData();
                 error.printStackTrace();
             }
         });

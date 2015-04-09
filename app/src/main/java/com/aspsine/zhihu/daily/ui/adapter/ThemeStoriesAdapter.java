@@ -1,13 +1,9 @@
 package com.aspsine.zhihu.daily.ui.adapter;
 
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.model.Editor;
@@ -22,9 +18,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by Aspsine on 2015/3/26.
@@ -115,7 +108,7 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         switch (viewType) {
             case Type.TYPE_HEADER:
                 ((StoryHeaderView) holder.itemView)
-                        .BindData(mTheme.getDescription(), null, mTheme.getBackground(), mOptions);
+                        .bindData(mTheme.getDescription(), null, mTheme.getBackground());
                 break;
             case Type.TYPE_AVATARS:
                 List<String> images = new ArrayList<>();

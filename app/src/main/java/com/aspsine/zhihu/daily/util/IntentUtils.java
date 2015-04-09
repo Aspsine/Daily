@@ -32,6 +32,7 @@ public class IntentUtils {
         sb.append(story.getTitle()).append(" ")
                 .append(activity.getString(R.string.share_link))
                 .append(story.getShareUrl())
+                .append(" ")
                 .append(activity.getString(R.string.share_from));
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");

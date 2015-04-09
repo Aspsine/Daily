@@ -23,7 +23,6 @@ import com.aspsine.zhihu.daily.model.Themes;
 import com.aspsine.zhihu.daily.ui.adapter.NavigationDrawerAdapter;
 import com.aspsine.zhihu.daily.util.SharedPrefUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -91,8 +90,7 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
             mFromSavedInstanceState = true;
         }
 
-        mThemes = new ArrayList<Theme>();
-        mAdapter = new NavigationDrawerAdapter(mThemes);
+        mAdapter = new NavigationDrawerAdapter();
         mAdapter.setNavigationDrawerCallbacks(this);
     }
 
@@ -132,16 +130,19 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
             closeDrawer();
             return;
         }
-        selectItem(position);
-    }
-
-    private void selectItem(int position) {
-        mCurrentSelectedPosition = position;
-        mAdapter.selectPosition(position);
         closeDrawer();
+        mCurrentSelectedPosition = position;
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
         }
+    }
+
+    public void selectItem(int position) {
+        if (position == mCurrentSelectedPosition) {
+            closeDrawer();
+            return;
+        }
+        mAdapter.selectPosition(position);
     }
 
     public void selectTheme(Theme t) {
@@ -251,9 +252,8 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
         DailyApi.createApi().getThemes(new Callback<Themes>() {
             @Override
             public void success(Themes themes, Response response) {
-                mThemes.clear();
-                mThemes.addAll(themes.getOthers());
-                mAdapter.notifyDataSetChanged();
+                mThemes = themes.getOthers();
+                mAdapter.setThemes(mThemes);
             }
 
             @Override

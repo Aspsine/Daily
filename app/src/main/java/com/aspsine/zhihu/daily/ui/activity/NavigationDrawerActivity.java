@@ -38,7 +38,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
         ButterKnife.inject(this);
         setUpDrawer();
         if (savedInstanceState == null) {
-            mNavigationFragment.onNavigationDrawerItemSelected(NavigationFragment.getDefaultNavDrawerItem());
+            mNavigationFragment.selectItem(NavigationFragment.getDefaultNavDrawerItem());
         }
     }
 
@@ -131,7 +131,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
             mNavigationFragment.closeDrawer();
         } else {
             if (mNavigationFragment.getCurrentSelectedPosition() != NavigationFragment.getDefaultNavDrawerItem()) {
-                mNavigationFragment.onNavigationDrawerItemSelected(NavigationFragment.getDefaultNavDrawerItem());
+                mNavigationFragment.selectItem(NavigationFragment.getDefaultNavDrawerItem());
             } else {
                 super.onBackPressed();
             }

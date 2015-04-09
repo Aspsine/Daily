@@ -98,7 +98,7 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         switch (viewType) {
             case Type.TYPE_HEADER:
                 itemView = UIUtils.inflate(R.layout.recycler_header_viewpager, parent);
-                return new HeaderViewPagerHolder(itemView);
+                return new HeaderViewPagerHolder(itemView, mItems.get(0).getStories());
             case Type.TYPE_DATE:
                 itemView = UIUtils.inflate(R.layout.recycler_item_date, parent);
                 return new DateViewHolder(itemView);
@@ -116,7 +116,7 @@ public class DailyStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         Item item = mItems.get(position);
         switch (viewType) {
             case Type.TYPE_HEADER:
-                ((HeaderViewPagerHolder) holder).bindHeaderView(item.getStories());
+                ((HeaderViewPagerHolder) holder).bindHeaderView();
                 break;
             case Type.TYPE_DATE:
                 ((DateViewHolder) holder).bindDateView(item.getDate());

@@ -13,7 +13,7 @@ import com.aspsine.zhihu.daily.ui.widget.CirclePageIndicator;
 import com.aspsine.zhihu.daily.ui.widget.MyViewPager;
 import com.aspsine.zhihu.daily.ui.widget.StoryHeaderView;
 import com.aspsine.zhihu.daily.util.IntentUtils;
-import com.aspsine.zhihu.daily.util.L;
+import com.aspsine.zhihu.daily.util.ListUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.List;
@@ -23,30 +23,29 @@ import java.util.List;
  */
 public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
     private static final String TAG = HeaderViewPagerHolder.class.getSimpleName();
-    private List<Story> mStories;
     private MyViewPager viewPager;
     private CirclePageIndicator indicator;
     private PagerAdapter mPagerAdapter;
 
-    public HeaderViewPagerHolder(@Nullable View itemView) {
+    public HeaderViewPagerHolder(@Nullable View itemView, List<Story> stories) {
         super(itemView);
+
         viewPager = (MyViewPager) itemView.findViewById(R.id.viewPager);
         indicator = (CirclePageIndicator) itemView.findViewById(R.id.indicator);
-    }
-
-    public void bindHeaderView(List<Story> stories) {
-        mStories = stories;
-        if (mStories == null || mStories.size() == 0) {
+        if (ListUtils.isEmpty(stories)) {
             return;
-        } else if (mStories.size() == 1) {
+        } else if (stories.size() < 2) {
             indicator.setVisibility(View.GONE);
         }
+        mPagerAdapter = new HeaderPagerAdapter(stories);
+    }
 
+    public void bindHeaderView() {
         if (viewPager.getAdapter() == null) {
-            L.i(TAG, "mPagerAdapter == null");
-            mPagerAdapter = new HeaderPagerAdapter(mStories);
             viewPager.setAdapter(mPagerAdapter);
             indicator.setViewPager(viewPager);
+        } else {
+            mPagerAdapter.notifyDataSetChanged();
         }
     }
 
@@ -70,11 +69,13 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
     }
 
     private final static class HeaderPagerAdapter extends PagerAdapter {
-        private List<Story> mmStories;
+        private List<Story> mStories;
         private DisplayImageOptions mOptions;
 
+        private int mChildCount;
+
         public HeaderPagerAdapter(List<Story> stories) {
-            mmStories = stories;
+            mStories = stories;
             this.mOptions = new DisplayImageOptions.Builder()
                     .cacheInMemory(true)
                     .cacheOnDisk(true)
@@ -84,7 +85,7 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
 
         @Override
         public int getCount() {
-            return mmStories == null ? 0 : mmStories.size();
+            return mStories == null ? 0 : mStories.size();
         }
 
         @Override
@@ -95,7 +96,7 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
         @Override
         public Object instantiateItem(final ViewGroup container, final int position) {
             StoryHeaderView storyHeaderView = StoryHeaderView.newInstance(container);
-            final Story story = mmStories.get(position);
+            final Story story = mStories.get(position);
             storyHeaderView.bindData(story.getTitle(), story.getImageSource(), story.getImage(), mOptions);
             storyHeaderView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -110,6 +111,21 @@ public class HeaderViewPagerHolder extends RecyclerView.ViewHolder {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((StoryHeaderView) object);
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+            mChildCount = getCount();
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            if (mChildCount > 0) {
+                mChildCount--;
+                return POSITION_NONE;
+            }
+            return super.getItemPosition(object);
         }
     }
 }

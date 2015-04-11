@@ -37,6 +37,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void setThemes(List<Theme> themes) {
         mThemes.clear();
         mThemes.addAll(themes);
+        notifyDataSetChanged();
     }
 
     public void setNavigationDrawerCallbacks(NavigationDrawerCallbacks callbacks) {

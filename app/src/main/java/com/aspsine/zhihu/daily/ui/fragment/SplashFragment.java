@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,21 +15,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.api.DailyApi;
 import com.aspsine.zhihu.daily.model.StartImage;
+import com.aspsine.zhihu.daily.respository.RepositoryImpl;
+import com.aspsine.zhihu.daily.respository.interfaces.Repository;
 import com.aspsine.zhihu.daily.util.DensityUtil;
 import com.aspsine.zhihu.daily.util.L;
-import com.aspsine.zhihu.daily.util.NetWorkUtils;
-import com.aspsine.zhihu.daily.util.SharedPrefUtils;
 import com.aspsine.zhihu.daily.util.UIUtils;
-import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Created by sf on 2015/1/13.
@@ -44,12 +36,12 @@ public class SplashFragment extends Fragment {
     public ImageView ivSplash;
     public Animation mIvSplashAnim;
 
-    private StartImage mOldStartImage;
-
     private DisplayImageOptions mOptions;
 
     private int mWidth;
     private int mHeight;
+
+    Repository repository;
 
     @Override
     public void onAttach(Activity activity) {
@@ -60,10 +52,6 @@ public class SplashFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String mOldJsonString = SharedPrefUtils.getSplashJson(getActivity());
-        if (!TextUtils.isEmpty(mOldJsonString)) {
-            mOldStartImage = new Gson().fromJson(mOldJsonString, StartImage.class);
-        }
 
         // if api >= 19 use themes in values-v19 has a full screen splash.
         mWidth = DensityUtil.getScreenWidth(getActivity());
@@ -78,6 +66,7 @@ public class SplashFragment extends Fragment {
                 .cacheOnDisk(true)
                 .considerExifParams(true)
                 .build();
+        repository = new RepositoryImpl(getActivity());
     }
 
     @Override
@@ -112,48 +101,32 @@ public class SplashFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setData();
-        if (NetWorkUtils.isNetWorkAvailable(getActivity())) {
-            refresh();
-        }
+        refresh();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mIvSplashAnim = null;
+        repository = null;
     }
 
-    private void setData() {
-        if (mOldStartImage == null) {
-            L.i(TAG, "default image.");
-            ivSplash.setBackgroundResource(R.drawable.bg_splash);
-            tvAuthor.setText(getResources().getString(R.string.splash_text));
-        } else {
-            L.i(TAG, "old image.");
-            tvAuthor.setText(mOldStartImage.getText());
-            ImageLoader.getInstance().displayImage(mOldStartImage.getImg(), ivSplash, mOptions);
-        }
-    }
 
     private void refresh() {
-        DailyApi.createApi().getStartImage(mWidth, mHeight, new Callback<StartImage>() {
+
+        repository.getStartImage(mWidth, mHeight, mOptions, new Repository.Callback<StartImage>() {
             @Override
-            public void success(StartImage startImage, Response response) {
-                if (mOldStartImage == null || !mOldStartImage.getImg().equals(startImage.getImg())) {
-                    ImageLoader.getInstance().loadImage(startImage.getImg(), new ImageSize(mWidth, mHeight), mOptions, null);
-                    L.i(TAG, "new image.");
-                } else {
-                    L.i(TAG, "image is not change.");
-                }
-                if (isAdded()) {
-                    SharedPrefUtils.setSplashJson(getActivity().getApplicationContext(), new Gson().toJson(startImage));
-                }
+            public void success(StartImage startImage, boolean outDate) {
+                tvAuthor.setText(startImage.getText());
+                ImageLoader.getInstance().displayImage(startImage.getImg(), ivSplash, mOptions);
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                error.printStackTrace();
+            public void failure(Exception e) {
+                L.i(TAG, "default image.");
+                ivSplash.setBackgroundResource(R.drawable.bg_splash);
+                tvAuthor.setText(getResources().getString(R.string.splash_text));
+                e.printStackTrace();
             }
         });
     }

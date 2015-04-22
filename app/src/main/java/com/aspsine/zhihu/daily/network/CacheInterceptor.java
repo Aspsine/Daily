@@ -1,4 +1,4 @@
-package com.aspsine.zhihu.daily.api;
+package com.aspsine.zhihu.daily.network;
 
 import com.aspsine.zhihu.daily.App;
 import com.aspsine.zhihu.daily.util.NetWorkUtils;
@@ -29,7 +29,7 @@ public class CacheInterceptor implements Interceptor {
         Response response = chain.proceed(request);
         // Re-write response CC header to force use of cache
         return response.newBuilder()
-                .header("Cache-Control", "public, max-age=" + 60 * 60 * 3) // 3h
+                .header("Cache-Control", "public, max-age=" + 60 * 10) // 10min
                 .build();
     }
 }

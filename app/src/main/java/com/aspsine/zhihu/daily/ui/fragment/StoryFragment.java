@@ -23,9 +23,10 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.api.DailyApi;
 import com.aspsine.zhihu.daily.model.Editor;
 import com.aspsine.zhihu.daily.model.Story;
+import com.aspsine.zhihu.daily.respository.RepositoryImpl;
+import com.aspsine.zhihu.daily.respository.interfaces.Repository;
 import com.aspsine.zhihu.daily.ui.widget.AvatarsView;
 import com.aspsine.zhihu.daily.ui.widget.StoryHeaderView;
 import com.aspsine.zhihu.daily.util.IntentUtils;
@@ -39,9 +40,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,6 +79,7 @@ public class StoryFragment extends Fragment {
 
     private Story mStory;
 
+    private Repository mRepository;
 
     public static StoryFragment newInstance(String storyId) {
         StoryFragment fragment = new StoryFragment();
@@ -109,6 +108,8 @@ public class StoryFragment extends Fragment {
                 .cacheOnDisk(true)
                 .considerExifParams(true)
                 .build();
+
+        mRepository = new RepositoryImpl(getActivity());
     }
 
     @Override
@@ -155,8 +156,9 @@ public class StoryFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDetach() {
+        super.onDetach();
+        mRepository = null;
     }
 
     @Override
@@ -177,9 +179,9 @@ public class StoryFragment extends Fragment {
     }
 
     private void refresh() {
-        DailyApi.createApi().getStoryDetail(mStoryId, new Callback<Story>() {
+        mRepository.getStoryDetail(mStoryId, new Repository.Callback<Story>() {
             @Override
-            public void success(Story story, Response response) {
+            public void success(Story story, boolean outDate) {
                 if (getActivity() == null) {
                     return;
                 }
@@ -189,9 +191,9 @@ public class StoryFragment extends Fragment {
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void failure(Exception e) {
                 progressBar.setVisibility(View.GONE);
-                error.printStackTrace();
+                e.printStackTrace();
             }
         });
     }
@@ -224,7 +226,6 @@ public class StoryFragment extends Fragment {
         } else {
             spaceView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mActionBarToolbar.getHeight()));
         }
-
     }
 
     private void bindAvatarsView() {
@@ -235,7 +236,7 @@ public class StoryFragment extends Fragment {
             for (Editor editor : recommenders) {
                 avatars.add(editor.getAvatar());
             }
-            avatarsView.bindData("推荐人", avatars);
+            avatarsView.bindData(getString(R.string.avatar_title_referee), avatars);
         } else {
             avatarsView.setVisibility(View.GONE);
         }

@@ -10,15 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.api.DailyApi;
 import com.aspsine.zhihu.daily.model.Theme;
+import com.aspsine.zhihu.daily.respository.RepositoryImpl;
+import com.aspsine.zhihu.daily.respository.interfaces.Repository;
 import com.aspsine.zhihu.daily.ui.adapter.ThemeStoriesAdapter;
 import com.aspsine.zhihu.daily.ui.widget.LoadMoreRecyclerView;
 import com.aspsine.zhihu.daily.util.L;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Created by Aspsine on 2015/3/25.
@@ -31,6 +28,8 @@ public class ThemeStoriesFragment extends BaseFragment {
     private LoadMoreRecyclerView recyclerView;
 
     private ThemeStoriesAdapter mAdapter;
+
+    private Repository mRepository;
 
     private String mThemeId;
 
@@ -46,6 +45,7 @@ public class ThemeStoriesFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             mAdapter = new ThemeStoriesAdapter();
+            mRepository = new RepositoryImpl(getActivity());
         }
     }
 
@@ -83,7 +83,6 @@ public class ThemeStoriesFragment extends BaseFragment {
 
             }
         });
-
     }
 
     @Override
@@ -101,11 +100,18 @@ public class ThemeStoriesFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mRepository = null;
+    }
+
     private void refresh() {
         isDataLoaded = false;
-        DailyApi.createApi().getTheme(mThemeId, new Callback<Theme>() {
+
+        mRepository.getTheme(mThemeId, new Repository.Callback<Theme>() {
             @Override
-            public void success(Theme theme, Response response) {
+            public void success(Theme theme, boolean outDate) {
                 isDataLoaded = true;
                 swipeRefreshLayout.setRefreshing(false);
                 if (theme != null && mAdapter != null) {
@@ -118,20 +124,20 @@ public class ThemeStoriesFragment extends BaseFragment {
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void failure(Exception e) {
                 isDataLoaded = false;
                 swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(getActivity(), "refresh error", Toast.LENGTH_SHORT).show();
-                error.printStackTrace();
+                e.printStackTrace();
             }
         });
     }
 
     private void loadMore() {
 
-        DailyApi.createApi().getThemeBeforeStory(mThemeId, mLastStoryId, new Callback<Theme>() {
+        mRepository.getThemeBeforeStory(mThemeId, mLastStoryId, new Repository.Callback<Theme>() {
             @Override
-            public void success(Theme theme, Response response) {
+            public void success(Theme theme, boolean outDate) {
                 recyclerView.setLoadingMore(false);
                 if (theme != null && mAdapter != null) {
                     if (theme.getStories().size() > 0) {
@@ -142,10 +148,10 @@ public class ThemeStoriesFragment extends BaseFragment {
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void failure(Exception e) {
                 recyclerView.setLoadingMore(false);
                 Toast.makeText(getActivity(), "load more error", Toast.LENGTH_SHORT).show();
-                error.printStackTrace();
+                e.printStackTrace();
             }
         });
     }

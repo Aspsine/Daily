@@ -2,12 +2,9 @@ package com.aspsine.zhihu.daily;
 
 import android.app.Application;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.StrictMode;
 
-import com.aspsine.zhihu.daily.db.DaoMaster;
-import com.aspsine.zhihu.daily.db.DaoSession;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -20,7 +17,6 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
  */
 public class App extends Application {
     private static Context applicationContext;
-    private DaoSession daoSession;
 
     @Override
     public void onCreate() {
@@ -32,8 +28,6 @@ public class App extends Application {
         applicationContext = getApplicationContext();
 
         CrashHandler.getInstance(getApplicationContext());
-
-        initDateBase();
 
         initImageLoader(getApplicationContext());
     }
@@ -54,17 +48,6 @@ public class App extends Application {
                 .writeDebugLogs() // Remove for release app
                 .build();
         ImageLoader.getInstance().init(config);
-    }
-
-    private void initDateBase() {
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, Constants.Config.DATABASE_NAME, null);
-        SQLiteDatabase db = helper.getWritableDatabase();
-        DaoMaster daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();
-    }
-
-    public DaoSession getDaoSession() {
-        return daoSession;
     }
 
     public static Context getContext() {

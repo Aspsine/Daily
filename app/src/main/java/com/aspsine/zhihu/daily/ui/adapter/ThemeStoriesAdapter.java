@@ -115,7 +115,7 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 for (Editor editor : mTheme.getEditors()) {
                     images.add(editor.getAvatar());
                 }
-                ((AvatarsView) holder.itemView).bindData("主编", images);
+                ((AvatarsView) holder.itemView).bindData(holder.itemView.getResources().getString(R.string.avatar_title_editor), images);
                 break;
             case Type.TYPE_ITEM:
                 StoryViewHolder storyViewHolder = (StoryViewHolder) holder;

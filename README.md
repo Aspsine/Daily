@@ -29,10 +29,10 @@ A demo app of Zhihu Daily with full Material Design and new widgets. It's more l
 - 1.0 Beta
 
 ### TODO List
-- Actionbar date change(TODO ing)
+- Actionbar date change(Done)
 - Item read status(set color grey)
-- Add News section List
-- Off-line data cache
+- Add News section List(Done)
+- Off-line data cache(Done)
 - Settings
 - MVC -> MVP project Refactoring
 - Network interface encryption

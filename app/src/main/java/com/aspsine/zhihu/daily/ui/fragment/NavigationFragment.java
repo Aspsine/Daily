@@ -16,18 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.api.DailyApi;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
 import com.aspsine.zhihu.daily.model.Theme;
 import com.aspsine.zhihu.daily.model.Themes;
+import com.aspsine.zhihu.daily.respository.RepositoryImpl;
+import com.aspsine.zhihu.daily.respository.interfaces.Repository;
 import com.aspsine.zhihu.daily.ui.adapter.NavigationDrawerAdapter;
 import com.aspsine.zhihu.daily.util.SharedPrefUtils;
 
 import java.util.List;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -65,9 +62,10 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
+    private NavigationDrawerAdapter mAdapter;
+    private List<Theme> mThemes;
 
-    NavigationDrawerAdapter mAdapter;
-    List<Theme> mThemes;
+    private Repository mRepository;
 
     @Override
     public void onAttach(Activity activity) {
@@ -92,6 +90,7 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
 
         mAdapter = new NavigationDrawerAdapter();
         mAdapter.setNavigationDrawerCallbacks(this);
+        mRepository = new RepositoryImpl(getActivity());
     }
 
     @Override
@@ -122,6 +121,7 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
+        mRepository = null;
     }
 
     @Override
@@ -249,16 +249,16 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
     }
 
     private void refresh() {
-        DailyApi.createApi().getThemes(new Callback<Themes>() {
+        mRepository.getThemes(new Repository.Callback<Themes>() {
             @Override
-            public void success(Themes themes, Response response) {
+            public void success(Themes themes, boolean outDate) {
                 mThemes = themes.getOthers();
                 mAdapter.setThemes(mThemes);
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                error.printStackTrace();
+            public void failure(Exception e) {
+                e.printStackTrace();
             }
         });
     }

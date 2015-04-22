@@ -40,8 +40,8 @@ public class RepositoryImpl implements Repository {
     @Override
     public void getStartImage(final int width, final int height, final DisplayImageOptions options, final Callback<StartImage> callback) {
 
-        //get data form db
-        mCache.getStartImage(width, height, new CacheRepository.Callback<StartImage>() {
+        //get data form cache
+        mCache.getStartImage(new CacheRepository.Callback<StartImage>() {
             @Override
             public void success(StartImage startImage) {
                 callback.success(startImage, true);
@@ -56,44 +56,173 @@ public class RepositoryImpl implements Repository {
         //get data form network
         mNet.getStartImage(width, height, new NetRepository.Callback<StartImage>() {
             @Override
-            public void success(StartImage startImage) {
+            public void success(StartImage startImage, String url) {
                 mCache.saveStartImage(width, height, options, startImage);
             }
 
             @Override
-            public void failure(Exception e) {
+            public void failure(Exception e, String url) {
                 e.printStackTrace();
             }
         });
     }
 
     @Override
-    public void getLatestDailyStories(Callback<DailyStories> callback) {
+    public void getLatestDailyStories(final Callback<DailyStories> callback) {
+        //get data form network
+        mNet.getLatestDailyStories(new NetRepository.Callback<DailyStories>() {
+            @Override
+            public void success(DailyStories dailyStories, String url) {
+                callback.success(dailyStories, false);
+                mCache.saveLatestDailyStories(dailyStories, url);
+            }
 
+            @Override
+            public void failure(Exception e, String url) {
+                //network failed, get data form cache
+                mCache.getLatestDailyStories(url, new CacheRepository.Callback<DailyStories>() {
+                    @Override
+                    public void success(DailyStories dailyStories) {
+                        callback.success(dailyStories, true);
+                    }
+
+                    @Override
+                    public void failure(Exception e) {
+                        callback.failure(e);
+                    }
+                });
+            }
+        });
+    }
+
+
+    @Override
+    public void getBeforeDailyStories(String date, final Callback<DailyStories> callback) {
+        mNet.getBeforeDailyStories(date, new NetRepository.Callback<DailyStories>() {
+            @Override
+            public void success(DailyStories dailyStories, String url) {
+                callback.success(dailyStories, false);
+                mCache.saveBeforeDailyStories(dailyStories, url);
+            }
+
+            @Override
+            public void failure(Exception e, String url) {
+                mCache.getBeforeDailyStories(url, new CacheRepository.Callback<DailyStories>() {
+                    @Override
+                    public void success(DailyStories dailyStories) {
+                        callback.success(dailyStories, false);
+                    }
+
+                    @Override
+                    public void failure(Exception e) {
+                        callback.failure(e);
+                    }
+                });
+            }
+        });
     }
 
     @Override
-    public void getBeforeDailyStories(String date, Callback<DailyStories> callback) {
+    public void getStoryDetail(String storyId, final Callback<Story> callback) {
+        mNet.getStoryDetail(storyId, new NetRepository.Callback<Story>() {
+            @Override
+            public void success(Story story, String url) {
+                callback.success(story, false);
+                mCache.saveStoryDetail(story, url);
+            }
 
+            @Override
+            public void failure(Exception e, String url) {
+                mCache.getStoryDetail(url, new CacheRepository.Callback<Story>() {
+                    @Override
+                    public void success(Story story) {
+                        callback.success(story, true);
+                    }
+
+                    @Override
+                    public void failure(Exception e) {
+                        callback.failure(e);
+                    }
+                });
+            }
+        });
     }
 
     @Override
-    public void getStoryDetail(String storyId, Callback<Story> callback) {
+    public void getThemes(final Callback<Themes> callback) {
+        mNet.getThemes(new NetRepository.Callback<Themes>() {
+            @Override
+            public void success(Themes themes, String url) {
+                callback.success(themes, false);
+                mCache.saveThemes(themes, url);
+            }
 
+            @Override
+            public void failure(Exception e, String url) {
+                mCache.getThemes(url, new CacheRepository.Callback<Themes>() {
+                    @Override
+                    public void success(Themes themes) {
+                        callback.success(themes, false);
+                    }
+
+                    @Override
+                    public void failure(Exception e) {
+                        callback.failure(e);
+                    }
+                });
+            }
+        });
     }
 
     @Override
-    public void getThemes(Callback<Themes> callback) {
+    public void getTheme(String themeId, final Callback<Theme> callback) {
+        mNet.getTheme(themeId, new NetRepository.Callback<Theme>() {
+            @Override
+            public void success(Theme theme, String url) {
+                callback.success(theme, false);
+                mCache.saveTheme(theme, url);
+            }
 
+            @Override
+            public void failure(Exception e, String url) {
+                mCache.getTheme(url, new CacheRepository.Callback<Theme>() {
+                    @Override
+                    public void success(Theme theme) {
+                        callback.success(theme, true);
+                    }
+
+                    @Override
+                    public void failure(Exception e) {
+                        callback.failure(e);
+                    }
+                });
+            }
+        });
     }
 
     @Override
-    public void getTheme(String themeId, Callback<Theme> callback) {
+    public void getThemeBeforeStory(String themeId, String storyId, final Callback<Theme> callback) {
+        mNet.getThemeBeforeStory(themeId, storyId, new NetRepository.Callback<Theme>() {
+            @Override
+            public void success(Theme theme, String url) {
+                callback.success(theme, false);
+                mCache.saveThemeBeforeStory(theme, url);
+            }
 
-    }
+            @Override
+            public void failure(Exception e, String url) {
+                mCache.getThemeBeforeStory(url, new CacheRepository.Callback<Theme>() {
+                    @Override
+                    public void success(Theme theme) {
+                        callback.success(theme, true);
+                    }
 
-    @Override
-    public void getThemeBeforeStory(String themeId, String storyId, Callback<Theme> callback) {
-
+                    @Override
+                    public void failure(Exception e) {
+                        callback.failure(e);
+                    }
+                });
+            }
+        });
     }
 }

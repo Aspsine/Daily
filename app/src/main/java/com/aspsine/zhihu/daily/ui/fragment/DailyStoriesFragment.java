@@ -14,17 +14,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.aspsine.zhihu.daily.R;
-import com.aspsine.zhihu.daily.api.DailyApi;
 import com.aspsine.zhihu.daily.model.DailyStories;
+import com.aspsine.zhihu.daily.respository.RepositoryImpl;
+import com.aspsine.zhihu.daily.respository.interfaces.Repository;
 import com.aspsine.zhihu.daily.ui.adapter.DailyStoriesAdapter;
 import com.aspsine.zhihu.daily.ui.adapter.holder.DateViewHolder;
 import com.aspsine.zhihu.daily.ui.widget.LoadMoreRecyclerView;
 import com.aspsine.zhihu.daily.ui.widget.MyViewPager;
 import com.aspsine.zhihu.daily.util.L;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +33,7 @@ public class DailyStoriesFragment extends BaseFragment {
     private LoadMoreRecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
 
+    private Repository mRepository;
     private String mDate;
 
     /**
@@ -47,13 +45,13 @@ public class DailyStoriesFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new DailyStoriesAdapter();
+        mRepository = new RepositoryImpl(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_daily_stories, container, false);
     }
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -98,28 +96,6 @@ public class DailyStoriesFragment extends BaseFragment {
         });
     }
 
-    private String mTitle;
-    private int lastTitlePos = -1;
-
-    private void changeActionBarTitle(int dy) {
-        int position = mLayoutManager.findFirstVisibleItemPosition();
-        if (lastTitlePos == position) {
-            return;
-        }
-        DailyStoriesAdapter.Item item = mAdapter.getItem(position);
-        int type = item.getType();
-        if (type == DailyStoriesAdapter.Type.TYPE_HEADER) {
-            mTitle = getString(R.string.title_activity_main);
-        } else if (dy > 0 && type == DailyStoriesAdapter.Type.TYPE_DATE) {
-            mTitle = DateViewHolder.getDate(item.getDate(), getActivity());
-        } else if (dy < 0) {
-            mTitle = DateViewHolder.getDate(mAdapter.getTitleBeforePosition(position), getActivity());
-        }
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(mTitle);
-        lastTitlePos = position;
-    }
-
-
     @Override
     public void onResume() {
         L.i(TAG, "onResume");
@@ -148,11 +124,39 @@ public class DailyStoriesFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mRepository = null;
+    }
+
+    private String mTitle;
+    private int lastTitlePos = -1;
+
+    private void changeActionBarTitle(int dy) {
+        int position = mLayoutManager.findFirstVisibleItemPosition();
+        if (lastTitlePos == position) {
+            return;
+        }
+        DailyStoriesAdapter.Item item = mAdapter.getItem(position);
+        int type = item.getType();
+        if (type == DailyStoriesAdapter.Type.TYPE_HEADER) {
+            mTitle = getString(R.string.title_activity_main);
+        } else if (dy > 0 && type == DailyStoriesAdapter.Type.TYPE_DATE) {
+            mTitle = DateViewHolder.getDate(item.getDate(), getActivity());
+        } else if (dy < 0) {
+            mTitle = DateViewHolder.getDate(mAdapter.getTitleBeforePosition(position), getActivity());
+        }
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(mTitle);
+        lastTitlePos = position;
+    }
+
     private void refresh() {
         isDataLoaded = false;
-        DailyApi.createApi().getLatestDailyStories(new Callback<DailyStories>() {
+
+        mRepository.getLatestDailyStories(new Repository.Callback<DailyStories>() {
             @Override
-            public void success(DailyStories dailyStories, Response response) {
+            public void success(DailyStories dailyStories, boolean outDate) {
                 isDataLoaded = true;
                 swipeRefreshLayout.setRefreshing(false);
                 mDate = dailyStories.getDate();
@@ -160,33 +164,32 @@ public class DailyStoriesFragment extends BaseFragment {
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void failure(Exception e) {
                 isDataLoaded = false;
                 swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(getActivity(), "refresh error", Toast.LENGTH_SHORT).show();
-                error.printStackTrace();
+                e.printStackTrace();
             }
         });
     }
 
     private void loadMore() {
         recyclerView.setLoadingMore(true);
-        DailyApi.createApi().getBeforeDailyStories(mDate, new Callback<DailyStories>() {
+
+        mRepository.getBeforeDailyStories(mDate, new Repository.Callback<DailyStories>() {
             @Override
-            public void success(DailyStories dailyStories, Response response) {
+            public void success(DailyStories dailyStories, boolean outDate) {
                 mDate = dailyStories.getDate();
                 recyclerView.setLoadingMore(false);
                 mAdapter.appendList(dailyStories);
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void failure(Exception e) {
                 recyclerView.setLoadingMore(false);
                 Toast.makeText(getActivity(), "load more error", Toast.LENGTH_SHORT).show();
-                error.printStackTrace();
+                e.printStackTrace();
             }
         });
     }
-
-
 }

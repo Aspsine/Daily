@@ -11,21 +11,34 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
  * Created by Aspsine on 2015/4/10.
  */
 public interface CacheRepository {
-    void getStartImage(int width, int height, Callback<StartImage> callback);
+    void getStartImage(Callback<StartImage> callback);
 
     void saveStartImage(int width, int height, DisplayImageOptions options, StartImage startImage);
 
-    void getLatestDailyStories(Callback<DailyStories> callback);
+    void getLatestDailyStories(String url, Callback<DailyStories> callback);
 
-    void getBeforeDailyStories(String date, Callback<DailyStories> callback);
+    void saveLatestDailyStories(DailyStories dailyStories, String url);
 
-    void getStoryDetail(String storyId, Callback<Story> callback);
+    void getBeforeDailyStories(String url, Callback<DailyStories> callback);
 
-    void getThemes(Callback<Themes> callback);
+    void saveBeforeDailyStories(DailyStories dailyStories, String url);
 
-    void getTheme(String themeId, Callback<Theme> callback);
+    void getStoryDetail(String url, Callback<Story> callback);
 
-    void getThemeBeforeStory(String themeId, String storyId, Callback<Theme> callback);
+    void saveStoryDetail(Story story, String url);
+
+    void getThemes(String url, Callback<Themes> callback);
+
+    void saveThemes(Themes themes, String url);
+
+    void getTheme(String url, Callback<Theme> callback);
+
+    void saveTheme(Theme theme, String url);
+
+    void getThemeBeforeStory(String url, Callback<Theme> callback);
+
+    void saveThemeBeforeStory(Theme theme, String url);
+
 
     public interface Callback<T> {
 

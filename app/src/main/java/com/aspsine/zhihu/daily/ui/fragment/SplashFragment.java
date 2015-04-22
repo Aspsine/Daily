@@ -41,7 +41,7 @@ public class SplashFragment extends Fragment {
     private int mWidth;
     private int mHeight;
 
-    Repository repository;
+    Repository mRepository;
 
     @Override
     public void onAttach(Activity activity) {
@@ -66,7 +66,7 @@ public class SplashFragment extends Fragment {
                 .cacheOnDisk(true)
                 .considerExifParams(true)
                 .build();
-        repository = new RepositoryImpl(getActivity());
+        mRepository = new RepositoryImpl(getActivity());
     }
 
     @Override
@@ -108,13 +108,13 @@ public class SplashFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mIvSplashAnim = null;
-        repository = null;
+        mRepository = null;
     }
 
 
     private void refresh() {
 
-        repository.getStartImage(mWidth, mHeight, mOptions, new Repository.Callback<StartImage>() {
+        mRepository.getStartImage(mWidth, mHeight, mOptions, new Repository.Callback<StartImage>() {
             @Override
             public void success(StartImage startImage, boolean outDate) {
                 tvAuthor.setText(startImage.getText());

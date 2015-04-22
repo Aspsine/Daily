@@ -2,8 +2,6 @@ package com.aspsine.zhihu.daily.model;
 
 import com.google.gson.annotations.Expose;
 
-import java.util.Date;
-
 /**
  * Created by Aspsine on 2015/4/10.
  */
@@ -14,7 +12,16 @@ public class Cache {
     @Expose
     private String response;
     @Expose
-    private Date time;
+    private long time;
+
+    public Cache() {
+    }
+
+    public Cache(String request, String response, long time) {
+        this.request = request;
+        this.response = response;
+        this.time = time;
+    }
 
     public String getRequest() {
         return request;
@@ -32,11 +39,11 @@ public class Cache {
         this.response = response;
     }
 
-    public Date getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(long time) {
         this.time = time;
     }
 }

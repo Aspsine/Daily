@@ -30,8 +30,9 @@ public interface NetRepository {
          * Successful
          *
          * @param t
+         * @param url
          */
-        public void success(T t);
+        public void success(T t, String url);
 
 
         /**
@@ -39,6 +40,6 @@ public interface NetRepository {
          *
          * @param e unexpected exception.
          */
-        public void failure(Exception e);
+        public void failure(Exception e, String url);
     }
 }

@@ -1,16 +1,12 @@
 package com.aspsine.zhihu.daily.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
@@ -19,23 +15,21 @@ import com.aspsine.zhihu.daily.ui.fragment.DailyStoriesFragment;
 import com.aspsine.zhihu.daily.ui.fragment.NavigationFragment;
 import com.aspsine.zhihu.daily.ui.fragment.ThemeStoriesFragment;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
-public class NavigationDrawerActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
+public class NavigationDrawerActivity extends BaseAppCompatActivity implements NavigationDrawerCallbacks {
     private static final String TAG = NavigationDrawerActivity.class.getSimpleName();
-    @InjectView(R.id.actionbarToolbar)
-    Toolbar mActionBarToolbar;
 
     private NavigationFragment mNavigationFragment;
 
     private CharSequence mTitle = "";
 
     @Override
+    protected int getContentViewLayoutId() {
+        return R.layout.activity_navigation_drawer;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation_drawer);
-        ButterKnife.inject(this);
         setUpDrawer();
         if (savedInstanceState == null) {
             mNavigationFragment.selectItem(NavigationFragment.getDefaultNavDrawerItem());
@@ -43,7 +37,6 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
     }
 
     private void setUpDrawer() {
-        setSupportActionBar(mActionBarToolbar);
         mNavigationFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
         mNavigationFragment.setup(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mActionBarToolbar);
@@ -110,19 +103,6 @@ public class NavigationDrawerActivity extends ActionBarActivity implements Navig
             return true;
         }
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -14,7 +14,6 @@ import com.aspsine.zhihu.daily.ui.widget.AvatarsView;
 import com.aspsine.zhihu.daily.ui.widget.StoryHeaderView;
 import com.aspsine.zhihu.daily.util.DensityUtil;
 import com.aspsine.zhihu.daily.util.UIUtils;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,17 +23,8 @@ import java.util.List;
  */
 public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Theme mTheme;
-    private DisplayImageOptions mOptions;
 
     public ThemeStoriesAdapter() {
-        this.mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_launcher)
-                .showImageForEmptyUri(R.drawable.ic_launcher)
-                .showImageOnFail(R.drawable.ic_launcher)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .build();
     }
 
     public void setTheme(Theme theme) {

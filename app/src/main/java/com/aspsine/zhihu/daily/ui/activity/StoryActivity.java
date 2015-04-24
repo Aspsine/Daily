@@ -3,14 +3,13 @@ package com.aspsine.zhihu.daily.ui.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.Menu;
 
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.ui.fragment.DailyStoriesFragment;
 import com.aspsine.zhihu.daily.ui.fragment.StoryFragment;
 import com.aspsine.zhihu.daily.util.L;
 
-public class StoryActivity extends BaseActionBarActivity {
+public class StoryActivity extends BaseAppCompatActivity {
 
     @Override
     protected int getContentViewLayoutId() {

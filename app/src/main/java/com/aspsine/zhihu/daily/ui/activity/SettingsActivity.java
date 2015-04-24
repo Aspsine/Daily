@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.ui.fragment.SettingsFragment;
 
-public class SettingsActivity extends BaseActionBarActivity {
+public class SettingsActivity extends BaseAppCompatActivity {
 
     @Override
     protected int getContentViewLayoutId() {

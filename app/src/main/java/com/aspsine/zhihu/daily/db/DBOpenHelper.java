@@ -16,6 +16,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = Constants.Config.DATABASE_VERSION;
     private static final String DB_NAME = Constants.Config.DATABASE_NAME;
 
+    private static DBOpenHelper sDBOpenHelper;
     /**
      * Creates underlying database table using DAOs.
      */
@@ -30,7 +31,18 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         CacheDao.dropTable(db, ifExists);
     }
 
-    public DBOpenHelper(Context context) {
+    public static DBOpenHelper getInstance(Context context) {
+        if (sDBOpenHelper == null) {
+            synchronized (DBOpenHelper.class) {
+                if (sDBOpenHelper == null) {
+                    sDBOpenHelper = new DBOpenHelper(context);
+                }
+            }
+        }
+        return sDBOpenHelper;
+    }
+
+    private DBOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 

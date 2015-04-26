@@ -71,6 +71,7 @@ public class NetRepositoryImpl implements NetRepository {
             @Override
             public void success(Story story, Response response) {
                 callback.success(story, response.getUrl());
+                L.i(TAG, "getStoryDetail net");
             }
 
             @Override
@@ -86,6 +87,7 @@ public class NetRepositoryImpl implements NetRepository {
             @Override
             public void success(Themes themes, Response response) {
                 callback.success(themes, response.getUrl());
+                L.i(TAG, "getThemes net");
             }
 
             @Override
@@ -101,6 +103,7 @@ public class NetRepositoryImpl implements NetRepository {
             @Override
             public void success(Theme theme, Response response) {
                 callback.success(theme, response.getUrl());
+                L.i(TAG, "getTheme net");
             }
 
             @Override
@@ -116,6 +119,7 @@ public class NetRepositoryImpl implements NetRepository {
             @Override
             public void success(Theme theme, Response response) {
                 callback.success(theme, response.getUrl());
+                L.i(TAG, "getThemeBeforeStory net");
             }
 
             @Override

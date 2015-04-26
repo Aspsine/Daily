@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aspsine.zhihu.daily.R;
@@ -23,15 +24,18 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static final String TAG = NavigationDrawerAdapter.class.getSimpleName();
     private List<Theme> mThemes;
     private NavigationDrawerCallbacks mCallBacks;
+    private boolean mIsKitKatWithNavigation;
     private int mSelectedPosition = -1;
 
     public static final class Type {
         public static final int TYPE_HEADER = 0;
-        public static final int TYPE_ITEM = 2;
+        public static final int TYPE_ITEM = 1;
+        public static final int TYPE_BOTTOM_SPACE = 2;
     }
 
-    public NavigationDrawerAdapter() {
+    public NavigationDrawerAdapter(boolean isKitKatWithNavigation) {
         mThemes = new ArrayList<Theme>();
+        mIsKitKatWithNavigation = isKitKatWithNavigation;
     }
 
     public void setThemes(List<Theme> themes) {
@@ -46,12 +50,26 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? Type.TYPE_HEADER : Type.TYPE_ITEM;
+        if (mIsKitKatWithNavigation) {
+            if (position == 0) {
+                return Type.TYPE_HEADER;
+            } else if (position == mThemes.size() + 2) {
+                return Type.TYPE_BOTTOM_SPACE;
+            } else {
+                return Type.TYPE_ITEM;
+            }
+        } else {
+            return position == 0 ? Type.TYPE_HEADER : Type.TYPE_ITEM;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mThemes != null ? mThemes.size() + 2 : 2;
+        if (mIsKitKatWithNavigation) {
+            return mThemes != null ? mThemes.size() + 3 : 3;
+        } else {
+            return mThemes != null ? mThemes.size() + 2 : 2;
+        }
     }
 
     @Override
@@ -71,6 +89,11 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 });
                 return holder;
+            case Type.TYPE_BOTTOM_SPACE:
+                View view = new View(viewGroup.getContext());
+                view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, UIUtils.getNavigationBarHeight(viewGroup.getContext())));
+                UIUtils.setAccessibilityIgnore(view);
+                return new BottomViewHolder(view);
         }
         return null;
     }
@@ -87,6 +110,8 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
             case Type.TYPE_ITEM:
                 ItemViewHolder itemViewHolder = (ItemViewHolder) viewHolder;
                 bindItemData(itemViewHolder, position);
+                break;
+            case Type.TYPE_BOTTOM_SPACE:
                 break;
             default:
                 throw new IllegalArgumentException(TAG + " error view type!");
@@ -153,6 +178,12 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
             super(itemView);
             tvItemName = (TextView) itemView.findViewById(R.id.tvItemName);
             imageView = (ImageView) itemView.findViewById(R.id.ivItemIcon);
+        }
+    }
+
+    public static class BottomViewHolder extends RecyclerView.ViewHolder {
+        public BottomViewHolder(View itemView) {
+            super(itemView);
         }
     }
 }

@@ -78,7 +78,7 @@ public class RepositoryImpl implements Repository {
             }
 
             @Override
-            public void failure(Exception e, String url) {
+            public void failure(final Exception error, String url) {
                 //network failed, get data form cache
                 mCache.getLatestDailyStories(url, new CacheRepository.Callback<DailyStories>() {
                     @Override
@@ -88,7 +88,7 @@ public class RepositoryImpl implements Repository {
 
                     @Override
                     public void failure(Exception e) {
-                        callback.failure(e);
+                        callback.failure(error);
                     }
                 });
             }
@@ -106,7 +106,7 @@ public class RepositoryImpl implements Repository {
             }
 
             @Override
-            public void failure(Exception e, String url) {
+            public void failure(final Exception error, String url) {
                 mCache.getBeforeDailyStories(url, new CacheRepository.Callback<DailyStories>() {
                     @Override
                     public void success(DailyStories dailyStories) {
@@ -115,7 +115,7 @@ public class RepositoryImpl implements Repository {
 
                     @Override
                     public void failure(Exception e) {
-                        callback.failure(e);
+                        callback.failure(error);
                     }
                 });
             }
@@ -132,7 +132,7 @@ public class RepositoryImpl implements Repository {
             }
 
             @Override
-            public void failure(Exception e, String url) {
+            public void failure(final Exception error, String url) {
                 mCache.getStoryDetail(url, new CacheRepository.Callback<Story>() {
                     @Override
                     public void success(Story story) {
@@ -141,7 +141,7 @@ public class RepositoryImpl implements Repository {
 
                     @Override
                     public void failure(Exception e) {
-                        callback.failure(e);
+                        callback.failure(error);
                     }
                 });
             }
@@ -158,7 +158,7 @@ public class RepositoryImpl implements Repository {
             }
 
             @Override
-            public void failure(Exception e, String url) {
+            public void failure(final Exception error, String url) {
                 mCache.getThemes(url, new CacheRepository.Callback<Themes>() {
                     @Override
                     public void success(Themes themes) {
@@ -167,7 +167,7 @@ public class RepositoryImpl implements Repository {
 
                     @Override
                     public void failure(Exception e) {
-                        callback.failure(e);
+                        callback.failure(error);
                     }
                 });
             }
@@ -184,7 +184,7 @@ public class RepositoryImpl implements Repository {
             }
 
             @Override
-            public void failure(Exception e, String url) {
+            public void failure(final Exception error, String url) {
                 mCache.getTheme(url, new CacheRepository.Callback<Theme>() {
                     @Override
                     public void success(Theme theme) {
@@ -193,7 +193,7 @@ public class RepositoryImpl implements Repository {
 
                     @Override
                     public void failure(Exception e) {
-                        callback.failure(e);
+                        callback.failure(error);
                     }
                 });
             }
@@ -210,7 +210,7 @@ public class RepositoryImpl implements Repository {
             }
 
             @Override
-            public void failure(Exception e, String url) {
+            public void failure(final Exception error, String url) {
                 mCache.getThemeBeforeStory(url, new CacheRepository.Callback<Theme>() {
                     @Override
                     public void success(Theme theme) {
@@ -219,7 +219,7 @@ public class RepositoryImpl implements Repository {
 
                     @Override
                     public void failure(Exception e) {
-                        callback.failure(e);
+                        callback.failure(error);
                     }
                 });
             }

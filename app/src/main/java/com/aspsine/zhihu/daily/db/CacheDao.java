@@ -14,7 +14,7 @@ public class CacheDao {
     private DBOpenHelper mHelper;
 
     public CacheDao(Context context) {
-        mHelper = new DBOpenHelper(context);
+        mHelper = DBOpenHelper.getInstance(context);
     }
 
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
@@ -54,7 +54,7 @@ public class CacheDao {
         db.close();
     }
 
-    public void updateCache(Cache cache) {
+    public synchronized void updateCache(Cache cache) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("select * from "
                         + TABLE_NAME
@@ -77,7 +77,7 @@ public class CacheDao {
     }
 
     public Cache getCache(String request) {
-        SQLiteDatabase db = mHelper.getWritableDatabase();
+        SQLiteDatabase db = mHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from "
                         + TABLE_NAME
                         + " where request = ?",
@@ -96,7 +96,7 @@ public class CacheDao {
     }
 
     public boolean exists(String request) {
-        SQLiteDatabase db = mHelper.getWritableDatabase();
+        SQLiteDatabase db = mHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from "
                         + TABLE_NAME
                         + " where request = ?",

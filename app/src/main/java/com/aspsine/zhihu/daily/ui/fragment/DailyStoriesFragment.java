@@ -13,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.aspsine.zhihu.daily.App;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.model.DailyStories;
-import com.aspsine.zhihu.daily.respository.RepositoryImpl;
 import com.aspsine.zhihu.daily.respository.interfaces.Repository;
 import com.aspsine.zhihu.daily.ui.adapter.DailyStoriesAdapter;
 import com.aspsine.zhihu.daily.ui.adapter.holder.DateViewHolder;
@@ -33,7 +33,6 @@ public class DailyStoriesFragment extends BaseFragment {
     private LoadMoreRecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
 
-    private Repository mRepository;
     private String mDate;
 
     /**
@@ -45,7 +44,6 @@ public class DailyStoriesFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new DailyStoriesAdapter();
-        mRepository = new RepositoryImpl(getActivity());
     }
 
     @Override
@@ -127,7 +125,6 @@ public class DailyStoriesFragment extends BaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mRepository = null;
     }
 
     private String mTitle;
@@ -154,7 +151,7 @@ public class DailyStoriesFragment extends BaseFragment {
     private void refresh() {
         isDataLoaded = false;
 
-        mRepository.getLatestDailyStories(new Repository.Callback<DailyStories>() {
+        App.getRepository().getLatestDailyStories(new Repository.Callback<DailyStories>() {
             @Override
             public void success(DailyStories dailyStories, boolean outDate) {
                 isDataLoaded = true;
@@ -176,7 +173,7 @@ public class DailyStoriesFragment extends BaseFragment {
     private void loadMore() {
         recyclerView.setLoadingMore(true);
 
-        mRepository.getBeforeDailyStories(mDate, new Repository.Callback<DailyStories>() {
+        App.getRepository().getBeforeDailyStories(mDate, new Repository.Callback<DailyStories>() {
             @Override
             public void success(DailyStories dailyStories, boolean outDate) {
                 mDate = dailyStories.getDate();

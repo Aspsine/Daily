@@ -14,9 +14,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aspsine.zhihu.daily.App;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.model.StartImage;
-import com.aspsine.zhihu.daily.respository.RepositoryImpl;
 import com.aspsine.zhihu.daily.respository.interfaces.Repository;
 import com.aspsine.zhihu.daily.util.DensityUtil;
 import com.aspsine.zhihu.daily.util.L;
@@ -41,8 +41,6 @@ public class SplashFragment extends Fragment {
     private int mWidth;
     private int mHeight;
 
-    Repository mRepository;
-
     @Override
     public void onAttach(Activity activity) {
         mIvSplashAnim = AnimationUtils.loadAnimation(activity, R.anim.splash);
@@ -66,7 +64,6 @@ public class SplashFragment extends Fragment {
                 .cacheOnDisk(true)
                 .considerExifParams(true)
                 .build();
-        mRepository = new RepositoryImpl(getActivity());
     }
 
     @Override
@@ -108,13 +105,12 @@ public class SplashFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mIvSplashAnim = null;
-        mRepository = null;
     }
 
 
     private void refresh() {
 
-        mRepository.getStartImage(mWidth, mHeight, mOptions, new Repository.Callback<StartImage>() {
+        App.getRepository().getStartImage(mWidth, mHeight, mOptions, new Repository.Callback<StartImage>() {
             @Override
             public void success(StartImage startImage, boolean outDate) {
                 tvAuthor.setText(startImage.getText());

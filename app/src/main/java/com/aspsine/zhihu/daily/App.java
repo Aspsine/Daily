@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
 
+import com.aspsine.zhihu.daily.respository.RepositoryImpl;
+import com.aspsine.zhihu.daily.respository.interfaces.Repository;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -17,6 +19,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
  */
 public class App extends Application {
     private static Context applicationContext;
+    private static Repository sRepository;
 
     @Override
     public void onCreate() {
@@ -52,5 +55,17 @@ public class App extends Application {
 
     public static Context getContext() {
         return applicationContext;
+    }
+
+    /**
+     * NOTE:there is no multiThread use simple singleton
+     * get volley network api access repository
+     * @return
+     */
+    public static final Repository getRepository() {
+        if (sRepository == null) {
+            sRepository = new RepositoryImpl(applicationContext);
+        }
+        return sRepository;
     }
 }

@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.aspsine.zhihu.daily.App;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.model.Theme;
-import com.aspsine.zhihu.daily.respository.RepositoryImpl;
 import com.aspsine.zhihu.daily.respository.interfaces.Repository;
 import com.aspsine.zhihu.daily.ui.adapter.ThemeStoriesAdapter;
 import com.aspsine.zhihu.daily.ui.widget.LoadMoreRecyclerView;
@@ -29,8 +29,6 @@ public class ThemeStoriesFragment extends BaseFragment {
 
     private ThemeStoriesAdapter mAdapter;
 
-    private Repository mRepository;
-
     private String mThemeId;
 
     private String mLastStoryId;
@@ -45,7 +43,6 @@ public class ThemeStoriesFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             mAdapter = new ThemeStoriesAdapter();
-            mRepository = new RepositoryImpl(getActivity());
         }
     }
 
@@ -103,13 +100,12 @@ public class ThemeStoriesFragment extends BaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mRepository = null;
     }
 
     private void refresh() {
         isDataLoaded = false;
 
-        mRepository.getTheme(mThemeId, new Repository.Callback<Theme>() {
+        App.getRepository().getTheme(mThemeId, new Repository.Callback<Theme>() {
             @Override
             public void success(Theme theme, boolean outDate) {
                 isDataLoaded = true;
@@ -135,7 +131,7 @@ public class ThemeStoriesFragment extends BaseFragment {
 
     private void loadMore() {
 
-        mRepository.getThemeBeforeStory(mThemeId, mLastStoryId, new Repository.Callback<Theme>() {
+        App.getRepository().getThemeBeforeStory(mThemeId, mLastStoryId, new Repository.Callback<Theme>() {
             @Override
             public void success(Theme theme, boolean outDate) {
                 recyclerView.setLoadingMore(false);

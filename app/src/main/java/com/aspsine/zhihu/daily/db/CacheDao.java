@@ -76,7 +76,7 @@ public class CacheDao {
         db.close();
     }
 
-    public Cache getCache(String request) {
+    public synchronized Cache getCache(String request) {
         SQLiteDatabase db = mHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from "
                         + TABLE_NAME

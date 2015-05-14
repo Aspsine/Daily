@@ -16,11 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aspsine.zhihu.daily.App;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.interfaces.NavigationDrawerCallbacks;
 import com.aspsine.zhihu.daily.model.Theme;
 import com.aspsine.zhihu.daily.model.Themes;
-import com.aspsine.zhihu.daily.respository.RepositoryImpl;
 import com.aspsine.zhihu.daily.respository.interfaces.Repository;
 import com.aspsine.zhihu.daily.ui.adapter.NavigationDrawerAdapter;
 import com.aspsine.zhihu.daily.util.SharedPrefUtils;
@@ -67,8 +67,6 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
     private NavigationDrawerAdapter mAdapter;
     private List<Theme> mThemes;
 
-    private Repository mRepository;
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -93,7 +91,6 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
         mAdapter = new NavigationDrawerAdapter(Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT
                 && UIUtils.hasNavigationBar(getActivity()));
         mAdapter.setNavigationDrawerCallbacks(this);
-        mRepository = new RepositoryImpl(getActivity());
     }
 
     @Override
@@ -124,7 +121,6 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
-        mRepository = null;
     }
 
     @Override
@@ -252,7 +248,7 @@ public class NavigationFragment extends Fragment implements NavigationDrawerCall
     }
 
     private void refresh() {
-        mRepository.getThemes(new Repository.Callback<Themes>() {
+        App.getRepository().getThemes(new Repository.Callback<Themes>() {
             @Override
             public void success(Themes themes, boolean outDate) {
                 mThemes = themes.getOthers();

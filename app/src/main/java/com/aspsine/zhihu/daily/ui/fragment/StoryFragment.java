@@ -22,10 +22,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
+import com.aspsine.zhihu.daily.App;
 import com.aspsine.zhihu.daily.R;
 import com.aspsine.zhihu.daily.model.Editor;
 import com.aspsine.zhihu.daily.model.Story;
-import com.aspsine.zhihu.daily.respository.RepositoryImpl;
 import com.aspsine.zhihu.daily.respository.interfaces.Repository;
 import com.aspsine.zhihu.daily.ui.widget.AvatarsView;
 import com.aspsine.zhihu.daily.ui.widget.StoryHeaderView;
@@ -79,8 +79,6 @@ public class StoryFragment extends Fragment {
 
     private Story mStory;
 
-    private Repository mRepository;
-
     public static StoryFragment newInstance(String storyId) {
         StoryFragment fragment = new StoryFragment();
         Bundle bundle = new Bundle();
@@ -108,8 +106,6 @@ public class StoryFragment extends Fragment {
                 .cacheOnDisk(true)
                 .considerExifParams(true)
                 .build();
-
-        mRepository = new RepositoryImpl(getActivity());
     }
 
     @Override
@@ -158,7 +154,6 @@ public class StoryFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mRepository = null;
     }
 
     @Override
@@ -179,7 +174,7 @@ public class StoryFragment extends Fragment {
     }
 
     private void refresh() {
-        mRepository.getStoryDetail(mStoryId, new Repository.Callback<Story>() {
+        App.getRepository().getStoryDetail(mStoryId, new Repository.Callback<Story>() {
             @Override
             public void success(Story story, boolean outDate) {
                 if (getActivity() == null) {

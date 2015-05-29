@@ -11,8 +11,6 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 
 /**
  * Created by sf on 2015/1/12.
@@ -22,7 +20,6 @@ import com.squareup.leakcanary.RefWatcher;
 public class App extends Application {
     private static Context applicationContext;
     private static Repository sRepository;
-    private RefWatcher refWatcher;
 
     @Override
     public void onCreate() {
@@ -30,8 +27,6 @@ public class App extends Application {
         setStrictMode();
 
         super.onCreate();
-
-        refWatcher = LeakCanary.install(this);
 
         applicationContext = getApplicationContext();
 
@@ -60,11 +55,6 @@ public class App extends Application {
 
     public static Context getContext() {
         return applicationContext;
-    }
-
-    public static RefWatcher getRefWatcher(Context context) {
-        App application = (App) context.getApplicationContext();
-        return application.refWatcher;
     }
 
     /**

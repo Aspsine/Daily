@@ -141,6 +141,22 @@ public class StoryFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (isWebViewOK()) {
+            refWebView.get().onResume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (isWebViewOK()) {
+            refWebView.get().onPause();
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (isWebViewOK()) {

@@ -38,12 +38,12 @@ public class StoryActivity extends BaseAppCompatActivity {
 
     @Override
     public void finish() {
-        FragmentManager fm;
-        Fragment fragment;
-        if ((fm = getSupportFragmentManager()) != null && (fragment = fm.findFragmentByTag(StoryFragment.TAG)) != null) {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentByTag(StoryFragment.TAG);
+        if (fm != null && fragment != null) {
             fm.beginTransaction().remove(fragment).commitAllowingStateLoss();
         }
-        if(mActionBarToolbar != null){
+        if (mActionBarToolbar != null) {
             mActionBarToolbar.getBackground().setAlpha(255);
         }
         super.finish();

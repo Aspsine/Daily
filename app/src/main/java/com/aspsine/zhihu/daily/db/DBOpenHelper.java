@@ -3,9 +3,9 @@ package com.aspsine.zhihu.daily.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.aspsine.zhihu.daily.Constants;
+import com.aspsine.zhihu.daily.util.L;
 
 /**
  * Created by Aspsine on 2015/4/10.
@@ -48,13 +48,13 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i(TAG, "Creating tables for DB version " + DB_VERSION);
+        L.i(TAG, "Creating tables for DB version " + DB_VERSION);
         createAllTables(db, false);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.i(TAG, "Upgrading DB from version " + oldVersion + " to " + newVersion + " by dropping all tables");
+        L.i(TAG, "Upgrading DB from version " + oldVersion + " to " + newVersion + " by dropping all tables");
         dropAllTables(db, true);
         onCreate(db);
     }

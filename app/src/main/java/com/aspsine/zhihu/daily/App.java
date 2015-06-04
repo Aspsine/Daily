@@ -35,6 +35,10 @@ public class App extends Application {
         initImageLoader(getApplicationContext());
     }
 
+    /**
+     * issue: retrofit Memory leak in StrickMode
+     * https://github.com/square/retrofit/issues/801
+     */
     private void setStrictMode() {
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
             StrictMode.enableDefaults();

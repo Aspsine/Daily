@@ -3,7 +3,6 @@
     android:id="@+id/avatarsView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="8dp"
     android:paddingTop="4dp"
     android:paddingBottom="4dp"
     android:background="@color/white" />

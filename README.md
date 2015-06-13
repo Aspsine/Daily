@@ -39,11 +39,11 @@ A demo app of Zhihu Daily with full Material Design and new widgets. It's more l
 - Proguard
 
 ### ScreenShot
-![splash](https://raw.githubusercontent.com/Aspsine/Daily/master/art/splash.jpeg)
-![main](https://raw.githubusercontent.com/Aspsine/Daily/master/art/main.jpeg)
-![drawer](https://raw.githubusercontent.com/Aspsine/Daily/master/art/drawer.jpeg)
-![section](https://raw.githubusercontent.com/Aspsine/Daily/master/art/section.jpeg)
-![detail](https://raw.githubusercontent.com/Aspsine/Daily/master/art/detail.jpeg)
+![splash](https://raw.githubusercontent.com/Aspsine/Daily/master/art/splash.png)
+![main](https://raw.githubusercontent.com/Aspsine/Daily/master/art/main.png)
+![drawer](https://raw.githubusercontent.com/Aspsine/Daily/master/art/drawer.png)
+![section](https://raw.githubusercontent.com/Aspsine/Daily/master/art/section.png)
+![detail](https://raw.githubusercontent.com/Aspsine/Daily/master/art/detail.png)
 
 ### Contact Me
 - Github:   github.com/aspsine

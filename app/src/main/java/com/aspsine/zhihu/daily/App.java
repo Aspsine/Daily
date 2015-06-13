@@ -65,7 +65,7 @@ public class App extends Application {
      * NOTE:there is no multiThread use simple singleton
      * @return
      */
-    public static final Repository getRepository() {
+    public static Repository getRepository() {
         if (sRepository == null) {
             sRepository = new RepositoryImpl(applicationContext);
         }

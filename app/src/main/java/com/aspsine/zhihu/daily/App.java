@@ -52,7 +52,7 @@ public class App extends Application {
                 .diskCacheFileNameGenerator(new Md5FileNameGenerator())
                 .diskCacheSize(Constants.Config.IMAGE_CACHE_SIZE) // 50 Mb
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .writeDebugLogs() // Remove for release app
+//                .writeDebugLogs() // Remove for release app
                 .build();
         ImageLoader.getInstance().init(config);
     }

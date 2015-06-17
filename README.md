@@ -17,13 +17,14 @@ A demo app of Zhihu Daily with full Material Design and new widgets. It's more l
 - RESTful API Design
 
 ### Libraris:
-- com.android.support:support-v4:21.0.3
-- com.android.support:appcompat-v7:21.0.3
-- com.android.support:recyclerview-v7:21.0.3
-- com.android.support:cardview-v7:21.0.3
+- com.android.support:support-v4:22.1.0
+- com.android.support:appcompat-v7:22.1.0
+- com.android.support:recyclerview-v7:22.1.0
+- com.android.support:cardview-v7:22.1.0
 - com.google.code.gson:gson:2.3.1
 - com.jakewharton:butterknife:6.0.0
 - com.squareup.retrofit:retrofit:1.9.0
+- com.squareup.okhttp:okhttp:2.3.0
 
 ### Version
 - 1.0 Beta

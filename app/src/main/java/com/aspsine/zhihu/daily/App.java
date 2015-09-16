@@ -52,7 +52,7 @@ public class App extends Application {
                 .diskCacheFileNameGenerator(new Md5FileNameGenerator())
                 .diskCacheSize(Constants.Config.IMAGE_CACHE_SIZE) // 50 Mb
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .writeDebugLogs() // Remove for release app
+//                .writeDebugLogs() // Remove for release app
                 .build();
         ImageLoader.getInstance().init(config);
     }
@@ -65,7 +65,7 @@ public class App extends Application {
      * NOTE:there is no multiThread use simple singleton
      * @return
      */
-    public static final Repository getRepository() {
+    public static Repository getRepository() {
         if (sRepository == null) {
             sRepository = new RepositoryImpl(applicationContext);
         }

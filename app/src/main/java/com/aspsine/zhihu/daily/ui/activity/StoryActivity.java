@@ -43,9 +43,6 @@ public class StoryActivity extends BaseAppCompatActivity {
         if (fm != null && fragment != null) {
             fm.beginTransaction().remove(fragment).commitAllowingStateLoss();
         }
-        if (mActionBarToolbar != null) {
-            mActionBarToolbar.getBackground().setAlpha(255);
-        }
         super.finish();
     }
 

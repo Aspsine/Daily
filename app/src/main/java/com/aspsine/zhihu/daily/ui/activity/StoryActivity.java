@@ -37,16 +37,6 @@ public class StoryActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    public void finish() {
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentByTag(StoryFragment.TAG);
-        if (fm != null && fragment != null) {
-            fm.beginTransaction().remove(fragment).commitAllowingStateLoss();
-        }
-        super.finish();
-    }
-
-    @Override
     protected void onDestroy() {
         L.i("StoryActivity", "onDestroy");
         super.onDestroy();

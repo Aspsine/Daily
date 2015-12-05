@@ -229,7 +229,7 @@ public class StoryFragment extends Fragment {
         // bind header view
         if (hasImage) {
             if (mActionBarToolbar != null) {
-                mActionBarToolbar.getBackground().setAlpha(0);
+                mActionBarToolbar.getBackground().mutate().setAlpha(0);
             }
             spaceView.setVisibility(View.VISIBLE);
             rlStoryHeader.addView(storyHeaderView);
@@ -316,7 +316,7 @@ public class StoryFragment extends Fragment {
         int toolbarHeight = mActionBarToolbar.getHeight();
         float contentHeight = storyHeaderViewHeight - toolbarHeight;
         float ratio = Math.min(scrollY / contentHeight, 1.0f);
-        mActionBarToolbar.getBackground().setAlpha((int) (ratio * 0xFF));
+        mActionBarToolbar.getBackground().mutate().setAlpha((int) (ratio * 0xFF));
         if (scrollY <= contentHeight) {
             mActionBarToolbar.setY(0f);
             return;

@@ -47,7 +47,7 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemViewType(int position) {
         if (!TextUtils.isEmpty(mTheme.getBackground()) && position == 0) {
             return Type.TYPE_HEADER;
-        } else if (mTheme.getEditors() != null && mTheme.getEditors().size() > 0 && position == 1) {
+        } else if (hasEditors() && position == 1) {
             return Type.TYPE_AVATARS;
         } else {
             return Type.TYPE_ITEM;
@@ -109,11 +109,16 @@ public class ThemeStoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 break;
             case Type.TYPE_ITEM:
                 StoryViewHolder storyViewHolder = (StoryViewHolder) holder;
-                storyViewHolder.bindStoryView(mTheme.getStories().get(position - 2));
+                final int storyPosition = hasEditors() ? position - 2 : position - 1;
+                storyViewHolder.bindStoryView(mTheme.getStories().get(storyPosition));
                 break;
             default:
                 throw new IllegalArgumentException("error view type!");
         }
+    }
+
+    private boolean hasEditors() {
+        return mTheme.getEditors() != null && mTheme.getEditors().size() > 0;
     }
 
     public static final class HeaderViewHolder extends RecyclerView.ViewHolder {

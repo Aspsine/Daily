@@ -30,7 +30,7 @@ public class App extends Application {
 
         applicationContext = getApplicationContext();
 
-        CrashHandler.getInstance(getApplicationContext());
+//        CrashHandler.getInstance(getApplicationContext());
 
         initImageLoader(getApplicationContext());
     }

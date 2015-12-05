@@ -50,7 +50,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         } else if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
+//            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
